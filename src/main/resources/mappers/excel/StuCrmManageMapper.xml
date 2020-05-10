@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tedu.sois.stu.dao.StuCrmManageDao">
+    <insert id="insertStuCrmManage" parameterType="java.util.List" keyProperty="crmManageId" useGeneratedKeys="true">
+        insert ignore into stu_crm_manage(
+            crm_id,crm_stu_name,series_class,
+            crm_class,stu_state,contract_send_type,
+            need_cost,cost_all,enter_class_time,
+            monthly_time,teaching_center,sales_center,
+            consult_name,create_name,created_time
+        )
+        values
+        <foreach collection="list" item="scm" separator=",">
+            (
+            #{scm.crmId},#{scm.crmStuName},#{scm.seriesClass},
+            #{scm.crmClass},#{scm.stuState},#{scm.contractSendType},
+            #{scm.needCost},#{scm.costAll},#{scm.enterClassTime},
+            #{scm.monthlyTime},#{scm.teachingCenter},#{scm.salesCenter},
+            #{scm.consultName},#{scm.createName},#{scm.createdTime}
+            )
+        </foreach>
+    </insert>
+    <insert id="insertStuClass" parameterType="java.util.Set" keyProperty="classId" useGeneratedKeys="true">
+        insert ignore into class_table(
+            class_num,class_direction,created_time
+        )
+        values
+        <foreach collection="collection" item="ct" separator=",">
+            (#{ct.ClassNum},#{ct.classDirection},#{ct.createdTime})
+        </foreach>
+    </insert>
+
+    <select id="selectClassNumAllList" resultType="java.lang.String">
+        SELECT class_num FROM class_table
+        /*WHERE created_time between (SELECT DATE_ADD(now(),INTERVAL -6 MONTH)) and now()*/
+        GROUP BY class_num
+        ORDER BY class_num ASC
+    </select>
+
+</mapper>
