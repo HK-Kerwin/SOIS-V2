@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>设置我的资料</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" th:href="@{../dist/layuiadmin/layui/css/layui.css}" media="all"/>
+    <link rel="stylesheet" th:href="@{../dist/layuiadmin/style/admin.css}" media="all"/>
+</head>
+<body>
+
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-header">设置我的资料</div>
+
+                <div class="layui-card-body" pad15>
+
+                    <div class="layui-form" lay-filter="">
+
+                        <form class="layui-form" action="">
+                            <input name="userId" th:value="${userInfo.userId}" style="display: none" disabled>
+
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">我的角色</label>
+                                <div class="layui-input-inline">
+                                    <select name="roleName" lay-verify="" lay-filter="aihao">
+                                        <option th:value="${roleName}" th:text="${roleName}">请选择</option>
+                                    </select>
+                                </div>
+                                <div class="layui-form-mid layui-word-aux">当前角色不可更改为其它角色</div>
+                            </div>
+
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">登录账号</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="loginName" th:value="${userInfo.loginName}" readonly
+                                           class="layui-input" disabled>
+                                </div>
+                                <div class="layui-form-mid layui-word-aux">登录账号不可修改</div>
+                            </div>
+
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">昵称</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="userName" th:value="${userInfo.userName}"
+                                           lay-verify="nickname"
+                                           autocomplete="off" placeholder="" class="layui-input" disabled>
+                                </div>
+                                <div class="layui-form-mid layui-word-aux">昵称固定不可修改</div>
+                            </div>
+
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">性别</label>
+                                <div class="layui-input-block">
+                                    <input type="radio" name="sex" value="男" title="男" th:field="*{userInfo.sex}"
+                                           checked>
+                                    <input type="radio" name="sex" value="女" title="女" th:field="*{userInfo.sex}">
+                                </div>
+                            </div>
+
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">头像</label>
+                                <div class="layui-input-inline">
+
+                                    <input name="avatar" lay-verify="required" id="LAY_avatarSrc" placeholder="图片地址"
+                                           th:value="(*{userInfo.avatar} == '') ? @{../dist/layuiadmin/img/defualt.png} : @{*{userInfo.avatar}}"
+                                           class="layui-input" type="hidden">
+                                    <div class="layui-upload-drag" id="chooseFileBtn">
+                                        <i class="layui-icon layui-icon-picture"></i>
+                                        <p>点击或拖拽文件到此</p>
+                                        <div class="" id="uploadDemoView">
+                                            <hr>
+                                            <img th:src="(*{userInfo.avatar} == '') ? @{../dist/layuiadmin/img/defualt.png} : @{*{userInfo.avatar}}"
+                                                 class="layui-upload-img" id="showImg" width="115px" height="150px">
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                                <div class="layui-input-inline " style="width: auto;">
+                                    <button type="button" class="layui-btn layhi ui-btn-primary"
+                                            id="LAY_avatarUpload">
+                                        <i class="layui-icon">&#xe67c;</i>上传图片
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">手机</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="phoneNumber" th:value="${userInfo.phoneNumber}"
+                                           lay-verify="phone" autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">邮箱</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="email" th:value="${userInfo.email}" lay-verify="email"
+                                           autocomplete="off" class="layui-input" list="stuEmail_list" id="email">
+                                    <datalist id="stuEmail_list"></datalist>
+                                </div>
+                            </div>
+
+                            <div class="layui-form-item layui-form-text">
+                                <label class="layui-form-label">备注</label>
+                                <div class="layui-input-block">
+                                    <textarea name="remark" placeholder="请输入内容" class="layui-textarea">[[*{userInfo.remark}]]</textarea>
+                                </div>
+                            </div>
+
+                            <div class="layui-form-item">
+                                <div class="layui-input-block">
+                                    <button class="layui-btn" lay-submit lay-filter="setMyInfo">确认修改</button>
+                                    <button type="reset" class="layui-btn layui-btn-primary">恢复原样</button>
+                                </div>
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<script th:src="@{../dist/layuiadmin/layui/layui.js}"></script>
+<script type="text/javascript" th:inline="javascript">
+    var ctxPath = /*[[@{/}]]*/'';
+    layui.config({
+        base: '../dist/layuiadmin/' //静态资源所在路径
+    }).extend({
+        index: 'lib/index' //主入口模块
+    }).use(['index', 'form', 'upload'], function () {
+        var $ = layui.$
+            , form = layui.form
+            , admin = layui.admin
+            , layer = layui.layer
+            , upload = layui.upload;
+        ;
+
+        form.render();
+
+        /* 邮箱后缀自动补全 */
+        inputList($("#email"), $("#stuEmail_list"));
+
+
+        var files;
+        upload.render({
+            elem: '#chooseFileBtn'
+            , url: 'avatarChange'
+            , data: {
+                userId: function(){
+                    return [[${userInfo.userId}]];
+                }
+            }
+            , accept: 'avatarImg'
+            , auto: false
+            , field: "avatarImg"
+            , bindAction: '#LAY_avatarUpload'
+            , acceptMime: 'image/*'
+            , size: 260 * 1024
+            , before: function (obj) {
+                layer.load();
+            }
+            , done: function (res, index, upload) {
+                if(res.code == '0'){ //上传成功
+                    let fileupload = $("#LAY_avatarSrc");
+                    fileupload.attr("value", res.data.src);
+                    $('#showImg').attr('src', res.data.file);
+                    layer.closeAll('loading');
+                    layer.msg(res.msg, {offset: '15px', time: 1000})
+                    return delete this.files[index]; //删除文件队列已经上传成功的文件
+                }
+            }, choose: function (obj) {
+
+                files = this.files = obj.pushFile();
+
+                obj.preview(function (index, file, result) {
+                    //传文件名给需要提交表单的input
+                    $('#LAY_avatarSrc').val(file.name);
+                    //需要回显给img
+                    $('#showImg').attr('src', result);
+                });
+            }, error: function (res, index, upload) {
+                layer.closeAll('loading'); //关闭loading
+                layer.msg(res.msg, {offset: '15px', time: 1000})
+            }
+        });
+
+        /*提交信息*/
+        form.on('submit(setMyInfo)', function (obj) {
+            let field = obj.field;
+            admin.req({
+                url: 'doModifySingleUserInfo',
+                method: 'post',
+                data: field,
+                dataType: 'JSON',
+                success: function (res) {
+                    if (res.code == '0') {
+                        layer.msg(res.msg == null ? '提交失败' : res.msg + ',退出登录重新刷新页面', {
+                            offset: '15px'
+                            , icon: 1
+                            , time: 1000
+                        }, function () {
+                            //刷新父页面
+                            parent.location.reload();
+                        });
+                    }
+                },
+                error: function (res) {
+                    layer.msg(res.msg, {offset: '15px', icon: 2, time: 800})
+                }
+            });
+            layui.element.init();
+            return false;
+        });
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,67 @@
+<ul class="pagination pagination-sm no-margin pull-right stuPageDown">
+    <li><a class="first">首页</a></li>
+    <li><a class="pre">上一页</a></li>
+    <li><a class="next">下一页</a></li>
+    <li><a class="last">尾页</a></li>
+    <li><a class="rowCount">总记录数(0)</a></li>
+    <li><a class="pageCount">总页数(0)</a></li>
+    <li><a class="pageCurrent">当前页(1)</a></li>
+</ul>
+<script type="text/javascript">
+    $(function () {
+        $("#pageId-stuInfo")
+            .on("click", ".first,.pre,.next,.last", doJumpToPage);
+    })
+
+    //跳转到指定页面
+    function doJumpToPage() {
+        //1.获取点击对象的class属性值
+        //1)$(this)表示当前被点击的对象
+        //2)prop(属性名,[属性值])用户获取属性值或为属性赋值
+        let cls = $(this).prop("class");
+        //2.基于class属性值,修改当前页码值
+        //1)pageCurrent=1;
+        //2)pageCurrent--;
+        //3)pageCurrent++;
+        //4)pageCurrent=pageCount;
+        //2.1获取pageCurrent,pageCount值的值
+        let pageCurrent = $("#pageId-stuInfo").data("pageCurrent");
+        let pageCount = $("#pageId-stuInfo").data("pageCount");
+        //2.2修改pageCurrent值
+        if (cls == "first") {
+            pageCurrent = 1;
+        } else if (cls == "pre" && pageCurrent > 1) {
+            pageCurrent--;
+        } else if (cls == "next" && pageCurrent < pageCount) {
+            pageCurrent++;
+        } else if (cls == "last") {
+            pageCurrent = pageCount;
+        } else {
+            return;
+        }
+        //3.基于当前页码值重新执行查询
+        $("#pageId-stuInfo").data("pageCurrent", pageCurrent);
+        doFindObjects();
+    }
+
+    //初始化分页信息
+    function doSetStuPageInitialize(pageObject) {
+        //提示信息
+        $(".stuClassCount").html("查 询 出 " + pageObject.rowCount + " 人");
+        $(".rowCount").html("总记录数(" + pageObject.rowCount + ")");
+        $(".pageCount").html("总页数(" + pageObject.pageCount + ")");
+        $(".pageCurrent").html("当前页(" + pageObject.pageCurrent + ")");
+
+        //存储当前页码以及pageCount的值
+        //data(key,[value])函数用于在某个对下个上绑定值或获取值
+        $("#pageId-stuInfo").data("pageCurrent", pageObject.pageCurrent);
+        $("#pageId-stuInfo").data("pageCount", pageObject.pageCount);
+    }
+
+</script>
+
+
+
+
+
+
