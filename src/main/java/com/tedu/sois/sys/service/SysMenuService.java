@@ -7,12 +7,21 @@ import com.tedu.sois.common.vo.Node;
 import com.tedu.sois.sys.entity.SysMenu;
 
 public interface SysMenuService {
-	
-	  
-      List<Node> findZtreeMenuNodes();
-	  List<Map<String,Object>> findObjects();
-	  int deleteObject(Integer id);
-	  int saveObject(SysMenu entity);
-	  int updateObject(SysMenu entity);
-	  
+
+
+    List<Node> findZtreeMenuNodes();
+
+    /**
+     * 查询菜单及子菜单信息
+     *
+     * @return
+     */
+    List<Map<String, Object>> findMenuList();
+
+    int deleteObject(Integer menuId);
+
+    int saveObject(SysMenu entity);
+
+    int updateObject(SysMenu entity);
+
 }

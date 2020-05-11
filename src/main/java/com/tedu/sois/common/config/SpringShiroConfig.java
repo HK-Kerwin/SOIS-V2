@@ -101,7 +101,6 @@ public class SpringShiroConfig {
         map.put("/dist/**", "anon");
         map.put("/i18n/**", "anon");
         map.put("/layuiadmin/**", "anon");
-        map.put("/plugins/**", "anon");
         map.put("/logout", "logout");
 
         map.put("/upload/**", "anon");//头像访问路径

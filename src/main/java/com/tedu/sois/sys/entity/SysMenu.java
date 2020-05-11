@@ -1,18 +1,20 @@
 package com.tedu.sois.sys.entity;
 
+import com.tedu.sois.common.pojo.BaseEntity;
+
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 
-public class SysMenu implements Serializable{
-	private static final long serialVersionUID = 6328149119720259896L;
-	private Long id;
+public class SysMenu extends BaseEntity {
+
+	private Long menuId;
 	/**菜单名称*/
-	private String name;
+	private String menuName;
 	/**菜单url: log/doFindPageObjects*/
 	private String url;
-	/**菜单类型(两种:按钮,普通菜单)*/
-	private Integer type=1;
+	/**菜单类型( 1：菜单   2：按钮)*/
+	private Integer type = 1;
 	/**排序(序号)*/
 	private Integer sort;
 	/**备注*/
@@ -21,27 +23,21 @@ public class SysMenu implements Serializable{
 	private Integer parentId;
 	/**菜单对应的权限标识(sys:log:delete)*/
 	private String permission;
-	/**创建用户*/
-	private String createdUser;
-	/**修改用户*/
-	private String modifiedUser;
-	private Date createdTime;
-	private Date modifiedTime;
 
-	public Long getId() {
-		return id;
+	public Long getMenuId() {
+		return menuId;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	public void setMenuId(Long menuId) {
+		this.menuId = menuId;
 	}
 
-	public String getName() {
-		return name;
+	public String getMenuName() {
+		return menuName;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setMenuName(String menuName) {
+		this.menuName = menuName;
 	}
 
 	public String getUrl() {
@@ -129,19 +125,19 @@ public class SysMenu implements Serializable{
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
 		SysMenu sysMenu = (SysMenu) o;
-		return Objects.equals(id, sysMenu.id);
+		return Objects.equals(menuId, sysMenu.menuId);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id);
+		return Objects.hash(menuId);
 	}
 
 	@Override
 	public String toString() {
 		return "SysMenu{" +
-				"id=" + id +
-				", name='" + name + '\'' +
+				"id=" + menuId +
+				", name='" + menuName + '\'' +
 				", url='" + url + '\'' +
 				", type=" + type +
 				", sort=" + sort +

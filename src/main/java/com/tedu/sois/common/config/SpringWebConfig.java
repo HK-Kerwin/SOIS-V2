@@ -31,7 +31,6 @@ public class SpringWebConfig implements WebMvcConfigurer {
         patterns.add("/dist/**");
         patterns.add("/i18n/**");
         patterns.add("/layuiadmin/**");
-        patterns.add("/plugins/**");
 
         patterns.add("/");
         patterns.add("/doErrorUI");

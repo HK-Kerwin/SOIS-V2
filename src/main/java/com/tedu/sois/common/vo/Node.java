@@ -10,30 +10,30 @@ public class Node implements Serializable{
 	/**
 	 * 节点id
 	 */
-	private Integer id;
+	private Integer menuId;
 	/**
 	 * 节点名称
 	 */
-	private String name;
+	private String menuName;
 	/**
 	 * 上级节点信息
 	 */
 	private Integer parentId;
 
-	public Integer getId() {
-		return id;
+	public Integer getMenuId() {
+		return menuId;
 	}
 
-	public void setId(Integer id) {
-		this.id = id;
+	public void setMenuId(Integer menuId) {
+		this.menuId = menuId;
 	}
 
-	public String getName() {
-		return name;
+	public String getMenuName() {
+		return menuName;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setMenuName(String menuName) {
+		this.menuName = menuName;
 	}
 
 	public Integer getParentId() {
@@ -47,8 +47,8 @@ public class Node implements Serializable{
 	@Override
 	public String toString() {
 		return "Node{" +
-				"id=" + id +
-				", name='" + name + '\'' +
+				"menuId=" + menuId +
+				", menuName='" + menuName + '\'' +
 				", parentId=" + parentId +
 				'}';
 	}

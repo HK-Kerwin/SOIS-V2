@@ -7,6 +7,7 @@
 	<title>菜单管理</title>
 	<link rel="stylesheet" th:href="@{../dist/layuiadmin/layui/css/layui.css}" media="all"/>
 	<link rel="stylesheet" th:href="@{../dist/layuiadmin/style/admin.css}" media="all"/>
+	<link rel="stylesheet" th:href="@{../dist/layuiadmin/treetable-lay/treeTable.css}" media="all"/>
 </head>
 <body>
 
@@ -17,37 +18,20 @@
 <div class="layui-row">
 	<div class="box-body">
 		<div class="layui-card">
-			<!--<div style="height: 50px;line-height: 60px;padding: 0 15px;border-bottom: 0px solid #f6f6f6;">
 
-				<div class="table-reload-btn" style="margin-bottom: 10px;">
-					<div class="layui-inline">
-						<input class="layui-input layui-input-search" name="userName" id="table-demoReload-input"
-							   autocomplete="off"
-							   placeholder="输入用户名"
-							   style="width:220px;border-radius:20px;outline: none;text-indent: 3px;">
-					</div>
-					<button class="layui-btn layui-btn-normal layui-btn-radius" data-type="reload"
-							data-method="searchBtn" id="search-userInfoList-btn">
-						<i class="layui-icon layui-icon-search"></i>搜索
-					</button>
-
-				</div>
-
-			</div>-->
 			<!-- /.box-header -->
 			<div class="layui-card-body">
-				<div class="layui-form">
-					<table class="layui-table" lay-filter="user-list-table-toolbar" id="roleInfoListTable">
+				<table class="layui-table" lay-filter="menu-list-table-toolbar" id="menuInfoListTable">
 
-					</table>
-				</div>
+				</table>
 				<script type="text/html" id="table-toolbar-toolbar">
-
+					<div class="layui-btn-group">
+						<button class="layui-btn layui-btn-sm layui-btn-radius" lay-event="add"><i class="layui-icon">&#xe654;</i>新增</button>
+						<button class="layui-btn layui-btn-sm layui-btn-radius" lay-event="updata"><i class="layui-icon">&#xe642;</i>修改</button>
+						<button class="layui-btn layui-btn-sm layui-btn-radius" lay-event="delete"><i class="layui-icon">&#xe640;</i>删除</button>
+						<button class="layui-btn layui-btn-sm layui-btn-radius" lay-event="refresh"><i class="layui-icon">&#xe666;</i>刷新</button>
+					</div>
                 </script>
-				<script type="text/html" id="table-toolbar-bar">
-					<a class="layui-btn layui-btn-xs layui-btn-radius" lay-event="edit">编辑</a>
-					<a class="layui-btn layui-btn-danger layui-btn-xs layui-btn-radius" lay-event="del">删除</a>
-				</script>
 			</div>
 
 			<!-- /.box-body -->
@@ -60,109 +44,113 @@
 </div>
 
 
+<!--<script th:src="@{../dist/layuiadmin/treetable/treeTable.js}"></script>-->
 <script th:src="@{../dist/layuiadmin/layui/layui.js}"></script>
 <script type="text/javascript">
 	layui.config({
 		base: '../dist/layuiadmin/' //静态资源所在路径
 	}).extend({
-		index: 'lib/index' //主入口模块
-	}).use(['table', 'index', 'form', 'admin'], function () {
-		let table = layui.table
-				, form = layui.form
-				, layer = layui.layer
-				, admin = layui.admin
-				, $ = layui.$;
+		index: 'lib/index', //主入口模块
+		treeTable : '../treetable-lay/treeTable'
+	}).use(['index','treeTable', 'table', 'layer'], function () {
+		var table = layui.table
+			, layer = layui.layer
+			, treeTable = layui.treeTable
+			, $ = layui.$;
 
-		table.render({
-			elem: '#roleInfoListTable'
-			, toolbar: '#table-toolbar-toolbar'
-			, url: '../role/doFindPageRoleInfoByRoleName'
-			, method: 'get'
-			, title: '角色数据表'
-			, cellMinWidth: 80
-			, page: true
-			, id: 'roleInfoReload'
-			, cols: [
-				[
-					{type: 'checkbox', fixed: 'left'}
-					, {
-					field: 'roleId',
-					title: '编号',
-					fixed: 'left',
-					unresize: true,
-					hide: true,
-					sort: true,
-					align: 'center'
+
+		$.ajax({
+			url: '../menu/doFindMenuList',
+			headers: {
+				"token": layui.data(layui.setter.tableName)['token']
+			},
+			type: 'get',
+			dataType: 'json',
+			success: function (res) {
+				if(res.code == 0){
+					renderTable(res.data);
+				} else {
+					layer.msg(res.msg);
 				}
-					, {field: 'roleName', title: '角色名', align: 'center', minWidth: 230}
-					, {field: 'note', title: '备注说明', align: 'center', minWidth: 200}
-					, {field: 'roleKey', title: '角色权限', align: 'center', minWidth: 120}
-					, {field: 'dataScope', title: '数据范围',  align: 'center', minWidth: 240, templet: function (d){
-						return d.dataScope == '1'
-								? '<span>全部数据权限</span>' :
-								d.dataScope == '2'
-										? '<span>自定数据权限</span>' :
-										d.dataScope == '3'
-												? '<span>本部门数据权限</span>' :
-												d.dataScope == '4' ? '<span>本部门及以下数据权限</span>' : '未知权限';
-					}}
-					, {field: 'status', title: '角色状态',  align: 'center', minWidth: 100, templet: function (d){
-						return d.status == 0 ? '正常' : '停用';
-					}}
-					, {field: 'roleSort', title: '显示顺序', sort: true, align: 'center', minWidth: 102}
-					, {field: 'createdTime', title: '创建时间', sort: true, align: 'center', minWidth: 240}
-					, {field: 'modifiedTime', title: '修改时间', sort: true, align: 'center', minWidth: 240}
-					, {field: 'createdUser', title: '创建者', align: 'center', minWidth: 135}
-					, {field: 'modifiedUser', title: '修改者',  align: 'center', minWidth: 135}
-					, {fixed: 'right', title: '操作', width: 120, align: 'center', toolbar: '#table-toolbar-bar'}
-
-				]
-			]
-			, parseData: function (res) {
-				let data = res.data;
-				for (let i in data) {
-
-					data[i].createdTime = formatDateForDateTime(data[i].createdTime);
-					data[i].modifiedTime = formatDateForDateTime(data[i].modifiedTime);
-
-				}
-			}
-			, done: function (res, curr, count) {
-				/*隐藏id*/
-				$("[data-field='userId']").css('display', 'none');
-
+			},
+			error: function (res) {
+				layer.msg(res.msg);
 			}
 		});
-		/*表格重载,搜索方法*/
-		var active = {
-			reload: function () {
-				let demoReload = $('#table-demoReload-input');
-				let index = layer.msg('查询中,请稍等', {icon: 16, time: 1000, shade: 0})
-				//执行重载
-				setTimeout(function () {
-					table.reload('roleInfoReload', {
-						url: '../role/doFindPageRoleInfoByRoleName'
-						, where: {
-							userName: demoReload.val()
-						}, error: function (res, curr, count) {
-							layer.msg(res.msg);
-						}
-					}, 'data');
-					layer.close(index);
-				}, 500);
-			}
-		};
 
+		let renderTable = function(data){
+			layer.load(2);  //加载层
+			treeTable.render({
+				elem: '#menuInfoListTable',
+				toolbar: '#table-toolbar-toolbar',
+				title: '角色数据表',
+				cellMinWidth: 80,
+				height: 'full-80',
+				page: false,
+				id: 'menuInfoReload',
+				data: data,
+				/*url: '../menu/doFindMenuList',*/
+				tree:{
+					iconIndex: 2,	//树形图标显示在第几列
+					isPidData: true,	// 是否是id、pid形式数据
+					idName: 'menuId',	//id字段的名称
+					pidName: 'parentId', 	//父级节点字段
+					defaultClose: true,	//是否默认折叠
+					linkage: false,	//父级展开时是否自动展开所有子级
+					getIcon: function(d) {  // 自定义图标
+						// d是当前行的数据
+						if (d.haveChild) {  // 判断是否有子集
+							return '<i class="ew-tree-icon layui-icon layui-icon-layer"></i>';
+						} else {
+							return '<i class="ew-tree-icon layui-icon layui-icon-file"></i>';
+						}
+					}
+				},
+				cols: [
+					[
+						{type: 'radio',title: '选择'}
+						, {type: 'numbers', title: '编号', align: 'center',minWidth: 80,unresize: false}
+						, {field: 'menuName', title: '菜单名称', align: 'center', minWidth: 140 ,unresize: true}
+						, {field: 'haveChild',title: '菜单图标', align: 'center',minWidth: 20, hide: true}
+						, {field: 'type', title: '类型', align: 'center' ,unresize: true, templet: function (d) {
+							return d.type==1?'<span class="layui-badge layui-bg-blue">菜单</span>':'<span class="layui-badge layui-bg-orange">按钮</span>'
+						}}
+						, {field: 'sort', title: '排序号', align: 'center' ,unresize: true}
+						, {field: 'url', title: '请求路径', align: 'center', minWidth: 150 ,unresize: true}
+						, {field: 'permission', title: '授权标识', align: 'center', minWidth: 140 ,unresize: true}
+						, {field: 'createdTime', title: '创建时间', align: 'center', minWidth: 200 ,unresize: true}
+						, {field: 'modifiedTime', title: '修改时间', align: 'center', minWidth: 200 ,unresize: true}
+						, {field: 'createdUser', title: '创建者', align: 'center', minWidth: 135 ,unresize: true}
+						, {field: 'modifiedUser', title: '修改者',  align: 'center', minWidth: 135 ,unresize: true}
+
+					]
+				]
+				, parseData: function (res) {
+					let data = res.data;
+					for (let i in data) {
+						data[i].createdTime = formatDateForDateTime(data[i].createdTime);
+						data[i].modifiedTime = formatDateForDateTime(data[i].modifiedTime);
+					}
+				}
+				, done: function (res, curr, count) {
+					//关闭加载
+					layer.closeAll('loading');
+				}
+			});
+		}
+
+
+		renderTable();
 
 		/* tr右侧点击功能 */
-		table.on('tool(user-list-table-toolbar)', function (obj) {
+		table.on('tool(menu-list-table-toolbar)', function (obj) {
 			let data = obj.data;
 			if (obj.event === 'edit') {
 				edit(data);
 			};
 		});
 
-		/* 编辑角色信息功能 */
+		/* 编辑菜单信息功能 */
 		function edit(data) {
 			window.reqData = data;
 			let url = '../user/getUserInfoPage?userId=' + data.userId;
@@ -181,13 +169,11 @@
 			});
 		}
 
-		//回车键监听
-		keyupByBindId("search-userInfoList-btn");
 
 		$('.table-reload-btn .layui-btn').on('click', function () {
-			var type = $(this).data('type');
+			let type = $(this).data('type');
 			active[type] ? active[type].call(this) : '';
-			var othis = $(this), method = othis.data('method');
+			let othis = $(this), method = othis.data('method');
 			active[method] ? active[method].call(this, othis) : '';
 		});
 	})

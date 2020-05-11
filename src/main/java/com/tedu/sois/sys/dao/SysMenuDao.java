@@ -2,8 +2,8 @@ package com.tedu.sois.sys.dao;
 import java.util.List;
 import java.util.Map;
 
+import com.baomidou.mybatisplus.core.mapper.Mapper;
 import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
@@ -15,7 +15,8 @@ import com.tedu.sois.sys.entity.SysMenu;
  * 在此接口的实现类中注入SqlSessionFactory对象.
  */
 
-public interface SysMenuDao {
+public interface SysMenuDao{
+
 	List<String> findPermissions( @Param("menuIds") Integer[] menuIds);
 	/**
 	 * 更新数据库中的菜单记录
@@ -36,23 +37,23 @@ public interface SysMenuDao {
 	    * 也可以使用map.
 	    * @return
 	    */
-	   @Select("select id,name,parentId from sys_menus")
+	   @Select("select menu_id,menu_name,parentId from sys_menu")
 	   List<Node> findZtreeMenuNodes(); 
 	   /**
 	    * 基于菜单id统计子菜单的数量
-	    * @param id 菜单id
+	    * @param menuId 菜单id
 	    * @return 子菜单的数量
 	    */
-	   @Select("select count(*) from sys_menus where parentId=#{id}")
-	   int getChildCount(Integer id);
+	   @Select("select count(*) from sys_menu where parentId=#{menuId}")
+	   int getChildCount(Integer menuId);
 	   
 	   /**
 	    * 基于菜单id删除菜单
-	    * @param id 菜单id
+	    * @param menuId 菜单id
 	    * @return 删除的行数
 	    */
-	   @Delete("delete from sys_menus where id=#{id}")
-	   int deleteObject(Integer id);
+	   @Delete("delete from sys_menu where menu_id=#{menuId}")
+	   int deleteObject(Integer menuId);
 	   
 	  /**
 	   * 查询所有的菜单以及菜单对应的上级菜单信息
@@ -64,7 +65,7 @@ public interface SysMenuDao {
 	   * 一些外包项目.
 	   * @return
 	   */
-	  List<Map<String,Object>> findObjects();
+	  List<Map<String,Object>> selectMenuList();
 }
 
 
