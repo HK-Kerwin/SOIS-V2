@@ -1,5 +1,7 @@
 package com.tedu.sois.sys.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.tedu.sois.common.vo.Node;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -10,41 +12,62 @@ import com.tedu.sois.common.vo.JsonResult;
 import com.tedu.sois.sys.entity.SysMenu;
 import com.tedu.sois.sys.service.SysMenuService;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 //@Controller
 //@ResponseBody
 @RestController
 @RequestMapping("menu/")
 public class SysMenuController {
+
     @Autowired
     private SysMenuService sysMenuService;
 
-    @PostMapping("doUpdateObject")
-    public JsonResult doUpdateObject(SysMenu entity) {
-        sysMenuService.updateObject(entity);
-        return new JsonResult("update ok");
+    @PostMapping("doSaveSysMenuInfo")
+    public JsonResult doSaveSysMenuInfo(SysMenu entity) {
+        sysMenuService.saveSysMenuInfo(entity);
+        return new JsonResult("菜单保存成功!");
     }
 
-    @PostMapping("doSaveObject")
-    public JsonResult doSaveObject(SysMenu entity) {
-        sysMenuService.saveObject(entity);
-        return new JsonResult("save ok");
+    /**
+     * 根据菜单id删除菜单信息
+     * @param menuId
+     * @return
+     */
+    @RequestMapping("doDeleteSysMenuInfoById")
+    public JsonResult doDeleteSysMenuInfoById(Integer menuId) {
+        sysMenuService.deleteSysMenuInfoById(menuId);
+        return new JsonResult("菜单删除成功");
     }
 
-    @RequestMapping("doDeleteObject")
-    public JsonResult doDeleteObject(Integer id) {
-        sysMenuService.deleteObject(id);
-        return new JsonResult("delete ok");
+
+    @PostMapping("doModifySysMenuInfo")
+    public JsonResult doModifySysMenuInfo(SysMenu entity) {
+        sysMenuService.modifySysMenuInfo(entity);
+        return new JsonResult("菜单修改成功");
     }
 
-    @GetMapping("doFindZtreeMenuNodes")
-    public JsonResult doFindZtreeMenuNodes() {
-        return new JsonResult(sysMenuService.findZtreeMenuNodes());
-    }
-
+    /**
+     * 查询所有菜单信息
+     * @return
+     */
     @RequestMapping("doFindMenuList")
     public JsonResult doFindMenuList() {
         return new JsonResult(sysMenuService.findMenuList());
     }
+
+    /**
+     * 查询节点树
+     * @return
+     */
+    @GetMapping("doFindZtreeMenuNodes")
+    public List<Node> doFindZtreeMenuNodes() {
+        return sysMenuService.findZtreeMenuNodes();
+    }
+
+
 }
 
 

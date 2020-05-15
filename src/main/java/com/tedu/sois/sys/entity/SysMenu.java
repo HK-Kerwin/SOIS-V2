@@ -8,27 +8,34 @@ import java.util.Objects;
 
 public class SysMenu extends BaseEntity {
 
-	private Long menuId;
+	private Integer menuId;
+
 	/**菜单名称*/
 	private String menuName;
+
 	/**菜单url: log/doFindPageObjects*/
 	private String url;
+
 	/**菜单类型( 1：菜单   2：按钮)*/
 	private Integer type = 1;
+
 	/**排序(序号)*/
 	private Integer sort;
+
 	/**备注*/
 	private String note;
+
 	/**上级菜单id*/
 	private Integer parentId;
+
 	/**菜单对应的权限标识(sys:log:delete)*/
 	private String permission;
 
-	public Long getMenuId() {
+	public Integer getMenuId() {
 		return menuId;
 	}
 
-	public void setMenuId(Long menuId) {
+	public void setMenuId(Integer menuId) {
 		this.menuId = menuId;
 	}
 
@@ -136,18 +143,20 @@ public class SysMenu extends BaseEntity {
 	@Override
 	public String toString() {
 		return "SysMenu{" +
-				"id=" + menuId +
-				", name='" + menuName + '\'' +
+				"menuId=" + menuId +
+				", menuName='" + menuName + '\'' +
 				", url='" + url + '\'' +
 				", type=" + type +
 				", sort=" + sort +
 				", note='" + note + '\'' +
 				", parentId=" + parentId +
 				", permission='" + permission + '\'' +
-				", createdUser='" + createdUser + '\'' +
-				", modifiedUser='" + modifiedUser + '\'' +
 				", createdTime=" + createdTime +
 				", modifiedTime=" + modifiedTime +
+				", createdUser='" + createdUser + '\'' +
+				", modifiedUser='" + modifiedUser + '\'' +
+				", delFlag='" + delFlag + '\'' +
+				", remark='" + remark + '\'' +
 				'}';
 	}
 }

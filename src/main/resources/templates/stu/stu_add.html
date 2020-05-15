@@ -438,7 +438,8 @@
             , field: "avatarImg"
             , bindAction: '#LAY_avatarUpload'
             , acceptMime: 'image/*'
-            , size: 260 * 1024
+            , size: 3 * 1024 * 1024
+            , headers: {"token": layui.data(layui.setter.tableName)['token']}
             , before: function (obj) {
                 layer.load();
             }
@@ -470,7 +471,7 @@
         form.on('submit(stuSaveFrom)', function (data) {
             $.ajax({
                 url: 'doSaveStuBaseInfo',
-                method: 'post',
+                type: 'post',
                 data: data.field,
                 dataType: 'JSON',
                 success: function (res) {

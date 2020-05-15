@@ -180,7 +180,6 @@ layui.define(['laytpl', 'form', 'util'], function (exports) {
                     dataType: 'json',
                     contentType: that.options.contentType,
                     success: function (res) {
-                        console.log(res)
                         if (that.options.parseData) res = that.options.parseData(res);
                         if (res.code == 0) callback(res.data);
                         else callback(res.msg || '加载失败');

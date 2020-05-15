@@ -58,7 +58,6 @@ public class TimeAccessInterceptor implements HandlerInterceptor {
                 e.printStackTrace();
                 String str = "{\"code\":801,\"msg\":\"登陆失效,请重新登录!!!\"}";
                 dealErrorReturn(httpServletRequest, httpServletResponse, str);
-                //httpServletResponse.sendRedirect("/doLoginUI");
                 return false;
             }
             if (claims.getExpiration().getTime() > DateUtil.date().getTime()) {
@@ -74,14 +73,12 @@ public class TimeAccessInterceptor implements HandlerInterceptor {
                     e.printStackTrace();
                     String str = "{\"code\":801,\"msg\":\"登陆失效,请重新登录.\"}";
                     dealErrorReturn(httpServletRequest, httpServletResponse, str);
-                    //httpServletResponse.sendRedirect("/doLoginUI");
                     return false;
                 }
             }
         }
         String str = "{\"code\":801,\"msg\":\"验证失效!请重新登录!\"}";
         dealErrorReturn(httpServletRequest, httpServletResponse, str);
-        //httpServletResponse.sendRedirect("/doLoginUI");
         return false;
     }
 

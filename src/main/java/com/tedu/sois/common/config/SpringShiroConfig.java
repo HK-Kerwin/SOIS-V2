@@ -33,7 +33,7 @@ public class SpringShiroConfig {
     @Bean
     public SessionManager sessionManager() {
         DefaultWebSessionManager sManager = new DefaultWebSessionManager();
-        sManager.setGlobalSessionTimeout(30 * 60 * 60 * 1000);
+        sManager.setGlobalSessionTimeout(2 * 60 * 60 * 1000);
         //sManager.setSessionIdUrlRewritingEnabled(false);
         return sManager;
     }
@@ -48,7 +48,7 @@ public class SpringShiroConfig {
     public CookieRememberMeManager rememberMeManager() {
         CookieRememberMeManager cManager = new CookieRememberMeManager();
         SimpleCookie cookie = new SimpleCookie("rememberMe");
-        cookie.setMaxAge(60 * 60);
+        cookie.setMaxAge(2 * 60 * 60);
         cManager.setCookie(cookie);
         return cManager;
     }

@@ -1,8 +1,11 @@
 package com.tedu.sois.sys.service.impl;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import com.tedu.sois.common.util.ShiroUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -20,53 +23,60 @@ import com.tedu.sois.sys.service.SysMenuService;
  */
 @Service
 public class SysMenuServiceImpl implements SysMenuService {
+
     @Autowired
     private SysMenuDao sysMenuDao;
     @Autowired
     private SysRoleMenuDao sysRoleMenuDao;
 
     @Override
-    public int updateObject(SysMenu entity) {
+    public void saveSysMenuInfo(SysMenu entity) {
         if (entity == null)
             throw new IllegalArgumentException("保存对象不能为空");
         if (StringUtils.isEmpty(entity.getMenuName()))
             throw new IllegalArgumentException("菜单名不能为空");
-        int rows = sysMenuDao.updateObject(entity);
-        return rows;
+        entity.setCreatedUser(ShiroUtils.getUsername());
+        entity.setCreatedTime(new Date());
+        int rows = sysMenuDao.insertSysMenuInfo(entity);
+        if(rows == 0)
+            throw new ServiceException("保存失败");
     }
 
-    @Override
-    public int saveObject(SysMenu entity) {
-        if (entity == null)
-            throw new IllegalArgumentException("保存对象不能为空");
-        if (StringUtils.isEmpty(entity.getMenuName()))
-            throw new IllegalArgumentException("菜单名不能为空");
-        int rows = sysMenuDao.insertObject(entity);
-        return rows;
-    }
 
     @Override
-    public List<Node> findZtreeMenuNodes() {
-        return sysMenuDao.findZtreeMenuNodes();
-    }
-
-    @Override
-    public int deleteObject(Integer id) {
+    public int deleteSysMenuInfoById(Integer menuId) {
         //1.参数有效性校验
-        if (id == null || id < 1)
+        if (menuId == null || menuId < 1)
             throw new IllegalArgumentException("id值无效");
         //2.统计子菜单数据并校验
-        int childCount = sysMenuDao.getChildCount(id);
+        int childCount = sysMenuDao.getChildCount(menuId);
         if (childCount > 0)
             throw new ServiceException("请先删除子菜单");
         //3.删除菜单角色关系数据
-        sysRoleMenuDao.deleteObjectsByMenuId(id);
+        sysRoleMenuDao.deleteSysRoleMenuByMenuId(menuId);
         //4.删除菜单自身信息并返回结果
-        int rows = sysMenuDao.deleteObject(id);
+        int rows = sysMenuDao.deleteSysMenuInfo(menuId);
         if (rows == 0)
             throw new ServiceException("记录可能已经不存在");
         return rows;
     }
+
+    @Override
+    public int modifySysMenuInfo(SysMenu entity) {
+        if (entity == null)
+            throw new IllegalArgumentException("保存对象不能为空");
+        if (StringUtils.isEmpty(entity.getMenuName()))
+            throw new IllegalArgumentException("菜单名不能为空");
+        if (entity.getParentId() == null || entity.getParentId() == 0)
+            throw new ServiceException("顶级菜单不允许修改");
+        entity.setModifiedTime(new Date());
+        entity.setModifiedUser(ShiroUtils.getUsername());
+        int rows = sysMenuDao.updateSysMenuInfo(entity);
+        if (rows == 0)
+            throw new ServiceException("修改菜单信息失败");
+        return rows;
+    }
+
 
     @Override
     public List<Map<String, Object>> findMenuList() {
@@ -75,4 +85,32 @@ public class SysMenuServiceImpl implements SysMenuService {
             throw new ServiceException("没有找到对应记录");
         return list;
     }
+
+
+    @Override
+    public List<Node> findZtreeMenuNodes() {
+        List<Node> nodes = sysMenuDao.selectZtreeMenuNodes();
+        List<Node> result = treeSelect(nodes,0);
+        return result;
+    }
+
+    /**
+     * 递归求树
+     * @param nodes 全部的节点信息
+     * @param parentId 父节点id
+     * @return
+     */
+    private List<Node> treeSelect(List<Node> nodes,Integer parentId) {
+        List<Node> result = new ArrayList<Node>();
+        for (Node node : nodes) {
+            if (node.getParentId() == parentId || node.getParentId().equals(parentId)) {
+                List<Node> childMenuList = treeSelect(nodes,node.getId());
+                node.setChildren(childMenuList);
+                result.add(node);
+            }
+        }
+        return result;
+    }
+
+
 }

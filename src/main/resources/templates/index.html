@@ -53,7 +53,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 </li>
                 <li class="layui-nav-item layui-hide-xs" lay-unselect>
                     <input type="text" placeholder="姓名/手机号/身份证号" autocomplete="off" class="layui-input layui-input-search"
-                           layadmin-event="serach" lay-action="teacher/getStuInfoPageForTeacher?indexSearch=" name="indexSearch">
+                           layadmin-event="serach" lay-action="teacher/doGetStuInfoPageForTeacher?indexSearch=" name="indexSearch">
                 </li>
                 <li class="layui-nav-item layui-hide-xs" lay-tips="逝去的青春,天呐！是时间在流逝！" lay-unselect >
                     <a id="nowTime" style="font-size:14px;" href="javascript:;">
@@ -154,6 +154,21 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             </dd>
                         </dl>
                     </li>
+                    <li data-name="show" class="layui-nav-item"><!--layui-nav-itemed-->
+                        <a href="javascript:;" lay-tips="达内之星" lay-direction="2">
+                            <i class="layui-icon layui-icon-star"></i>
+                            <cite>达内之星</cite>
+                            <span class="layui-nav-more"></span>
+                        </a>
+                        <dl class="layui-nav-child">
+                            <dd>
+                                <a lay-href="doErrorUI">就业明星</a>
+                            </dd>
+                            <dd>
+                                <a lay-href="doErrorUI">奖学金</a>
+                            </dd>
+                        </dl>
+                    </li>
                     <li data-name="user" class="layui-nav-item"><!--layui-nav-itemed-->
                         <a href="javascript:;" lay-tips="学员功能" lay-direction="2">
                             <i class="layui-icon layui-icon-user"></i>
@@ -189,7 +204,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             <span class="layui-nav-more"></span>
                         </a>
                         <dl class="layui-nav-child">
-                            <dd><a lay-href="teacher/getStuInfoPageForTeacher">分类查询</a></dd>
+                            <dd><a lay-href="teacher/doGetStuInfoPageForTeacher">分类查询</a></dd>
                             <dd><a lay-href="javascript:;">考勤信息</a></dd>
                             <dd><a lay-href="javascript:;">成绩信息</a></dd>
                             <dd>
@@ -234,9 +249,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             </dd>
                             <dd>
                                 <a lay-href="sys/doGetRoleListInfoPage">角色管理</a>
-                            </dd>
-                            <dd>
-                                <a lay-href="javascript:;">岗位管理</a>
                             </dd>
                             <dd>
                                 <a lay-href="sys/doGetDeptListInfoPage">部门管理</a>

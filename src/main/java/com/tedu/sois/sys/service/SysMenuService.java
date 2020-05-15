@@ -8,7 +8,10 @@ import com.tedu.sois.sys.entity.SysMenu;
 
 public interface SysMenuService {
 
-
+    /**
+     * 查询节点树
+     * @return
+     */
     List<Node> findZtreeMenuNodes();
 
     /**
@@ -18,10 +21,15 @@ public interface SysMenuService {
      */
     List<Map<String, Object>> findMenuList();
 
-    int deleteObject(Integer menuId);
+    /**
+     * 根据菜单id删除菜单信息
+     * @param menuId
+     * @return
+     */
+    int deleteSysMenuInfoById(Integer menuId);
 
-    int saveObject(SysMenu entity);
+    void saveSysMenuInfo(SysMenu entity);
 
-    int updateObject(SysMenu entity);
+    int modifySysMenuInfo(SysMenu entity);
 
 }

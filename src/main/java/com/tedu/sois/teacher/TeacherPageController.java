@@ -21,8 +21,8 @@ public class TeacherPageController {
     @Autowired
     private StuBaseInfoService stuBaseInfoService;
 
-    @RequestMapping("getStuInfoPageForTeacher")
-    public String getStuInfoPageForTeacher(String indexSearch,Model model) {
+    @RequestMapping("doGetStuInfoPageForTeacher")
+    public String doGetStuInfoPageForTeacher(String indexSearch,Model model) {
         List<String> list = stuBaseInfoService.showStuClassNumList();
         model.addAttribute("stuClass",list);
         //System.err.println("indexSearch = " + indexSearch);

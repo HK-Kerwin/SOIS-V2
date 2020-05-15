@@ -66,7 +66,7 @@
                         <a href="forget.html" class="layadmin-user-jump-change layadmin-link" style="margin-top: 7px;">忘记密码？</a>
                     </div>
                     <div class="layui-form-item">
-                        <button id="LAY-user-login-submit-btn" class="layui-btn layui-btn-fluid" lay-submit
+                        <button id="user-login-submit-btn" class="layui-btn layui-btn-fluid" lay-submit
                                 lay-filter="LAY-user-login-submit">登 入
                         </button>
                     </div>
@@ -183,6 +183,7 @@
                                 //刷新父页面
                                 parent.location.reload();
                             })
+                            return false;
                         } else {
                             $("#LAY-user-login-password").val("");
                             $("#user-login-verCode").val("");
@@ -207,7 +208,7 @@
         });
 
         //回车键监听
-        keyupByBindId("LAY-user-login-submit-btn");
+        keyupByBindId("user-login-submit-btn");
 
         //首次生成验证码
         let show_num = [];

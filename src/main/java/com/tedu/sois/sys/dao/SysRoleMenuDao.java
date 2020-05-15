@@ -7,7 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 /**
- * 此Dao对象负责操作sys_role_menus中间表数据
+ * 此Dao对象负责操作sys_role_menu中间表数据
  */
 
 public interface SysRoleMenuDao {
@@ -32,15 +32,15 @@ public interface SysRoleMenuDao {
       * @param roleId
       * @return
       */
-	 @Delete("delete from sys_role_menus where role_id=#{roleId}")
+	 @Delete("delete from sys_role_menu where role_id=#{roleId}")
 	 int deleteObjectsByRoleId(Integer roleId);
 	 /**
 	  * 基于菜单id删除菜单和角色的关系数据
 	  * @param menuId
 	  * @return
 	  */
-	 @Delete("delete from sys_role_menus where menuId=#{menuId}")
-	 int deleteObjectsByMenuId(Integer menuId);
+	 @Delete("delete from sys_role_menu where menu_id=#{menuId}")
+	 int deleteSysRoleMenuByMenuId(Integer menuId);
 }
 
 

@@ -23,7 +23,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 @RestController
-@RequestMapping("shiroUser/")
+@RequestMapping("user/")
 public class AvatarController implements StatusCodeConfig {
 
 
@@ -41,7 +41,7 @@ public class AvatarController implements StatusCodeConfig {
     /**
      * 允许上传的文件大小的上限值，以字节为单位
      */
-    private static final long AVATAR_MAX_SIZE = 260 * 1024;
+    private static final long AVATAR_MAX_SIZE = 3 * 1024 * 1024;
     /**
      * 允许上传的文件类型的集合
      */
@@ -81,7 +81,7 @@ public class AvatarController implements StatusCodeConfig {
         long size = avatarImg.getSize();
         System.err.println("size=" + size);
         if (size > AVATAR_MAX_SIZE) {
-            throw new FileSizeException("上传失败！不允许上传超过" +(AVATAR_MAX_SIZE / 1024) + "KB的文件！");
+            throw new FileSizeException("上传失败！不允许上传超过" +(AVATAR_MAX_SIZE / (1024*1024)) + "MB的文件！");
         }
 
         // 获取文件的MIME类型
@@ -184,6 +184,6 @@ public class AvatarController implements StatusCodeConfig {
         Map<String,String> map = new HashMap<>();
         map.put("src",avatarImgPath);
         // 返回
-        return new JsonResult("上传成功", map);
+        return new JsonResult("上传成功,可以直接退出编辑页面", map);
     }
 }

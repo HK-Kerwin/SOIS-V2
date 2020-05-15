@@ -2,6 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.tedu.sois.sys.dao.SysMenuDao">
+
     <select id="findPermissions" resultType="string">
         select permission <!-- sys:user:update -->
         from sys_menu
@@ -15,54 +16,62 @@
         </foreach>
     </select>
 
-    <update id="updateObject"
-            parameterType="com.tedu.sois.sys.entity.SysMenu">
-         update sys_menu
-         set
-           menu_name=#{menuName},
-           type=#{type},
-           sort=#{sort},
-           url=#{url},
-           parent_id=#{parentId},
-           permission=#{permission},
-           modified_user=#{modifiedUser},
-           modified_time=now()
-        where id=#{id}
+    <update id="updateSysMenuInfo" parameterType="com.tedu.sois.sys.entity.SysMenu">
+        update sys_menu set
+        menu_name = #{menuName},
+        type = #{type},
+        url = #{url},
+        parent_id = #{parentId},
+        sort = #{sort},
+        permission = #{permission},
+        note = #{note},
+        modified_user = #{modifiedUser},
+        modified_time = #{modifiedTime}
+        where menu_id = #{menuId}
     </update>
 
-    <insert id="insertObject" parameterType="com.tedu.sois.sys.entity.SysMenu">
-		insert into sys_menu
-		(menu_name,url,type,sort,note,parent_id,permission,
-		created_time,modified_time,created_user,modified_user)
-		values
-		(#{menuName},#{url},#{type},#{sort},#{note},#{parentId},
-		#{permission},now(),now(),#{createdUser},#{modifiedUser})
-	</insert>
+    <insert id="insertSysMenuInfo" parameterType="com.tedu.sois.sys.entity.SysMenu" useGeneratedKeys="true"
+            keyProperty="menuId">
+        insert into sys_menu
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="menuName != null  and menuName != ''">menu_name,</if>
+            <if test="url != null  and url != ''">url,</if>
+            <if test="type != null  and type != ''">type,</if>
+            <if test="sort != null  and sort != ''">sort,</if>
+            <if test="note != null  and note != ''">note,</if>
+            <if test="parentId != null  and parentId != ''">parent_id,</if>
+            <if test="permission != null  and permission != ''">permission,</if>
+            <if test="createdTime != null ">created_time,</if>
+            <if test="modifiedTime != null ">modified_time,</if>
+            <if test="createdUser != null  and createdUser != ''">created_user,</if>
+            <if test="modifiedUser != null  and modifiedUser != ''">modified_user,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="menuName != null  and menuName != ''">#{menuName},</if>
+            <if test="url != null  and url != ''">#{url},</if>
+            <if test="type != null  and type != ''">#{type},</if>
+            <if test="sort != null  and sort != ''">#{sort},</if>
+            <if test="note != null  and note != ''">#{note},</if>
+            <if test="parentId != null  and parentId != ''">#{parentId},</if>
+            <if test="permission != null  and permission != ''">#{permission},</if>
+            <if test="createdTime != null ">#{createdTime},</if>
+            <if test="modifiedTime != null ">#{modifiedTime},</if>
+            <if test="createdUser != null  and createdUser != ''">#{createdUser},</if>
+            <if test="modifiedUser != null  and modifiedUser != ''">#{modifiedUser},</if>
+        </trim>
+    </insert>
 
     <!-- 查询所有菜单以及菜单对应的上级菜单的菜单名 -->
-    <!--<select id="selectMenuList" resultType="map">
-        &lt;!&ndash; 方案1 &ndash;&gt;
-        &lt;!&ndash;
-        select c.*,p.menu_name parentName
-        from sys_menu c join sys_menu p
-        on c.parentId=p.id
-        &ndash;&gt;
-        select c.menu_id as menuId,c.menu_name as menuName,
-        c.menu_name as parentName,c.sort as sort,
-        c.url as url,c.permission as permission,c.type as type,
-        c.created_user as createdUser,c.modified_user as modifiedUser,
-        c.created_time as createdTime,c.modified_time as modifiedTime,
-        (select menu_name from sys_menu p where c.parent_id = p.menu_id) parentName
-        from sys_menu c
-    </select>-->
-
     <select id="selectMenuList" resultType="map">
-        select menu_id as menuId,menu_name as menuName,
-        parent_id as parentId,sort as sort,
-        url as url,permission as permission,type as type,
+        select
+        menu_id as menuId,
+        menu_name as menuName,
+        parent_id as parentId,
+        sort,url,permission,type,note,
         created_user as createdUser,modified_user as modifiedUser,
         created_time as createdTime,modified_time as modifiedTime
         from sys_menu
+        order by sort
     </select>
 
 
