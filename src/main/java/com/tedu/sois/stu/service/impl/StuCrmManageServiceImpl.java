@@ -32,7 +32,7 @@ import java.util.Set;
 public class StuCrmManageServiceImpl implements StuCrmManageService {
 
     @Autowired
-    private StuCrmManageDao dao;
+    private StuCrmManageDao stuCrmManageDao;
 
 
 
@@ -66,12 +66,12 @@ public class StuCrmManageServiceImpl implements StuCrmManageService {
 
         List<StuCrmManage> list = listener.getList();
         System.out.println(list);
-        int row1 = dao.insertStuCrmManage(list);
+        int row1 = stuCrmManageDao.insertStuCrmManage(list);
         if (row1 == 0)
             throw new ServiceException("基本信息无更新内容");
 
         Set<ClassTable> seriesClassAll = listener.getSeriesClassAll();
-        int row2 = dao.insertStuClass(seriesClassAll);
+        int row2 = stuCrmManageDao.insertStuClass(seriesClassAll);
         if (row2 == 0)
             throw new ServiceException("班级号信息无更新内容");
     }
@@ -79,6 +79,6 @@ public class StuCrmManageServiceImpl implements StuCrmManageService {
     @Transactional(readOnly = true)
     @Override
     public List<String> showClassNumAllList() {
-        return dao.selectClassNumAllList();
+        return stuCrmManageDao.selectClassNumAllList();
     }
 }

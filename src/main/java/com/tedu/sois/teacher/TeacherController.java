@@ -24,6 +24,7 @@ public class TeacherController {
      */
     @PostMapping("doFindStuInfoList")
     public JsonResult doFindStuInfoList(StuBaseInfo stuBaseInfo,Integer page, Integer limit ) {
+        System.err.println(stuBaseInfo);
         return stuBaseInfoService.showStuInfoList(stuBaseInfo,page,limit);
     }
 }

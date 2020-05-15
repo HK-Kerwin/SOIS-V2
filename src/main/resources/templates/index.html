@@ -52,8 +52,13 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     </a>
                 </li>
                 <li class="layui-nav-item layui-hide-xs" lay-unselect>
-                    <input type="text" placeholder="姓名/手机号/身份证号" autocomplete="off" class="layui-input layui-input-search"
-                           layadmin-event="serach" lay-action="teacher/doGetStuInfoPageForTeacher?indexSearch=" name="indexSearch">
+                    <input id="indexSearch" name="indexSearch" type="text" placeholder="姓名/手机号/身份证号" autocomplete="off"
+                           class="layui-input layui-input-search" lay-action="teacher/doGetStuInfoPageForTeacher?indexSearch="/>
+                </li>
+                <li class="layui-nav-item" lay-unselect>
+                    <button id="indexSearch-btn" class="layui-btn layui-btn-radius layui-btn-primary layui-btn-sm">
+                        <i class="layui-icon layui-icon-search"></i>
+                    </button>
                 </li>
                 <li class="layui-nav-item layui-hide-xs" lay-tips="逝去的青春,天呐！是时间在流逝！" lay-unselect >
                     <a id="nowTime" style="font-size:14px;" href="javascript:;">
@@ -169,7 +174,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             </dd>
                         </dl>
                     </li>
-                    <li data-name="user" class="layui-nav-item"><!--layui-nav-itemed-->
+                    <li data-name="user" class="layui-nav-item">
                         <a href="javascript:;" lay-tips="学员功能" lay-direction="2">
                             <i class="layui-icon layui-icon-user"></i>
                             <cite>学员功能</cite>
@@ -197,14 +202,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
                         </dl>
                     </li>
 
-                    <li data-name="teachers" class="layui-nav-item">
+                    <li id="teacher" data-name="teacher" class="layui-nav-item"><!--layui-nav-item layui-nav-itemed-->
                         <a href="javascript:;" lay-tips="教师功能" lay-direction="2">
                             <i class="layui-icon layui-icon-group"></i>
                             <cite>教师功能</cite>
                             <span class="layui-nav-more"></span>
                         </a>
                         <dl class="layui-nav-child">
-                            <dd><a lay-href="teacher/doGetStuInfoPageForTeacher">分类查询</a></dd>
+                            <dd id="teacherQuery" ><a lay-href="teacher/doGetStuInfoPageForTeacher">分类查询</a></dd>
                             <dd><a lay-href="javascript:;">考勤信息</a></dd>
                             <dd><a lay-href="javascript:;">成绩信息</a></dd>
                             <dd>
@@ -310,16 +315,17 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
 <script th:src="@{dist/layuiadmin/layui/layui.js}"></script>
 <script type="text/javascript" th:inline="javascript">
-
-
-
     layui.config({
         base: 'dist/layuiadmin/' //静态资源所在路径
     }).extend({
         index: 'lib/index' //主入口模块
     }).use('index',function () {
-
-        layui.layer.ready(function() {
+        var layer = layui.layer,
+            $ = layui.$;
+        
+        
+        layer.ready(function() {
+            
             setInterval(showNowTime, 1000);
 
             function showNowTime() {
@@ -347,6 +353,48 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
             }
         });
+
+        $('#indexSearch-btn').on('click',function () {
+            checkSearch();
+        });
+
+        $('#indexSearch').keyup(function(evt){
+            if(evt.keyCode == 13){
+                checkSearch();
+            }
+        });
+
+        function checkSearch(){
+
+            let search_val = $.trim($('#indexSearch').val());
+            let search_type = '';
+
+            if($.trim(search_val).length == 0){
+                layer.msg('请输入正确的姓名或手机号');
+                return false;
+            }else if(/^((?!1{11})1\d{10})$|^(09\d{8})$/.test($.trim(search_val))){
+                search_type = 'phoneNumber';
+            }else if(/(^\d{17}(\d|X|x)$)/.test($.trim(search_val))){
+                search_type = 'idCard';
+            }else{
+                let reg = new RegExp("[\\u4E00-\\u9FFF]+","g");
+                if(reg.test(search_val)){
+                    search_type = 'stuName';
+                    if(search_val.length > 16){
+                        layer.msg('输入的姓名过长');
+                        return false;
+                    }
+                }else{
+                    layer.msg('输入正确的姓名、身份证号、手机号');
+                    return false;
+                }
+            }
+            $('#teacher').attr('class','layui-nav-item layui-nav-itemed');
+            $('#teacherQuery').attr('class','layui-this');
+            layui.index.openTabsPage('teacher/doGetStuInfoPageForTeacher?indexSearch='+search_type+':'+search_val, '分类查询');
+            return;
+        };
+        
     });
 
 

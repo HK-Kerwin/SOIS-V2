@@ -216,30 +216,6 @@ public class BaseInfoServiceImpl implements StuBaseInfoService, StatusCodeConfig
         return selectStuInfoByIdSQL(stuId);
     }
 
-    @Override
-    public Map<String,String> findStuInfoBySearch(String indexSearch) {
-
-        if(isEx(indexSearch.trim())){
-            throw new ServiceException("请输入正确姓名/手机号/身份证号");
-        }
-        Map<String,String> map = new HashMap<>();
-
-        List<StuBaseInfo> dataName = stuBaseInfoDao.selectStuBaseInfoByStuName(indexSearch);
-        if (dataName != null && dataName.size()>0){
-            map.put("result","stuName");
-        }
-        StuBaseInfo dataPhoneNumber = stuBaseInfoDao.selectStuBaseInfoByPhoneNumber(indexSearch);
-        if (dataPhoneNumber != null){
-            map.put("result","phoneNumber");
-        }
-        StuBaseInfo dataIdCard = stuBaseInfoDao.selectStuBaseInfoByIdCard(indexSearch);
-        if (dataIdCard != null){
-            map.put("result","idCard");
-        }
-        map.put("indexSearch",indexSearch);
-        return map;
-    }
-
 
 
     /*

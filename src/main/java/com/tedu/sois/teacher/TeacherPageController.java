@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -25,12 +26,28 @@ public class TeacherPageController {
     public String doGetStuInfoPageForTeacher(String indexSearch,Model model) {
         List<String> list = stuBaseInfoService.showStuClassNumList();
         model.addAttribute("stuClass",list);
-        //System.err.println("indexSearch = " + indexSearch);
-        //if(indexSearch != null && !"".equals(indexSearch)){
-           // Map<String,String> searchResult = stuBaseInfoService.findStuInfoBySearch(indexSearch);
-            //System.out.println(searchResult);
-            //model.addAttribute("searchResult",searchResult);
-        //}
+        if(indexSearch != null && !"".equals(indexSearch)){
+
+            String[] result = indexSearch.split(":");
+            if (result.length != 2)
+                throw new ServiceException("输入内容有误,请检查");
+
+            Map<String,String> map = new HashMap<>();
+
+            switch (result[0]){
+                case "stuName":
+                    map.put("stuName",result[1]);
+                    break;
+                case "phoneNumber":
+                    map.put("phoneNumber",result[1]);
+                    break;
+                case "idCard":
+                    map.put("idCard",result[1]);
+                    break;
+            }
+
+            model.addAttribute("searchResult",map);
+        }
         return "teacher/stuInfo_list";
     }
 }

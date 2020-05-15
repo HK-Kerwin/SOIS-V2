@@ -61,12 +61,5 @@ public interface StuBaseInfoService {
     JsonResult showStuInfoList(StuBaseInfo data, int page, int limit);
 
 
-    /**
-     * 老师功能,主页根据学员名字/手机号码/身份证号
-     * @param indexSearch
-     * @return
-     */
-    Map<String,String> findStuInfoBySearch(String indexSearch);
-
 
 }

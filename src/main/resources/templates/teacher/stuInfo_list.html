@@ -34,7 +34,7 @@
                                         <select lay-filter="aihao" id="stuClass" name="stuClass" lay-search="">
                                             <option value="">请选择</option>
                                             <option th:each="stuClass:${stuClass}" th:text="${stuClass}"
-                                                    th:value="${stuClass }"></option>
+                                                    th:value="${stuClass}"></option>
                                         </select>
                                     </div>
                                 </div>
@@ -180,24 +180,14 @@
             , layer = layui.layer;
         let $ = layui.$;
 
-        let params = {
-            stuClass: $("#stuClass").val(),
-            stuName: $("#stuName").val(),
-            phoneNumber: $("#phoneNumber").val(),
-            idCard: $("#idCard").val(),
-            nativePlace: $("#nativePlace").val(),
-            classRoom: $("#classRoom").val(),
-            educationBackground: $("#educationBackground").val(),
-            stuState: $("#stuState").val(),
-            delFlag: $("#delFlag").val()
-        }
-
+        let indexSearchResult = [[${searchResult}]];
+        indexSearchResult.delFlag = 0;
         table.render({
             elem: '#stuBaseSingleInfoTable'
             , toolbar: '#table-toolbar-toolbar'
             , url: '../teacher/doFindStuInfoList'
             , method: 'post'
-            , where: params
+            , where: indexSearchResult
             , title: '学员数据表'
             , cellMinWidth: 80
             , page: true
