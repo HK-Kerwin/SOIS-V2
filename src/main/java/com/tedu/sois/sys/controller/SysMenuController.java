@@ -28,6 +28,9 @@ public class SysMenuController {
     @PostMapping("doSaveSysMenuInfo")
     public JsonResult doSaveSysMenuInfo(SysMenu entity) {
         sysMenuService.saveSysMenuInfo(entity);
+        int type = entity.getType();
+        if(type == 2)
+            new JsonResult("按钮保存成功!");
         return new JsonResult("菜单保存成功!");
     }
 
@@ -39,13 +42,16 @@ public class SysMenuController {
     @RequestMapping("doDeleteSysMenuInfoById")
     public JsonResult doDeleteSysMenuInfoById(Integer menuId) {
         sysMenuService.deleteSysMenuInfoById(menuId);
-        return new JsonResult("菜单删除成功");
+        return new JsonResult("删除成功");
     }
 
 
     @PostMapping("doModifySysMenuInfo")
     public JsonResult doModifySysMenuInfo(SysMenu entity) {
         sysMenuService.modifySysMenuInfo(entity);
+        int type = entity.getType();
+        if(type == 2)
+            new JsonResult("按钮修改成功!");
         return new JsonResult("菜单修改成功");
     }
 
