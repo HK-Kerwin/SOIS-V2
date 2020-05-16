@@ -181,14 +181,14 @@
                             success: function (layero, index) {
                                 layero.addClass('layui-form');
                                 let submitBtn = layero.find('.layui-layer-btn0');
-                                submitBtn.attr('lay-filter', 'formVerify').attr('lay-submit', '');
+                                submitBtn.attr('lay-filter', 'formMenu').attr('lay-submit', '');
                                 layero.keydown(function (e) {
                                     if (e.keyCode == 13) {
                                         submitBtn.click();
                                     }
                                 });
 
-                                form.on('submit(formVerify)', function (data) {
+                                form.on('submit(formMenu)', function (data) {
                                     console.log(data)
                                     let url;
                                     if ( tag === 'add') {

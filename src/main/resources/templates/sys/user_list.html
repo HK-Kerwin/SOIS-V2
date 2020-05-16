@@ -201,18 +201,6 @@
             let param = {
                 userId: userId
             };
-            //监听指定开关
-            if (checked) {
-                param.status = '0';
-                layer.msg('启用', {
-                    offset: '6px', time: 1000
-                });
-            } else {
-                param.status = '1';
-                layer.msg('禁用', {
-                    offset: '6px', time: 1000
-                });
-            }
             $.ajax({
                 url: '../user/doModifyStatusById',
                 type: 'get',
@@ -221,7 +209,20 @@
                 headers: {"token": layui.data(layui.setter.tableName)['token']},
                 success: function (res) {
                     if (res.code == '0') {
-                        layer.msg(res.msg, {offset: '6px'});
+                        //监听指定开关
+                        if (checked) {
+                            param.status = '0';
+                            layer.msg('启用', {
+                                offset: '6px', time: 2000
+                            });
+                        } else {
+                            param.status = '1';
+                            layer.msg('禁用', {
+                                offset: '6px', time: 2000
+                            });
+                        }
+                        //layer.msg(res.msg, {offset: '6px'});
+                        form.render();
                     } else {
                         layer.msg(res.msg, {offset: '15px', icon: 2, time: 2000})
                     }

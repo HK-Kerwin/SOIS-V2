@@ -31,9 +31,15 @@
         </div>
     </div>
     <div class="layui-form-item" >
-        <label class="layui-form-label">菜单地址：</label>
+        <label class="layui-form-label">请求路径：</label>
         <div class="layui-input-block">
             <input type="text" name="url" th:value="${menu.url}" class="layui-input" />
+        </div>
+    </div>
+    <div class="layui-form-item" >
+        <label class="layui-form-label">授权标识：</label>
+        <div class="layui-input-block">
+            <input type="text" name="permission" th:value="${menu.permission}" class="layui-input" />
         </div>
     </div>
     <div class="layui-form-item" >
