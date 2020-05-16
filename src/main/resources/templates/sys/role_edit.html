@@ -1,147 +1,122 @@
-<!-- Horizontal Form -->
- <div class="box box-info">
-      <div class="box-header with-border">
-        <h3 class="box-title">添加角色</h3>
-      </div>
-      <!-- /.box-header -->
-      <!-- form start -->
-      <form class="form-horizontal">
-        <div class="box-body">
-          <div class="form-group">
-            <label for="nameId" class="col-sm-2 control-label">名称</label>
+<style type="text/css">
+    .menu .layui-form-item {
+        margin: 20px 100px 10px 45px;
+    }
 
-            <div class="col-sm-10">
-              <input type="text" class="form-control" name="name" id="nameId" placeholder="名称">
-            </div>
-          </div>
-          <div class="form-group">
-            <label for="noteId" class="col-sm-2 control-label">描述</label>
+    .menu .layui-form-label {
+        width: 80px;
+    }
+</style>
 
-            <div class="col-sm-10">
-              <input type="text" class="form-control" name="note" id="noteId" placeholder="描述">
-            </div>
-          </div>
-          <div class="form-group">
-				<label class="col-sm-2 control-label">授权</label>
-				<div class="col-sm-10">
-						<ul id="menuTree" class="ztree"></ul>
-				</div>
-		  </div>
+<form class="layui-form menu" action="save" method="post" lay-filter="stuform">
+    <input type="hidden" name="roleId" th:value="${role.roleId}"/>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">角色名称</label>
+        <div class="layui-input-block">
+            <input type="text" class="layui-input" name="roleName" id="roleName" th:value="${role.roleName}"
+                   placeholder="角色名称" autocomplete="off" lay-verify="required">
         </div>
-        <!-- /.box-body -->
-        <div class="box-footer">
-          <button type="button" class="btn btn-default btn-cancel">Cancel</button>
-          <button type="button" class="btn btn-info pull-right btn-save">Save</button>
-        </div>
-        <!-- /.box-footer -->
-      </form>
     </div>
-    <script type="text/javascript" src="bower_components/ztree/jquery.ztree.all.min.js"></script>
-    <script type="text/javascript">
-    var zTree; 
-    var setting = {
-   	data : {
-   	    simpleData : {
-   			enable : true, //使用简单数据模式
-   			idKey : "id",  //节点数据中保存唯一标识的属性名称
-   			pIdKey : "parentId",  //节点数据中保存其父节点唯一标识的属性名称
-   			rootPId : null  //根节点id
-   		}
-   	},
-   	check:{
-   		enable:true,
-   		nocheckInherit:true
-   	}//此配置提供复选框操作(可查官方zTree)
-    }
-    $(function(){
-    	//异步加载菜单信息,初始化页面菜单
-    	doLoadSysMenus();
-    	$(".box-footer")
-    	.on("click",".btn-save",doSaveOrUpdate)
-    	.on("click",".btn-cancel",doCancel);
-    	
+    <div class="layui-form-item">
+        <label class="layui-form-label">备注说明</label>
+        <div class="layui-input-block">
+            <input type="text" class="layui-input" name="note" id="note" th:value="${role.note}"
+                   placeholder="备注说明" autocomplete="off">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">角色权限</label>
+        <div class="layui-input-block">
+            <input type="text" class="layui-input" name="roleKey" id="roleKey" th:value="${role.roleKey}"
+                   placeholder="角色权限" autocomplete="off">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">数据范围</label>
+        <div class="layui-input-block">
+            <select lay-filter="aihao" id="dataScope" name="dataScope" th:value="${role.dataScope}" lay-verify="required">
+                <option value="">请选择</option>
+                <option value="1" th:selected="${role.dataScope == '1'}">全部数据权限</option>
+                <option value="2" th:selected="${role.dataScope == '2'}">自定数据权限</option>
+                <option value="3" th:selected="${role.dataScope == '3'}">本部门数据权限</option>
+                <option value="4" th:selected="${role.dataScope == '4'}">本部门及以下数据权限</option>
+            </select>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">显示顺序</label>
+        <div class="layui-input-block">
+            <input type="text" class="layui-input" name="roleSort" id="roleSort" th:value="${role.roleSort}"
+                   placeholder="显示顺序" autocomplete="off">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">菜单授权</label>
+        <div id="xm-select" class="layui-input-block" lay-verify="chooseSelect">
+        </div>
+    </div>
+</form>
+
+
+<script th:inline="javascript">
+    layui.use(['form','xmSelect'], function () {
+        var form = layui.form,
+            xmSelect = layui.xmSelect;
+
+        form.render();
+
+        let roleIds = [[${role.menuIds}]];
+        let nodes = [[${nodes}]];
+
+        let roleSelect = xmSelect.render({
+            el: '#xm-select',
+            tips: '请为角色赋予菜单权限',
+            autoRow: true,
+            filterable: true,
+            height: '300px',//'auto',
+            name: 'menuIds',
+            tree: {
+                show: true,
+                showFolderIcon: true,
+                showLine: true,
+                simple: true,
+                indent: 20,
+                expandedKeys: roleIds == null ? [-1] : roleIds,
+                strict:false
+            },
+            toolbar: {
+                show: true,
+                list: ['ALL', 'REVERSE', 'CLEAR']
+            },
+            model: {
+                label: {
+                    type: 'block',
+                    block: {
+                        //最大显示数量, 0:不限制
+                        showCount: 1,
+                        //是否显示删除图标
+                        showIcon: true,
+                        template: function(item, sels){
+                            return item.type == 1 ? '<span class="layui-icon layui-icon-layer"></span>' + item.name : '<i class="layui-icon layui-icon-radio"></i>' + item.name;
+                        },
+                    }
+
+                }
+            },
+            data:nodes
+        })
+
+        roleSelect.append(roleIds);
+
+        //自定义验证规则
+        form.verify({
+            chooseSelect: function (value, item) {
+                if (roleSelect.getValue('value').length == 0) {
+                    return '请为角色赋予菜单权限';
+                }
+            }
+        });
+
     });
-    function doInitEditFormData(data){
-    	//1.初始化角色自身信息
-    	$("#nameId").val(data.name);
-    	$("#noteId").val(data.note);
-    	//2.初始化菜单信息
-    	//2.1展开树节点
-    	zTree.expandAll(true);
-    	//2.2获取角色对应的菜单id
-    	var menuIds=data.menuIds;
-    	//2.3迭代所有菜单id
-    	for(var i in menuIds){
-    	  //基于菜单id获取ztree中的node节点
-    	  var node=
-    	  zTree.getNodeByParam("id",menuIds[i]);
-    	  //让节点选中
-    	  zTree.checkNode(node,true,false);
-    	}
-    }
-    function doCancel(){
-    	var url="role/role_list";
-    	$("#mainContentId")
-    	.load(url,function(){
-    	  $("#mainContentId").removeData();
-    	});
-    }
-    function doSaveOrUpdate(){
-    	//1.参数(表单数据)
-    	var params=doGetEditFormData();
-    	if(!params.name.trim()){
-    		alert("角色名不能为空");
-    		return;
-    	}
-    	if(!params.menuIds.trim()){
-    		alert("请为角色赋予权限")
-    		return;
-    	}
-    	var data=$("#mainContentId").data("data");
-    	if(data)params.id=data.id;
-    	//2.url
-    	var insertUrl="role/doSaveObject";
-    	var updateUrl="role/doUpdateObject";
-    	var url=data?updateUrl:insertUrl;
-    	//3.ajax request
-    	$.post(url,params,function(result){
-    		if(result.state==1){
-    		   alert(result.message);
-    		   doCancel();
-    		}else{
-    		   alert(result.message);
-    		}
-    	})
-    }
-    function doGetEditFormData(){
-    	//1.获取角色自身信息
-    	var params={
-    		name:$("#nameId").val(),
-    		note:$("#noteId").val()
-    	}
-    	//2.获取选中菜单信息
-    	var menuIds=[];
-    	var checkedNodes=
-    	zTree.getCheckedNodes(true);
-    	for(var i in checkedNodes){
-    		menuIds.push(checkedNodes[i].id);
-    	}
-    	params.menuIds=menuIds.toString();
-    	return params;
-    }
-    //页面加载完成时初始化zTree
-    function doLoadSysMenus(){
-    	var url="menu/doFindZtreeMenuNodes"
-    	$.getJSON(url,function(result){
-    	 if(result.state==1){
-    		zTree=$.fn.zTree.init(
-    		$("#menuTree"),setting,result.data);
-    		//修改时添加如下代码(注意先后顺序)
-    		var rowData=$("#mainContentId").data("data");
-    	    if(rowData)doInitEditFormData(rowData);
-    	 }else{
-    		alert(result.message);
-    	 }
-    });
-}
 </script>

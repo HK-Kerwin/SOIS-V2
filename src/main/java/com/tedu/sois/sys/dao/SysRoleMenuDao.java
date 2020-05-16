@@ -24,16 +24,16 @@ public interface SysRoleMenuDao {
 	 * @param menuIds
 	 * @return
 	 */
-	 int insertObjects(
+	 int insertSysRoleMenu(
 			 @Param("roleId")Integer roleId,
-			 @Param("menuIds")Integer[]menuIds);
+			 @Param("menuIds")Integer[] menuIds);
      /**
             * 基于角色id删除菜单和角色的关系数据
       * @param roleId
       * @return
       */
 	 @Delete("delete from sys_role_menu where role_id=#{roleId}")
-	 int deleteObjectsByRoleId(Integer roleId);
+	 int deleteSysRoleMenuByRoleId(Integer roleId);
 	 /**
 	  * 基于菜单id删除菜单和角色的关系数据
 	  * @param menuId

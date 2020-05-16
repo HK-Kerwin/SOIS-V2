@@ -43,5 +43,5 @@ public interface SysUserRoleDao {
      * @return
      */
     @Delete("delete from sys_user_role where role_id=#{roleId}")
-    int deleteObjectsByRoleId(Integer roleId);
+    int deleteSysUserRoleByRoleId(Integer roleId);
 }

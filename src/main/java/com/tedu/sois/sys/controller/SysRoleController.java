@@ -2,6 +2,7 @@ package com.tedu.sois.sys.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -9,12 +10,52 @@ import com.tedu.sois.common.vo.JsonResult;
 import com.tedu.sois.sys.entity.SysRole;
 import com.tedu.sois.sys.service.SysRoleService;
 
+/**
+ * 角色控制层
+ * @author LYS
+ */
 @RestController
 @RequestMapping("role/")
 public class SysRoleController {
 
-    @Autowired //has a
+    @Autowired
     private SysRoleService sysRoleService;
+
+    /**
+     * 新增角色信息,并且绑定角色对应菜单权限
+     * @param entity 角色信息
+     * @param menuIds 菜单权限值
+     * @return
+     */
+    @PostMapping("doSaveRoleInfo")
+    public JsonResult doSaveRoleInfo(SysRole entity, Integer[] menuIds) {
+        sysRoleService.saveRoleInfo(entity, menuIds);
+        return new JsonResult("保存成功");
+    }
+
+    /**
+     * 基于角色id删除角色以及对应的关系数据
+     * @param roleId
+     * @return
+     */
+    @RequestMapping("doRemoveRoleInfo")
+    public JsonResult doRemoveRoleInfo(Integer roleId) {
+        sysRoleService.removeRoleInfo(roleId);
+        return new JsonResult("删除成功");
+    }
+
+    /**
+     * 更新角色以及角色对应的关系数据
+     * @param entity
+     * @param menuIds
+     * @return
+     */
+    @PostMapping("doModifyRoleInfo")
+    public JsonResult doModifyRoleInfo(SysRole entity, Integer[] menuIds) {
+        sysRoleService.modifyRoleInfo(entity, menuIds);
+        return new JsonResult("修改成功");
+    }
+
 
     @GetMapping("doFindRoles")
     public JsonResult doFindRoles() {
@@ -26,27 +67,9 @@ public class SysRoleController {
      * @param roleId
      * @return
      */
-    @GetMapping("doFindObjectById")
+    @GetMapping("getRoleAndMenuInfoByRoleId")
     public JsonResult getRoleAndMenuInfoByRoleId(Integer roleId) {
         return new JsonResult(sysRoleService.findRoleAndMenuInfoByRoleId(roleId));
-    }
-
-    @RequestMapping("doUpdateObject")
-    public JsonResult doUpdateObject(SysRole entity, Integer[] menuIds) {
-        sysRoleService.updateObject(entity, menuIds);
-        return new JsonResult("update ok");
-    }
-
-    @RequestMapping("doSaveObject")
-    public JsonResult doSaveObject(SysRole entity, Integer[] menuIds) {
-        sysRoleService.saveObject(entity, menuIds);
-        return new JsonResult("save ok");
-    }
-
-    @RequestMapping("doDeleteObject")
-    public JsonResult doDeleteObject(Integer id) {
-        sysRoleService.deleteObject(id);
-        return new JsonResult("delete ok");
     }
 
     /**

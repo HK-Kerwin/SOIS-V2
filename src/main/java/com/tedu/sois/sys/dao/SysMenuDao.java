@@ -3,7 +3,6 @@ package com.tedu.sois.sys.dao;
 import java.util.List;
 import java.util.Map;
 
-import com.baomidou.mybatisplus.core.mapper.Mapper;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -45,7 +44,7 @@ public interface SysMenuDao {
      *
      * @return
      */
-    @Select("select menu_id as id,menu_name as name,parent_id as parentId from sys_menu order by sort")
+    @Select("select menu_id as id,menu_name as name,parent_id as parentId,type,menu_id as value from sys_menu order by sort")
     List<Node> selectZtreeMenuNodes();
 
 

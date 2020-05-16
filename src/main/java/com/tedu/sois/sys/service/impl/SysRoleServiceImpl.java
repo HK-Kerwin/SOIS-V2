@@ -1,7 +1,9 @@
 package com.tedu.sois.sys.service.impl;
 
+import java.util.Date;
 import java.util.List;
 
+import com.tedu.sois.common.util.ShiroUtils;
 import com.tedu.sois.common.vo.JsonResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
@@ -68,7 +70,7 @@ public class SysRoleServiceImpl implements SysRoleService {
     }
 
     @Override
-    public int updateObject(SysRole entity, Integer[] menuIds) {
+    public int modifyRoleInfo(SysRole entity, Integer[] menuIds) {
         //1.参数有效性校验
         if (entity == null)
             throw new IllegalArgumentException("保存对象不能为空");
@@ -76,19 +78,24 @@ public class SysRoleServiceImpl implements SysRoleService {
             throw new IllegalArgumentException("角色名不允许为空");
         if (menuIds == null || menuIds.length == 0)
             throw new ServiceException("必须为角色分配权限");
+        int row = sysRoleDao.getRoleInfoRowCount(entity.getRoleName());
+        if (row > 0)
+            throw new ServiceException("角色已经存在,请查询");
+        entity.setModifiedUser(ShiroUtils.getUsername());
+        entity.setModifiedTime(new Date());
         //2.保存角色自身信息
-        int rows = sysRoleDao.updateObject(entity);
+        int rows = sysRoleDao.updateRoleInfo(entity);
         //3.保存角色菜单关系数据
         //3.1)先删除原有关系数据
-        sysRoleMenuDao.deleteObjectsByRoleId(entity.getRoleId());
+        sysRoleMenuDao.deleteSysRoleMenuByRoleId(entity.getRoleId());
         //3.2)添加新的关系数据
-        sysRoleMenuDao.insertObjects(entity.getRoleId(), menuIds);
+        sysRoleMenuDao.insertSysRoleMenu(entity.getRoleId(), menuIds);
         //4.返回业务结果
         return rows;
     }
 
     @Override
-    public int saveObject(SysRole entity, Integer[] menuIds) {
+    public void saveRoleInfo(SysRole entity, Integer[] menuIds) {
         //1.参数有效性校验
         if (entity == null)
             throw new IllegalArgumentException("保存对象不能为空");
@@ -96,27 +103,37 @@ public class SysRoleServiceImpl implements SysRoleService {
             throw new IllegalArgumentException("角色名不允许为空");
         if (menuIds == null || menuIds.length == 0)
             throw new ServiceException("必须为角色分配权限");
-
+        if (entity.getDataScope() == null || "".equals(entity.getDataScope()))
+            throw new ServiceException("必须为角色分配数据范围");
+        int row = sysRoleDao.getRoleInfoRowCount(entity.getRoleName());
+        if (row > 0)
+            throw new ServiceException("角色已经存在,请查询");
+        entity.setStatus("0");
+        entity.setDelFlag("0");
+        entity.setCreatedUser(ShiroUtils.getUsername());
+        entity.setCreatedTime(new Date());
         //2.保存角色自身信息
-        int rows = sysRoleDao.insertObject(entity);
+        int rows = sysRoleDao.insertRoleInfo(entity);
         //3.保存角色菜单关系数据
-        sysRoleMenuDao.insertObjects(entity.getRoleId(), menuIds);
+        sysRoleMenuDao.insertSysRoleMenu(entity.getRoleId(), menuIds);
         //4.返回业务结果
-        return rows;
+        if(rows == 0)
+            throw new ServiceException("保存失败");
     }
 
     @Override
-    public int deleteObject(Integer id) {
+    public void removeRoleInfo(Integer roleId) {
         //1.参数校验
-        if (id == null || id < 1)
+        if (roleId == null || roleId < 1)
             throw new IllegalArgumentException("id值无效");
         //2.删除关系数据
-        sysRoleMenuDao.deleteObjectsByRoleId(id);
-        sysUserRoleDao.deleteObjectsByRoleId(id);
+        sysRoleMenuDao.deleteSysRoleMenuByRoleId(roleId);
+        sysUserRoleDao.deleteSysUserRoleByRoleId(roleId);
         //3.删除自身信息
-        int rows = sysRoleDao.deleteObject(id);
+        int rows = sysRoleDao.deleteSysRoleInfo(roleId);
         //4.返回结果
-        return rows;
+        if(rows == 0)
+            throw new ServiceException("删除失败");
     }
 
     @Override
@@ -125,15 +142,14 @@ public class SysRoleServiceImpl implements SysRoleService {
         if (page == null || page < 1)
             throw new IllegalArgumentException("页码值无效");
         //2.查询记录总数并验证
-        int rowCount = sysRoleDao.getRoleInfoRowCount(roleName);
+        int rowCount = sysRoleDao.getRoleInfoLikeRowCount(roleName);
         if (rowCount == 0)
             throw new ServiceException("没有对应的记录");
         //3.查询当前页记录
-        int pageSize = 5;
-        int startIndex = (page - 1) * pageSize;
-        List<SysRole> records = sysRoleDao.selectRoleInfoPage(roleName, startIndex, pageSize);
+        int startIndex = (page - 1) * limit;
+        List<SysRole> records = sysRoleDao.selectRoleInfoPage(roleName, startIndex, limit);
         //4.封装结果并返回.
-        return new JsonResult(page, pageSize, rowCount, records);
+        return new JsonResult(page, limit, rowCount, records);
     }
 
 }

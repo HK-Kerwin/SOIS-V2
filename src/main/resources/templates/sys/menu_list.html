@@ -101,7 +101,7 @@
                     , {field: 'haveChild', title: '菜单图标', align: 'center', minWidth: 20, hide: true}
                     , {
                     field: 'type', title: '类型', align: 'center', unresize: true, templet: function (d) {
-                        return d.type == 1 ? '<span class="layui-badge layui-bg-blue">菜单</span>' : '<span class="layui-badge layui-bg-orange">按钮</span>'
+                        return d.type == 1 ? '<span class="layui-badge layui-bg-blue">菜单</span>' : '<span class="layui-badge layui-bg-orange">按钮</span>';
                     }
                 }
                     , {field: 'sort', title: '排序号', align: 'center', unresize: true}
@@ -156,16 +156,16 @@
                 let title;
                 let data = obj[0];
                 if ( tag === 'add') {
-                    title = '新增';
+                    title = '新增菜单';
                     data = null;
                 }
                 if ( tag === 'edit') {
                     if (data == null)
                         return layer.msg('请选择后编辑', {offset: '15px'});
-                    title = '编辑';
+                    title = data.type == 1 ? '编辑菜单' : '编辑按钮';
                 }
                 $.ajax({
-                    url: '../menu/edit',
+                    url: '../menu/editPage',
                     data: data,
                     type: 'post',
                     headers: {"token": layui.data(layui.setter.tableName)['token']},

@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * 节点值对象,一般用于封装树结构中的具体对象信息
@@ -19,9 +20,16 @@ public class Node implements Serializable{
 	/**节点名称*/
 	private String name;
 
+	/**类型 1：菜单 2：按钮*/
+	private Integer type;
 
-	private Boolean open = false;
-	private Boolean checked = false;
+	/** tree前端框架所用参数*/
+	private Boolean open;
+	private Boolean checked;
+	private Boolean selected;
+	private String value;
+
+
 
 	/**上级节点id*/
 	private Integer parentId;
@@ -46,6 +54,14 @@ public class Node implements Serializable{
 		this.name = name;
 	}
 
+	public Integer getType() {
+		return type;
+	}
+
+	public void setType(Integer type) {
+		this.type = type;
+	}
+
 	public Boolean getOpen() {
 		return open;
 	}
@@ -60,6 +76,14 @@ public class Node implements Serializable{
 
 	public void setChecked(Boolean checked) {
 		this.checked = checked;
+	}
+
+	public String getValue() {
+		return value;
+	}
+
+	public void setValue(String value) {
+		this.value = value;
 	}
 
 	@JsonIgnore
@@ -79,11 +103,16 @@ public class Node implements Serializable{
 		this.children = children;
 	}
 
+
 	@Override
 	public String toString() {
 		return "Node{" +
 				"id=" + id +
 				", name='" + name + '\'' +
+				", type=" + type +
+				", open=" + open +
+				", checked=" + checked +
+				", value='" + value + '\'' +
 				", parentId=" + parentId +
 				", children=" + children +
 				'}';

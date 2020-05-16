@@ -4,8 +4,7 @@
 <mapper namespace="com.tedu.sois.sys.dao.SysRoleMenuDao">
 
     <!-- 基于角色id查询菜单id -->
-    <select id="selectMenuIdsByRoleIds"
-            resultType="int">
+    <select id="selectMenuIdsByRoleIds" resultType="int">
         select menu_id
         from sys_role_menu
         where role_id in
@@ -13,13 +12,14 @@
                  open="("
                  close=")"
                  separator=","
-                 item="item">
-            #{item}
+                 item="roleId">
+            #{roleId}
         </foreach>
+        ORDER BY menu_id
     </select>
 
 
-    <insert id="insertObjects">
+    <insert id="insertSysRoleMenu">
         insert into sys_role_menu
         (role_id,menu_id)
         values <!-- (1,2),(1,3),(1,4) -->

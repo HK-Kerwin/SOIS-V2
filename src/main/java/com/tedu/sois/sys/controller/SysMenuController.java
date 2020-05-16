@@ -73,7 +73,6 @@ public class SysMenuController {
         return sysMenuService.findZtreeMenuNodes();
     }
 
-
 }
 
 

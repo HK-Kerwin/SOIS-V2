@@ -7,7 +7,6 @@ import java.util.Map;
 
 import com.tedu.sois.common.util.ShiroUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -101,7 +100,7 @@ public class SysMenuServiceImpl implements SysMenuService {
      * @return
      */
     private List<Node> treeSelect(List<Node> nodes,Integer parentId) {
-        List<Node> result = new ArrayList<Node>();
+        List<Node> result = new ArrayList<>();
         for (Node node : nodes) {
             if (node.getParentId() == parentId || node.getParentId().equals(parentId)) {
                 List<Node> childMenuList = treeSelect(nodes,node.getId());
@@ -111,6 +110,7 @@ public class SysMenuServiceImpl implements SysMenuService {
         }
         return result;
     }
+
 
 
 }

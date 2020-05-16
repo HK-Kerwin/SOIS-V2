@@ -235,6 +235,9 @@ function inputList(input,list){
 
 /* 修改时间格式为 yyyy-MM-dd*/
 function formatDateForDate(date){
+    if (date == null || date == undefined)
+        return '';
+
     let time = new Date((date+'').replace(/\-/g, "/"));
 
     let timeMonth = time.getMonth() + 1;
@@ -250,6 +253,8 @@ function formatDateForDate(date){
 
 /* 修改时间格式为 yyyy-MM-dd HH:mm:ss*/
 function formatDateForDateTime(date){
+    if (date == null || date == undefined)
+        return '';
     let dataTime = new Date((date+'').replace(/\-/g, "/"));
 
     let y = dataTime.getFullYear();
