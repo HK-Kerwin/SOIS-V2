@@ -237,8 +237,13 @@
                                     submitBtn.click();
                                 }
                             });
-
+							let lock = false;
 							form.on('submit(formRole)', function (data) {
+								if (lock) {
+									layer.msg('请勿重复提交', {offset: '15px'});
+									return false;
+								}
+								lock = true;
 								let url;
 								if ( tag === 'add') {
 									url = '../role/doSaveRoleInfo';

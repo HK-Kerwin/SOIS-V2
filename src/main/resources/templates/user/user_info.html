@@ -151,7 +151,7 @@
         inputList($("#email"), $("#stuEmail_list"));
 
 
-        var files;
+        let files;
         upload.render({
             elem: '#chooseFileBtn'
             , url: 'avatarChange'
@@ -195,8 +195,14 @@
             }
         });
 
+        let lock = false;
         /*提交信息*/
         form.on('submit(setMyInfo)', function (obj) {
+            if (lock) {
+                layer.msg('请勿重复提交', {offset: '15px'});
+                return false;
+            }
+            lock = true;
             let field = obj.field;
             admin.req({
                 url: 'doModifySingleUserInfo',

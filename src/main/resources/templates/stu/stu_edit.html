@@ -484,8 +484,14 @@
             }
         });
 
+        let lock = false;
         //监听提交
         form.on('submit(stuEditFrom)', function (data) {
+            if (lock) {
+                layer.msg('请勿重复提交', {offset: '15px'});
+                return false;
+            }
+            lock = true;
             $.ajax({
                 url: 'doModifyStuBaseInfo',
                 type: 'post',

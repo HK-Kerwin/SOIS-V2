@@ -21,7 +21,7 @@
     <div class="layui-form-item">
         <label class="layui-form-label">菜单名称：</label>
         <div class="layui-input-block">
-            <input type="text" name="menuName" lay-verify="required" th:value="${menu.menuName}" class="layui-input" />
+            <input type="text" name="menuName" lay-verify="required" th:value="${menu.menuName}" class="layui-input" autocomplete="off"/>
         </div>
     </div>
     <div class="layui-form-item">
@@ -33,25 +33,25 @@
     <div class="layui-form-item" >
         <label class="layui-form-label">请求路径：</label>
         <div class="layui-input-block">
-            <input type="text" name="url" th:value="${menu.url}" class="layui-input" />
+            <input type="text" name="url" th:value="${menu.url}" class="layui-input" autocomplete="off"/>
         </div>
     </div>
     <div class="layui-form-item" >
         <label class="layui-form-label">授权标识：</label>
         <div class="layui-input-block">
-            <input type="text" name="permission" th:value="${menu.permission}" class="layui-input" />
+            <input type="text" name="permission" th:value="${menu.permission}" class="layui-input" autocomplete="off"/>
         </div>
     </div>
     <div class="layui-form-item" >
         <label class="layui-form-label">排序号：</label>
         <div class="layui-input-block">
-            <input type="text" name="sort" th:value="${menu.sort}" class="layui-input" />
+            <input type="text" name="sort" th:value="${menu.sort}" class="layui-input" autocomplete="off"/>
         </div>
     </div>
     <div class="layui-form-item" >
         <label class="layui-form-label">备注：</label>
         <div class="layui-input-block">
-            <textarea type="text" name="note" th:text="${menu.note}" class="layui-input" />
+            <textarea type="text" name="note" th:text="${menu.note}" class="layui-input" autocomplete="off"/>
         </div>
     </div>
 </form>
