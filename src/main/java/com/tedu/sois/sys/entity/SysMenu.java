@@ -25,6 +25,9 @@ public class SysMenu extends BaseEntity {
 	/**备注*/
 	private String note;
 
+	/**菜单图标*/
+	private String icon;
+
 	/**上级菜单id*/
 	private Integer parentId;
 
@@ -77,6 +80,14 @@ public class SysMenu extends BaseEntity {
 
 	public void setNote(String note) {
 		this.note = note;
+	}
+
+	public String getIcon() {
+		return icon;
+	}
+
+	public void setIcon(String icon) {
+		this.icon = icon;
 	}
 
 	public Integer getParentId() {
@@ -149,6 +160,7 @@ public class SysMenu extends BaseEntity {
 				", type=" + type +
 				", sort=" + sort +
 				", note='" + note + '\'' +
+				", icon='" + icon + '\'' +
 				", parentId=" + parentId +
 				", permission='" + permission + '\'' +
 				", createdTime=" + createdTime +

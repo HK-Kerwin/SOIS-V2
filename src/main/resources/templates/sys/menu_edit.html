@@ -49,6 +49,12 @@
         </div>
     </div>
     <div class="layui-form-item" >
+        <label class="layui-form-label">图标样式：</label>
+        <div class="layui-input-block">
+            <input type="text" name="icon" th:value="${menu.icon}" class="layui-input" autocomplete="off"/>
+        </div>
+    </div>
+    <div class="layui-form-item" >
         <label class="layui-form-label">备注：</label>
         <div class="layui-input-block">
             <textarea type="text" name="note" th:text="${menu.note}" class="layui-input" autocomplete="off"/>

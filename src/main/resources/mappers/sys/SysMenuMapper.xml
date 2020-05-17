@@ -25,6 +25,7 @@
         sort = #{sort},
         permission = #{permission},
         note = #{note},
+        icon = #{icon},
         modified_user = #{modifiedUser},
         modified_time = #{modifiedTime}
         where menu_id = #{menuId}
@@ -39,6 +40,7 @@
             <if test="type != null  and type != ''">type,</if>
             <if test="sort != null  and sort != ''">sort,</if>
             <if test="note != null  and note != ''">note,</if>
+            <if test="icon != null  and icon != ''">icon,</if>
             <if test="parentId != null  and parentId != ''">parent_id,</if>
             <if test="permission != null  and permission != ''">permission,</if>
             <if test="createdTime != null ">created_time,</if>
@@ -52,6 +54,7 @@
             <if test="type != null  and type != ''">#{type},</if>
             <if test="sort != null  and sort != ''">#{sort},</if>
             <if test="note != null  and note != ''">#{note},</if>
+            <if test="icon != null  and icon != ''">#{icon},</if>
             <if test="parentId != null  and parentId != ''">#{parentId},</if>
             <if test="permission != null  and permission != ''">#{permission},</if>
             <if test="createdTime != null ">#{createdTime},</if>
@@ -67,7 +70,7 @@
         menu_id as menuId,
         menu_name as menuName,
         parent_id as parentId,
-        sort,url,permission,type,note,
+        sort,url,permission,type,note,icon,
         created_user as createdUser,modified_user as modifiedUser,
         created_time as createdTime,modified_time as modifiedTime
         from sys_menu
@@ -102,7 +105,7 @@
 
     <!--查询出全部之后在业务层使用递归-->
     <select id="selectMenusListByIds" resultType="com.tedu.sois.sys.vo.SysUserMenuVo">
-        select menu_id,menu_name,url,parent_id
+        select menu_id,menu_name,url,parent_id,icon
         from sys_menu p
         <where>
             <foreach collection="menuIds" open="(" close=")" separator="or" item="menuId">

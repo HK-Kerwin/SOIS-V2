@@ -40,6 +40,11 @@ public class PageController {
             user.setUserName("请登录");
             user.setAvatar("dist/layuiadmin/img/defualt.png");
             model.addAttribute("userData", user);
+            List<SysUserMenuVo> userMenus = sysMenuService.findMenusByUserId(7L);
+            for(SysUserMenuVo data: userMenus){
+                System.err.println(userMenus);
+            }
+            model.addAttribute("userMenus", userMenus);
         }
         return "index";
     }

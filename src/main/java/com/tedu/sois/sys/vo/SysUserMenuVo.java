@@ -22,6 +22,9 @@ public class SysUserMenuVo implements Serializable {
     /**菜单url*/
     private String url;
 
+    /**菜单图标*/
+    private String icon;
+
     /**上级节点id*/
     private Integer parentId;
 
@@ -52,6 +55,14 @@ public class SysUserMenuVo implements Serializable {
         this.url = url;
     }
 
+    public String getIcon() {
+        return icon;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon;
+    }
+
     public Integer getParentId() {
         return parentId;
     }
@@ -74,6 +85,7 @@ public class SysUserMenuVo implements Serializable {
                 "menuId=" + menuId +
                 ", menuName='" + menuName + '\'' +
                 ", url='" + url + '\'' +
+                ", icon='" + icon + '\'' +
                 ", parentId=" + parentId +
                 ", children=" + children +
                 '}';

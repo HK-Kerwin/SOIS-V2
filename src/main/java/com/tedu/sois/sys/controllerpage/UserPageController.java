@@ -39,20 +39,15 @@ public class UserPageController {
     @RequestMapping("getUserInfoPage")
     public String getUserInfoPage(Long userId, Model model) {
         SysUser user;
-        String loginName;
         if (userId != null && userId > 0) {
             user = sysUserService.findUserInfoById(userId);
             userId = user.getUserId();
-            loginName = user.getLoginName();
         } else {
             user = ShiroUtils.getUser();
             userId = user.getUserId();
-            loginName = user.getLoginName();
         }
         String roleName = sysRoleService.findRoleNameByUserId(userId);
         model.addAttribute("roleName", roleName);
-        //Map<String, Object> map = sysUserService.getDataByLoginName(loginName);
-        //SysUser userInfo = (SysUser)map.get("userData");
         model.addAttribute("userInfo", user);
         return "user/user_info";
     }

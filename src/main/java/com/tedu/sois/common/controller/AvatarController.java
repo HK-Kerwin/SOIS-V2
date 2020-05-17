@@ -109,6 +109,7 @@ public class AvatarController implements StatusCodeConfig {
         }else if(shiroUser != null && shiroUser.getDeptId() == STU_DEPT_CODE){
             parent = uploadFolder + "stu";
             dirName = "upload/img/stu";
+            user = sysUserService.findUserInfoById(userId);
         } else if(userId != null){
             parent = uploadFolder + "user";
             dirName = "upload/img/user";
@@ -175,10 +176,10 @@ public class AvatarController implements StatusCodeConfig {
             stuBaseInfoService.modifyStuBaseInfo(StuBaseInfo);
         }
 
-        //满足用户登录状态,stuId为空,表示在用户自己界面操作
-        if(shiroUser != null && stuId == null){
+        //用户上传头像
+        if(shiroUser != null && userId != null && user != null){
             System.err.println("用户修改头像");
-            sysUserService.changeAvatar(shiroUser,avatarImgPath);
+            sysUserService.changeAvatar(user,avatarImgPath);
         }
 
         Map<String,String> map = new HashMap<>();
