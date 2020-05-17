@@ -93,8 +93,10 @@ public class SysMenuServiceImpl implements SysMenuService {
     @Override
     public List<Node> findZtreeMenuNodes() {
         List<Node> nodes = sysMenuDao.selectZtreeMenuNodes();
-        List<Node> result = treeSelect(nodes,0);
-        return result;
+        if (nodes == null || nodes.size() == 0)
+            throw new ServiceException("没有菜单信息");
+        nodes = treeSelect(nodes,0);
+        return nodes;
     }
 
     /**

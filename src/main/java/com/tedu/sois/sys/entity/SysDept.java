@@ -5,94 +5,93 @@ import java.util.Date;
 import java.util.Objects;
 
 import com.tedu.sois.common.pojo.BaseEntity;
+
 /**
- * 部门PO对象
+ * 部门实体对象
  */
 public class SysDept extends BaseEntity {
-	private Integer deptId;
-	private String deptName;
-	private String leader;
-	private Integer parentId;
-	private Integer sort;
-	private String note;
 
-	public Integer getDeptId() {
-		return deptId;
-	}
+    /**部门编号*/
+    private Integer deptId;
 
-	public void setDeptId(Integer deptId) {
-		this.deptId = deptId;
-	}
+    /**部门名字*/
+    private String deptName;
 
-	public String getDeptName() {
-		return deptName;
-	}
+    /**部门负责人*/
+    private String leader;
 
-	public void setDeptName(String deptName) {
-		this.deptName = deptName;
-	}
+    /**上机部门编号*/
+    private Integer parentId;
 
-	public String getLeader() {
-		return leader;
-	}
+    /**排序号*/
+    private Integer sort;
 
-	public void setLeader(String leader) {
-		this.leader = leader;
-	}
+    /**备注*/
+    private String note;
 
-	public Integer getParentId() {
-		return parentId;
-	}
+    public Integer getDeptId() {
+        return deptId;
+    }
 
-	public void setParentId(Integer parentId) {
-		this.parentId = parentId;
-	}
+    public void setDeptId(Integer deptId) {
+        this.deptId = deptId;
+    }
 
-	public Integer getSort() {
-		return sort;
-	}
+    public String getDeptName() {
+        return deptName;
+    }
 
-	public void setSort(Integer sort) {
-		this.sort = sort;
-	}
+    public void setDeptName(String deptName) {
+        this.deptName = deptName;
+    }
 
-	public String getNote() {
-		return note;
-	}
+    public String getLeader() {
+        return leader;
+    }
 
-	public void setNote(String note) {
-		this.note = note;
-	}
+    public void setLeader(String leader) {
+        this.leader = leader;
+    }
 
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
-		SysDept sysDept = (SysDept) o;
-		return Objects.equals(deptId, sysDept.deptId) &&
-				Objects.equals(deptName, sysDept.deptName);
-	}
+    public Integer getParentId() {
+        return parentId;
+    }
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(deptId, deptName);
-	}
+    public void setParentId(Integer parentId) {
+        this.parentId = parentId;
+    }
 
-	@Override
-	public String toString() {
-		return "SysDept{" +
-				"deptId=" + deptId +
-				", deptName='" + deptName + '\'' +
-				", leader='" + leader + '\'' +
-				", parentId=" + parentId +
-				", sort=" + sort +
-				", note='" + note + '\'' +
-				", createdTime=" + createdTime +
-				", modifiedTime=" + modifiedTime +
-				", createdUser='" + createdUser + '\'' +
-				", modifiedUser='" + modifiedUser + '\'' +
-				", delFlag='" + delFlag + '\'' +
-				", remark='" + remark + '\'' +
-				'}';
-	}
+    public Integer getSort() {
+        return sort;
+    }
+
+    public void setSort(Integer sort) {
+        this.sort = sort;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
+    }
+
+    @Override
+    public String toString() {
+        return "SysDept{" +
+                "deptId=" + deptId +
+                ", deptName='" + deptName + '\'' +
+                ", leader='" + leader + '\'' +
+                ", parentId=" + parentId +
+                ", sort=" + sort +
+                ", note='" + note + '\'' +
+                ", createdTime=" + createdTime +
+                ", modifiedTime=" + modifiedTime +
+                ", createdUser='" + createdUser + '\'' +
+                ", modifiedUser='" + modifiedUser + '\'' +
+                ", delFlag='" + delFlag + '\'' +
+                ", remark='" + remark + '\'' +
+                '}';
+    }
 }

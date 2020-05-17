@@ -10,31 +10,45 @@ import com.tedu.sois.common.vo.Node;
 import com.tedu.sois.sys.entity.SysDept;
 
 /**
- * 部门信息Dao接口
+ * 部门信息持久层接口
+ * @author LYS
  */
 public interface SysDeptDao {
+
+    int insertDeptInfo(SysDept dept);
+
+    @Delete("delete from sys_dept where dept_id=#{deptId}")
+    int deleteDeptInfoById(Integer deptId);
+
+    int updateDeptInfo(SysDept dept);
+
     /**
      * 查询所有部门以及部门的上级菜单信息
      *
      * @return
      */
-    @Select("select c.*,p.name parentName from sys_dept c left join sys_dept p on c.parentId=p.dept_dept_id")
-    List<Map<String, Object>> findDeptInfoList();
+    List<Map<String, Object>> selectDeptInfoList();
 
-    @Select("select dept_id,name,parentId from sys_dept")
+    @Select("select dept_id id,dept_name name ,parent_id parentId from sys_dept")
     List<Node> findZTreeNodes();
 
-	@Select("select count(*) from sys_dept where parentId=#{deptId}")
-	int getChildCount(Integer dept_id);
+	@Select("select count(*) from sys_dept where parent_id=#{deptId}")
+	int getChildCount(Integer deptId);
 
-	@Delete("delete from sys_dept where dept_id=#{deptId}")
-	int deleteDeptInfoById(Integer dept_id);
+    /**
+     * 根据ID编号查询部门信息
+     * @param deptId
+     * @return
+     */
+    SysDept selectDeptInfoById(Integer deptId);
 
-    int insertDeptInfo(SysDept entity);
-
-    List<SysDept> selectDeptInfoById(Integer dept_id);
-
-    int updateDeptInfo(SysDept entity);
+    /**
+     * 根据部门名称统计是否存在
+     * @param deptName
+     * @return
+     */
+    @Select("select count(*) from sys_dept where dept_name=#{deptName}")
+    int selectDeptInfoByName(String deptName);
 }
 
 

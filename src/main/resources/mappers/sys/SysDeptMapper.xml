@@ -1,35 +1,70 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper
-  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.tedu.sois.sys.dao.SysDeptDao">
- <!-- 基于部门id查询部门信息 -->
-   <select id="selectDeptInfoById" resultType="com.tedu.sois.sys.entity.SysDept">
-          select * from sys_dept
-          where dept_id=#{deptId}
-   </select>
-   
-   <update id="updateDeptInfo"
-       parameterType="com.tedu.sois.sys.entity.SysDept">
+
+    <insert id="insertDeptInfo" parameterType="com.tedu.sois.sys.entity.SysDept"
+            useGeneratedKeys="true" keyProperty="deptId">
+        INSERT INTO sys_dept
+        (dept_name, leader, parent_id,note, sort, created_user, created_time)
+        values
+        (#{deptName},#{leader},#{parentId},#{note},#{sort},#{createdUser},#{createdTime})
+        <!--<trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="deptName != null  and deptName != ''">dept_name,</if>
+            <if test="leader != null  and leader != ''">leader,</if>
+            <if test="parentId != null  and parentId != ''">parent_id,</if>
+            <if test="note != null  and note != ''">note,</if>
+            <if test="sort != null  and sort != ''">sort,</if>
+            <if test="createdUser != null  and createdUser != ''">created_user,</if>
+            <if test="createdTime != null ">created_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="deptName != null  and deptName != ''">#{deptName},</if>
+            <if test="leader != null  and leader != ''">#{leader},</if>
+            <if test="parentId != null  and parentId != ''">#{parentId},</if>
+            <if test="note != null  and note != ''">#{note},</if>
+            <if test="sort != null  and sort != ''">#{sort},</if>
+            <if test="createdUser != null  and createdUser != ''">${createdUser},</if>
+            <if test="createdTime != null ">#{createdTime},</if>
+        </trim>-->
+    </insert>
+
+    <update id="updateDeptInfo"
+            parameterType="com.tedu.sois.sys.entity.SysDept">
          update sys_dept
          set
            dept_name=#{deptName},
-           sort=#{sort},
+           leader=#{leader},
+           parent_id=#{parentId},
            note=#{note},
-           parentId=#{parentId},
-           modifiedUser=#{modifiedUser},
-           modifiedTime=now()
+           sort=#{sort},
+           modified_user=#{modifiedUser},
+           modified_time=#{modifiedTime}
         where dept_id=#{deptId}
     </update>
-    
-    <insert id="insertDeptInfo"
-            parameterType="com.tedu.sois.sys.entity.SysDept">
-         insert into sys_dept
-         (dept_name,sort,note,parentId,created_time,modified_time,created_user,modified_user)
-         values
-         (#{deptName},#{sort},#{note},#{parentId},now(),now(),#{createdUser},#{modifiedUser})
-    </insert>
-   
+
+    <!-- 基于部门id查询部门信息 -->
+    <select id="selectDeptInfoById" resultType="com.tedu.sois.sys.entity.SysDept">
+          select * from sys_dept
+          where dept_id=#{deptId}
+   </select>
+
+    <select id="selectDeptInfoList" resultType="java.util.Map">
+        select c.dept_id deptId,c.dept_name deptName,
+        c.leader leader,
+        c.parent_id parentId,
+        p.dept_name parentName,
+        c.note note,c.sort sort,
+        c.created_user createdUser,
+        c.created_time createdTime,
+        c.modified_user modifiedUser,
+        c.modified_time modifiedTime
+        from sys_dept c
+        left join sys_dept p
+        on c.parent_id=p.dept_id
+    </select>
+
 </mapper>
 
 

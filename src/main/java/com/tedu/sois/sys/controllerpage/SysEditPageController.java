@@ -1,8 +1,10 @@
 package com.tedu.sois.sys.controllerpage;
 
 import com.tedu.sois.common.vo.Node;
+import com.tedu.sois.sys.entity.SysDept;
 import com.tedu.sois.sys.entity.SysMenu;
 import com.tedu.sois.sys.entity.SysRole;
+import com.tedu.sois.sys.service.SysDeptService;
 import com.tedu.sois.sys.service.SysMenuService;
 import com.tedu.sois.sys.service.SysRoleService;
 import com.tedu.sois.sys.vo.SysRoleMenuVo;
@@ -35,6 +37,12 @@ public class SysEditPageController {
     private SysRoleService sysRoleService;
 
     /**
+     * 部门业务层接口
+     */
+    @Autowired
+    private SysDeptService sysDeptService;
+
+    /**
      * 菜单编辑 界面
      * @param model
      * @return
@@ -47,6 +55,12 @@ public class SysEditPageController {
         return "sys/menu_edit" ;
     }
 
+    /**
+     * 角色编辑页面
+     * @param roleId
+     * @param model
+     * @return
+     */
     @PostMapping("role/editPage")
     public String doGetRoleEditPage(Integer roleId, Model model) {
         SysRoleMenuVo sysRoleMenuVo = new SysRoleMenuVo();
@@ -56,6 +70,20 @@ public class SysEditPageController {
         List<Node> nodes = sysMenuService.findZtreeMenuNodes();
         model.addAttribute("nodes",nodes);
         return "sys/role_edit" ;
+    }
+
+
+
+
+    @PostMapping("dept/editPage")
+    public String doGetDeptEditPage(Integer deptId, Model model) {
+        SysDept dept = new SysDept();
+        if (deptId != null)
+            dept = sysDeptService.findSysDeptInfoByRoleId(deptId);
+        model.addAttribute("dept",dept);
+        List<Node> nodes = sysDeptService.findZTreeDeptNodes();
+        model.addAttribute("nodes",nodes);
+        return "sys/dept_edit" ;
     }
 
 }

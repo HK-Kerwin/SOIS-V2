@@ -6,10 +6,38 @@ import java.util.Map;
 import com.tedu.sois.common.vo.Node;
 import com.tedu.sois.sys.entity.SysDept;
 
+/**
+ * 部门功能接口
+ *
+ * @author LYS
+ */
 public interface SysDeptService {
-	 List<Map<String,Object>> findObjects();
-	 List<Node> findZTreeNodes();
-	 int saveObject(SysDept entity);
-	 int updateObject(SysDept entity);
-	 int deleteObject(Integer id);
+
+	void saveSysDeptInfo(SysDept entity);
+
+	void removeSysDeptInfo(Integer deptId);
+
+	void modifySysDeptInfo(SysDept entity);
+
+
+
+    /**
+     * 查询所有部门以及部门的上级菜单信息
+     *
+     * @return
+     */
+    List<Map<String, Object>> findDeptInfoList();
+
+	/**
+	 * 查找树节点
+	 * @return
+	 */
+	List<Node> findZTreeDeptNodes();
+
+	/**
+	 * 根据ID查询部门信息
+	 * @param roleId
+	 * @return
+	 */
+	SysDept findSysDeptInfoByRoleId(Integer roleId);
 }

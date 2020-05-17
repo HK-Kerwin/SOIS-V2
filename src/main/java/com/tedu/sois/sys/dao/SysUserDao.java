@@ -16,22 +16,24 @@ public interface SysUserDao extends BaseMapper<SysUser> {
 
     /**
      * 修改密码,会自动保存修改时间
-     * @param password 新加密后的密码
-     * @param salt      新盐值
-     * @param userId    用户id
-     * @param modifiedUser  修改人
+     *
+     * @param password     新加密后的密码
+     * @param salt         新盐值
+     * @param userId       用户id
+     * @param modifiedUser 修改人
      * @return
      */
     int updatePassword(
             @Param("password") String password
-            ,@Param("salt") String salt
-            ,@Param("userId") Long userId
-            ,@Param("modifiedUser") String modifiedUser);
+            , @Param("salt") String salt
+            , @Param("userId") Long userId
+            , @Param("modifiedUser") String modifiedUser);
 
     SysUser findUserByLoginName(String username);
 
     /**
      * 根据用户id查询用户信息和部门信息
+     *
      * @param userId 用户id
      * @return
      */
@@ -56,8 +58,8 @@ public interface SysUserDao extends BaseMapper<SysUser> {
     /**
      * 用户禁用启用数据状态的修改
      *
-     * @param userId           用户id
-     * @param status        用户状态
+     * @param userId       用户id
+     * @param status       用户状态
      * @param modifiedUser 修改用户
      * @return 修改行数
      */
@@ -88,8 +90,8 @@ public interface SysUserDao extends BaseMapper<SysUser> {
             @Param("pageSize") Integer pageSize);
 
 
-    @Select("select * from stu_base_info where stu_id=#{stuId}")
-    StuBaseInfo selectStuInfoByUserStuId(Long stuId);
+    @Select("select count(*) from sys_user where dept_id=#{deptId}")
+    int getUserCountByDeptId(Integer deptId);
 }
 
 
