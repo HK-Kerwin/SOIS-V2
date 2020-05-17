@@ -499,16 +499,18 @@
                 dataType: 'JSON',
                 success: function (res) {
                     if (res.code == '0') {
-                        alert(res.msg==null?'提交失败':res.msg+',重新刷新页面');
+                        layui.layer.alert(res.msg==null?'提交失败':res.msg+',重新刷新页面');
                         let index = parent.layer.getFrameIndex(window.name);
                         parent.layer.close(index);
                         parent.location.reload();
                     } else{
-                        alert(res.msg);
+                        lock = true;
+                        layui.layer.alert(res.msg);
                     }
                 },
                 error: function (data) {
-                    layer.msg(data.msg)
+                    lock = true;
+                    layer.msg(data.msg);
                 }
             });
 

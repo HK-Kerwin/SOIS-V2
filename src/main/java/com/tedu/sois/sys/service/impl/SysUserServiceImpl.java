@@ -215,7 +215,7 @@ public class SysUserServiceImpl implements SysUserService {
         if (user == null)
             throw new ServiceException("用户不存在");
         //3.查询用户对应的角色id
-        List<Integer> roleIds = sysUserRoleDao.findRoleIdsByUserId(userId);
+        List<Integer> roleIds = sysUserRoleDao.selectRoleIdsByUserId(userId);
         //4.封装两次查询结果
         Map<String, Object> map = new HashMap<>();
         map.put("user", user);
@@ -228,7 +228,7 @@ public class SysUserServiceImpl implements SysUserService {
     public Map<String, Object> getDataByLoginName(String loginName) {
         SysUser user = sysUserDao.findUserByLoginName(loginName);
         Map<String, Object> map = new HashMap<>();
-        List<Integer> list = sysUserRoleDao.findRoleIdsByUserId(user.getUserId());
+        List<Integer> list = sysUserRoleDao.selectRoleIdsByUserId(user.getUserId());
         map.put("userData", user);
         map.put("roleData", list);
         return map;

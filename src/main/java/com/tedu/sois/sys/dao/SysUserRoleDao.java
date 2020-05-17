@@ -16,7 +16,7 @@ public interface SysUserRoleDao {
      * @return
      */
     @Select("select role_id from sys_user_role where user_id=#{userId}")
-    List<Integer> findRoleIdsByUserId(Long userId);
+    List<Integer> selectRoleIdsByUserId(Long userId);
 
     /**
      * 将用户和角色的关系数据存储到数据库
@@ -44,4 +44,5 @@ public interface SysUserRoleDao {
      */
     @Delete("delete from sys_user_role where role_id=#{roleId}")
     int deleteSysUserRoleByRoleId(Integer roleId);
+
 }

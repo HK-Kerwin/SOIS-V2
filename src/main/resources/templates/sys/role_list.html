@@ -262,10 +262,13 @@
 											layer.close(index);
 											//刷新，重新渲染表格
 											active['reload'].call(this,'reload');
+											return;
 										}
+										lock = true;
 										layer.msg(res.msg, {offset: '15px'});
 									},
 									error: function (res) {
+										lock = true;
 										layer.msg(res.msg, {offset: '15px'});
 									}
 								});

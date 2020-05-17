@@ -41,7 +41,7 @@ public class SysRoleServiceImpl implements SysRoleService {
 
     @Override
     public String findRoleNameByUserId(Long stuId) {
-		List<Integer> roleIds = sysUserRoleDao.findRoleIdsByUserId(stuId);
+		List<Integer> roleIds = sysUserRoleDao.selectRoleIdsByUserId(stuId);
 		if (roleIds == null || roleIds.size() == 0)
             throw new ServiceException("没有找到角色编号");
         Integer roleId = roleIds.get(0);

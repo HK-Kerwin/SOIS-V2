@@ -210,7 +210,7 @@
                 data: field,
                 dataType: 'JSON',
                 success: function (res) {
-                    if (res.code == '0') {
+                    if (res.code == 0) {
                         layer.msg(res.msg == null ? '提交失败' : res.msg + ',退出登录重新刷新页面', {
                             offset: '15px'
                             , icon: 1
@@ -220,9 +220,12 @@
                             parent.location.reload();
                         });
                     }
+                    layer.msg(res.msg, {offset: '15px'});
+                    lock = true;
                 },
                 error: function (res) {
-                    layer.msg(res.msg, {offset: '15px', icon: 2, time: 800})
+                    layer.msg(res.msg, {offset: '15px', icon: 2, time: 800});
+                    lock = true;
                 }
             });
             layui.element.init();

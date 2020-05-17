@@ -3,6 +3,8 @@ package com.tedu.sois.systestcase;
 import com.tedu.sois.common.util.ShiroUtils;
 import com.tedu.sois.sys.dao.SysUserDao;
 import com.tedu.sois.sys.entity.SysUser;
+import com.tedu.sois.sys.service.SysMenuService;
+import com.tedu.sois.sys.vo.SysUserMenuVo;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -13,6 +15,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.List;
 import java.util.UUID;
 
 @SpringBootTest
@@ -21,7 +24,7 @@ public class SysUserLoginTestCase {
     @Autowired
     org.apache.shiro.mgt.SecurityManager securityManager;
 
-    @Test
+    //@Test
     public void login(){
         //set认证器
         SecurityUtils.setSecurityManager(securityManager);
@@ -43,6 +46,7 @@ public class SysUserLoginTestCase {
 
     @Autowired
     private SysUserDao sysUserDao;
+
     //@Test
     public void modifyPassword(){
         //3.对新密码进行加密
@@ -51,5 +55,16 @@ public class SysUserLoginTestCase {
 
         //4.将新密码加密以后的结果更新到数据库
         int rows = sysUserDao.updatePassword(sh.toHex(), salt, 2L, "admin");
+    }
+
+    @Autowired
+    private SysMenuService sysMenuService;
+
+    //@Test
+    public void findSysMenusByUserId(){
+        List<SysUserMenuVo> menus = sysMenuService.findMenusByUserId(2L);
+        for (SysUserMenuVo sysUserMenuVo: menus) {
+            System.err.println(sysUserMenuVo);
+        }
     }
 }

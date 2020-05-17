@@ -26,14 +26,10 @@ public class Node implements Serializable{
 	/** tree前端框架所用参数*/
 	private Boolean open;
 	private Boolean checked;
-	private Boolean selected;
 	private String value;
-
-
 
 	/**上级节点id*/
 	private Integer parentId;
-
 
 	/**下级节点集合*/
 	private List<Node> children = new ArrayList<>();

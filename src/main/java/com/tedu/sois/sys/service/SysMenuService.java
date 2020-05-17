@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.tedu.sois.common.vo.Node;
 import com.tedu.sois.sys.entity.SysMenu;
+import com.tedu.sois.sys.vo.SysUserMenuVo;
 
 public interface SysMenuService {
 
@@ -33,4 +34,10 @@ public interface SysMenuService {
      */
     List<Map<String, Object>> findMenuList();
 
+    /**
+     * 获取用户对应的菜单信息
+     * @param userId
+     * @return
+     */
+    List<SysUserMenuVo> findMenusByUserId(Long userId);
 }

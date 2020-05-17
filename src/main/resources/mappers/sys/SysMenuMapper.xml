@@ -74,5 +74,43 @@
         order by sort
     </select>
 
+    <!--查询出二级菜单-->
+    <resultMap id="sysUserMenuVo" type="com.tedu.sois.sys.vo.SysUserMenuVo">
+        <id property="menuId" column="pId"></id>
+        <id property="menuName" column="pName"></id>
+        <id property="url" column="pUrl"></id>
+        <collection property="children" ofType="com.tedu.sois.sys.vo.SysUserMenuVo">
+            <id property="menuId" column="cId"></id>
+            <id property="menuName" column="cName"></id>
+            <id property="url" column="cUrl"></id>
+        </collection>
+    </resultMap>
+    
+    <select id="selectMenusByIds" resultMap="sysUserMenuVo">
+        select p.menu_id pId,p.menu_name pName,p.url pUrl,c.menu_id cId,c.menu_name cName,c.url cUrl
+        from sys_menu p join sys_menu c
+        on p.menu_id=c.parent_id
+        <where>
+            <foreach collection="menuIds" open="(" close=")" separator="or" item="menuId">
+                c.menu_id=#{menuId}
+            </foreach>
+            and p.parent_id&lt;&gt;0 and  p.type&lt;&gt;2 and c.type&lt;&gt;2
+        </where>
+        order by p.sort
+
+    </select>
+
+    <!--查询出全部之后在业务层使用递归-->
+    <select id="selectMenusListByIds" resultType="com.tedu.sois.sys.vo.SysUserMenuVo">
+        select menu_id,menu_name,url,parent_id
+        from sys_menu p
+        <where>
+            <foreach collection="menuIds" open="(" close=")" separator="or" item="menuId">
+                menu_id=#{menuId}
+            </foreach>
+            and parent_id&lt;&gt;0 and  type&lt;&gt;2
+        </where>
+        order by sort
+    </select>
 
 </mapper>

@@ -3,6 +3,7 @@ package com.tedu.sois.sys.dao;
 import java.util.List;
 import java.util.Map;
 
+import com.tedu.sois.sys.vo.SysUserMenuVo;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -11,14 +12,29 @@ import com.tedu.sois.common.vo.Node;
 import com.tedu.sois.sys.entity.SysMenu;
 
 /**
- * @Mapper 注解一般用于描述数据层接口对象, 表示
- * 此接口对象的实现类由系统底层自动创建,并且会
- * 在此接口的实现类中注入SqlSessionFactory对象.
+ * 菜单持久层接口
+ * @author LYS
  */
 
 public interface SysMenuDao {
 
-    List<String> findPermissions(@Param("menuIds") Integer[] menuIds);
+
+    /**
+     * 将内存中的菜单对象持久化(存储到数据库)
+     *
+     * @param entity
+     * @return
+     */
+    int insertSysMenuInfo(SysMenu entity);
+
+    /**
+     * 基于菜单id删除菜单
+     *
+     * @param menuId 菜单id
+     * @return 删除的行数
+     */
+    @Delete("delete from sys_menu where menu_id=#{menuId}")
+    int deleteSysMenuInfo(Integer menuId);
 
     /**
      * 更新数据库中的菜单记录
@@ -29,12 +45,11 @@ public interface SysMenuDao {
     int updateSysMenuInfo(SysMenu entity);
 
     /**
-     * 将内存中的菜单对象持久化(存储到数据库)
-     *
-     * @param entity
+     * 基于菜单id获取对应的菜单权限标识
+     * @param menuIds
      * @return
      */
-    int insertSysMenuInfo(SysMenu entity);
+    List<String> findPermissions(@Param("menuIds") Integer[] menuIds);
 
     /**
      * 获取所有菜单的菜单id,菜单名,上级菜单id
@@ -57,14 +72,6 @@ public interface SysMenuDao {
     @Select("select count(*) from sys_menu where parent_id=#{menuId}")
     int getChildCount(Integer menuId);
 
-    /**
-     * 基于菜单id删除菜单
-     *
-     * @param menuId 菜单id
-     * @return 删除的行数
-     */
-    @Delete("delete from sys_menu where menu_id=#{menuId}")
-    int deleteSysMenuInfo(Integer menuId);
 
     /**
      * 查询所有的菜单以及菜单对应的上级菜单信息
@@ -78,6 +85,21 @@ public interface SysMenuDao {
      * @return
      */
     List<Map<String, Object>> selectMenuList();
+
+    /**
+     * 基于菜单id获取用户权限菜单信息
+     * 需要包含多级菜单
+     * @param menuIds
+     * @return
+     */
+    List<SysUserMenuVo> selectMenusByIds(@Param("menuIds")List<Integer> menuIds);
+
+    /**
+     * 查询全部
+     * @param menuIds
+     * @return
+     */
+    List<SysUserMenuVo> selectMenusListByIds(@Param("menuIds") List<Integer> menuIds);
 }
 
 

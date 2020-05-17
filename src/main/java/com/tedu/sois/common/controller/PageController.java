@@ -2,14 +2,27 @@ package com.tedu.sois.common.controller;
 
 import com.tedu.sois.common.util.ShiroUtils;
 import com.tedu.sois.sys.entity.SysUser;
+import com.tedu.sois.sys.service.SysMenuService;
+import com.tedu.sois.sys.vo.SysUserMenuVo;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.List;
+import java.util.Map;
+
 @Controller
 @RequestMapping("/")
 public class PageController {
+
+    /**
+     * 菜单业务接口
+     */
+    @Autowired
+    private SysMenuService sysMenuService;
+    
     /**
      * 返回主页
      *
@@ -20,6 +33,8 @@ public class PageController {
         SysUser user = ShiroUtils.getUser();
         if (user != null) {
             model.addAttribute("userData", user);
+            List<SysUserMenuVo> userMenus = sysMenuService.findMenusByUserId(user.getUserId());
+            model.addAttribute("userMenus", userMenus);
         } else {
             user = new SysUser();
             user.setUserName("请登录");

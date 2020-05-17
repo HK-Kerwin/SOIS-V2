@@ -102,12 +102,12 @@ public class ShiroUserRealm extends AuthorizingRealm {
         //1.获取登录用户信息
         SysUser user = (SysUser) principals.getPrimaryPrincipal();
         //2.基于登录用户id获取角色id并进行校验.
-        List<Integer> roleIds = sysUserRoleDao.findRoleIdsByUserId(user.getUserId());
+        List<Integer> roleIds = sysUserRoleDao.selectRoleIdsByUserId(user.getUserId());
         if (roleIds == null || roleIds.size() == 0)
             throw new AuthorizationException();
         //3.基于角色id获取对应菜单id并进行校验
         Integer[] array = {};
-        List<Integer> menuIds = sysRoleMenuDao.selectMenuIdsByRoleIds(roleIds.toArray(array));
+        List<Integer> menuIds = sysRoleMenuDao.selectMenuIdsByRoleIds(roleIds);
         if (menuIds == null || menuIds.size() == 0)
             throw new AuthorizationException();
         //4.基于菜单id获取对应的菜单权限标识(permission)

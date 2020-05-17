@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 
 import com.tedu.sois.common.util.ShiroUtils;
+import com.tedu.sois.sys.dao.SysUserRoleDao;
+import com.tedu.sois.sys.vo.SysUserMenuVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -27,6 +29,9 @@ public class SysMenuServiceImpl implements SysMenuService {
     private SysMenuDao sysMenuDao;
     @Autowired
     private SysRoleMenuDao sysRoleMenuDao;
+
+    @Autowired
+    private SysUserRoleDao sysUserRoleDao;
 
     @Override
     public void saveSysMenuInfo(SysMenu entity) {
@@ -85,7 +90,6 @@ public class SysMenuServiceImpl implements SysMenuService {
         return list;
     }
 
-
     @Override
     public List<Node> findZtreeMenuNodes() {
         List<Node> nodes = sysMenuDao.selectZtreeMenuNodes();
@@ -112,5 +116,34 @@ public class SysMenuServiceImpl implements SysMenuService {
     }
 
 
+    @Override
+    public List<SysUserMenuVo> findMenusByUserId(Long userId) {
+        //获取角色id
+        List<Integer> roleIds = sysUserRoleDao.selectRoleIdsByUserId(userId);
+        //获取菜单id
+        List<Integer> menuIds = sysRoleMenuDao.selectMenuIdsByRoleIds(roleIds);
+        //获取菜单
+        //List<SysUserMenuVo> sysUserMenuVos = sysMenuDao.selectMenusByIds(menuIds);//mybatis二级
+        List<SysUserMenuVo> sysUserMenuVos = sysMenuDao.selectMenusListByIds(menuIds);//获取全部使用递归
+        sysUserMenuVos = treeSelectByMenuVo(sysUserMenuVos,8);
+        return sysUserMenuVos;
+    }
 
+    /**
+     * 递归求树
+     * @param nodes 全部的节点信息
+     * @param parentId 父节点id
+     * @return
+     */
+    private List<SysUserMenuVo> treeSelectByMenuVo(List<SysUserMenuVo> sysUserMenuVo,Integer parentId) {
+        List<SysUserMenuVo> result = new ArrayList<>();
+        for (SysUserMenuVo menuVo : sysUserMenuVo) {
+            if (menuVo.getParentId() == parentId || menuVo.getParentId().equals(parentId)) {
+                List<SysUserMenuVo> childMenuList = treeSelectByMenuVo(sysUserMenuVo,menuVo.getMenuId());
+                menuVo.setChildren(childMenuList);
+                result.add(menuVo);
+            }
+        }
+        return result;
+    }
 }

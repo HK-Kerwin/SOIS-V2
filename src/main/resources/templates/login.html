@@ -193,6 +193,7 @@
                             $("#LAY-user-login-password").val("");
                             $("#user-login-verCode").val("");
                             draw(show_num);
+                            lock = true;
                         }
                     },
                     error: function (res) {
@@ -200,6 +201,7 @@
                         $("#LAY-user-login-password").val("");
                         $("#user-login-verCode").val("");
                         draw(show_num);
+                        lock = true;
                     }
 
                 });
