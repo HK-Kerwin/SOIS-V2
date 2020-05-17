@@ -264,11 +264,11 @@
 											active['reload'].call(this,'reload');
 											return;
 										}
-										lock = true;
+										lock = false;
 										layer.msg(res.msg, {offset: '15px'});
 									},
 									error: function (res) {
-										lock = true;
+										lock = false;
 										layer.msg(res.msg, {offset: '15px'});
 									}
 								});

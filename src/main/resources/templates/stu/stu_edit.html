@@ -504,12 +504,12 @@
                         parent.layer.close(index);
                         parent.location.reload();
                     } else{
-                        lock = true;
+                        lock = false;
                         layui.layer.alert(res.msg);
                     }
                 },
                 error: function (data) {
-                    lock = true;
+                    lock = false;
                     layer.msg(data.msg);
                 }
             });

@@ -53,21 +53,22 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 </li>
                 <li class="layui-nav-item layui-hide-xs" lay-unselect>
                     <input id="indexSearch" name="indexSearch" type="text" placeholder="姓名/手机号/身份证号" autocomplete="off"
-                           class="layui-input layui-input-search" lay-action="teacher/doGetStuInfoPageForTeacher?indexSearch="/>
+                           class="layui-input layui-input-search"
+                           lay-action="teacher/doGetStuInfoPageForTeacher?indexSearch="/>
                 </li>
                 <li class="layui-nav-item" lay-unselect>
                     <button id="indexSearch-btn" class="layui-btn layui-btn-radius layui-btn-primary layui-btn-sm">
                         <i class="layui-icon layui-icon-search"></i>
                     </button>
                 </li>
-                <li class="layui-nav-item layui-hide-xs" lay-tips="逝去的青春,天呐！是时间在流逝！" lay-unselect >
+                <li class="layui-nav-item layui-hide-xs" lay-tips="逝去的青春,天呐！是时间在流逝！" lay-unselect>
                     <a id="nowTime" style="font-size:14px;" href="javascript:;">
                     </a>
                 </li>
             </ul>
             <ul class="layui-nav layui-layout-right" lay-filter="layadmin-layout-right">
                 <li class="layui-nav-item" lay-unselect lay-tips="消息中心">
-                    <a lay-href="app/message/index.html" layadmin-event="message" lay-text="消息中心" >
+                    <a lay-href="app/message/index.html" layadmin-event="message" lay-text="消息中心">
                         <i class="layui-icon layui-icon-notice"></i>
 
                         <!-- 如果有新消息，则显示小圆点 -->
@@ -92,7 +93,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
                 <li class="layui-nav-item" lay-unselect="" title="没登录就点一下">
                     <a lay-href="user/getUserInfoPage">
-                        <img th:src="${userData.avatar}" width="28px" height="30px" style="line-height: 10px;border-radius:50%;">
+                        <img th:src="${userData.avatar}" width="28px" height="30px"
+                             style="line-height: 10px;border-radius:50%;">
                         <cite id="loginUserName" th:text="${userData.userName}" style="font-size:12px;">
                         </cite>
                         <span class="layui-nav-more"></span>
@@ -124,42 +126,49 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 </div>
 
                 <ul class="layui-nav layui-nav-tree" lay-shrink="all" id="LAY-system-side-menu"
-                    lay-filter="layadmin-system-side-menu">
+                    lay-filter="layadmin-system-side-menu" th:each="um:${userMenus}">
 
                     <li data-name="home" class="layui-nav-item">
-                        <a href="javascript:;" lay-tips="主页" lay-direction="2">
+                        <a href="javascript:;" lay-tips="${um.menuName}" lay-direction="2">
                             <i class="layui-icon layui-icon-home"></i>
-                            <cite>主页</cite>
+                            <cite>[[${um.menuName}]]</cite>
                             <span class="layui-nav-more"></span>
                         </a>
                         <dl class="layui-nav-child">
-                            <dd data-name="console">
-                                <a lay-href="home/show_data_page">数据展示</a>
+                            <dd th:each="chOne:${um.children}">
+                                <a th:lay-href="${chOne.url}==null?'javascript:;':${chOne.url}">[[${chOne.menuName}]]</a>
+
+                                <dl class="layui-nav-child">
+                                    <dd th:each="chTwo:${chOne.children}">
+                                        <a th:lay-href="${chTwo.url}==null?'javascript:;':${chTwo.url}">[[${chTwo.menuName}]]</a>
+                                    </dd>
+                                </dl>
                             </dd>
                         </dl>
                     </li>
-                    <li data-name="xyl" class="layui-nav-item"><!--layui-nav-itemed-->
-                        <a href="javascript:;" lay-tips="训练营" lay-direction="2">
-                            <i class="layui-icon layui-icon-user"></i>
-                            <cite>训练营</cite>
-                            <span class="layui-nav-more"></span>
-                        </a>
-                        <dl class="layui-nav-child">
-                            <dd>
-                                <a lay-href="doErrorUI">试听申请</a>
-                            </dd>
-                            <dd>
-                                <a lay-href="doErrorUI">笔记下载</a>
-                            </dd>
-                            <dd>
-                                <a lay-href="doErrorUI">学员签到</a>
-                            </dd>
-                            <dd>
-                                <a lay-href="doErrorUI">座位表</a>
-                            </dd>
-                        </dl>
-                    </li>
-                    <li data-name="show" class="layui-nav-item"><!--layui-nav-itemed-->
+
+                    <!--<li data-name="xyl" class="layui-nav-item">&lt;!&ndash;layui-nav-itemed&ndash;&gt;
+                    <a href="javascript:;" lay-tips="训练营" lay-direction="2">
+                        <i class="layui-icon layui-icon-user"></i>
+                        <cite>训练营</cite>
+                        <span class="layui-nav-more"></span>
+                    </a>
+                    <dl class="layui-nav-child">
+                        <dd>
+                            <a lay-href="doErrorUI">试听申请</a>
+                        </dd>
+                        <dd>
+                            <a lay-href="doErrorUI">笔记下载</a>
+                        </dd>
+                        <dd>
+                            <a lay-href="doErrorUI">学员签到</a>
+                        </dd>
+                        <dd>
+                            <a lay-href="doErrorUI">座位表</a>
+                        </dd>
+                    </dl>
+                </li>
+                    <li data-name="show" class="layui-nav-item">&lt;!&ndash;layui-nav-itemed&ndash;&gt;
                         <a href="javascript:;" lay-tips="达内之星" lay-direction="2">
                             <i class="layui-icon layui-icon-star"></i>
                             <cite>达内之星</cite>
@@ -202,14 +211,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
                         </dl>
                     </li>
 
-                    <li id="teacher" data-name="teacher" class="layui-nav-item"><!--layui-nav-item layui-nav-itemed-->
+                    <li data-name="teacher" class="layui-nav-item">&lt;!&ndash;layui-nav-item layui-nav-itemed&ndash;&gt;
                         <a href="javascript:;" lay-tips="教师功能" lay-direction="2">
                             <i class="layui-icon layui-icon-group"></i>
                             <cite>教师功能</cite>
                             <span class="layui-nav-more"></span>
                         </a>
                         <dl class="layui-nav-child">
-                            <dd id="teacherQuery" ><a lay-href="teacher/doGetStuInfoPageForTeacher">分类查询</a></dd>
+                            <dd><a lay-href="teacher/doGetStuInfoPageForTeacher">分类查询</a></dd>
                             <dd><a lay-href="javascript:;">考勤信息</a></dd>
                             <dd><a lay-href="javascript:;">成绩信息</a></dd>
                             <dd><a lay-href="javascript:;" target="_blank">访谈记录</a></dd>
@@ -267,7 +276,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                 </dl>
                             </dd>
                         </dl>
-                    </li>
+                    </li>-->
 
                 </ul>
             </div>
@@ -317,13 +326,13 @@ scratch. This page gets rid of all links and provides the needed markup only.
         base: 'dist/layuiadmin/' //静态资源所在路径
     }).extend({
         index: 'lib/index' //主入口模块
-    }).use('index',function () {
+    }).use('index', function () {
         var layer = layui.layer,
             $ = layui.$;
-        
-        
-        layer.ready(function() {
-            
+        layui.element.render();
+
+        layer.ready(function () {
+
             setInterval(showNowTime, 1000);
 
             function showNowTime() {
@@ -352,47 +361,47 @@ scratch. This page gets rid of all links and provides the needed markup only.
             }
         });
 
-        $('#indexSearch-btn').on('click',function () {
+        $('#indexSearch-btn').on('click', function () {
             checkSearch();
         });
 
-        $('#indexSearch').keyup(function(evt){
-            if(evt.keyCode == 13){
+        $('#indexSearch').keyup(function (evt) {
+            if (evt.keyCode == 13) {
                 checkSearch();
             }
         });
 
-        function checkSearch(){
+        function checkSearch() {
 
             let search_val = $.trim($('#indexSearch').val());
             let search_type = '';
 
-            if($.trim(search_val).length == 0){
+            if ($.trim(search_val).length == 0) {
                 layer.msg('请输入正确的姓名或手机号');
                 return false;
-            }else if(/^((?!1{11})1\d{10})$|^(09\d{8})$/.test($.trim(search_val))){
+            } else if (/^((?!1{11})1\d{10})$|^(09\d{8})$/.test($.trim(search_val))) {
                 search_type = 'phoneNumber';
-            }else if(/(^\d{17}(\d|X|x)$)/.test($.trim(search_val))){
+            } else if (/(^\d{17}(\d|X|x)$)/.test($.trim(search_val))) {
                 search_type = 'idCard';
-            }else{
-                let reg = new RegExp("[\\u4E00-\\u9FFF]+","g");
-                if(reg.test(search_val)){
+            } else {
+                let reg = new RegExp("[\\u4E00-\\u9FFF]+", "g");
+                if (reg.test(search_val)) {
                     search_type = 'stuName';
-                    if(search_val.length > 16){
+                    if (search_val.length > 16) {
                         layer.msg('输入的姓名过长');
                         return false;
                     }
-                }else{
+                } else {
                     layer.msg('输入正确的姓名、身份证号、手机号');
                     return false;
                 }
             }
-            $('#teacher').attr('class','layui-nav-item layui-nav-itemed');
-            $('#teacherQuery').attr('class','layui-this');
-            layui.index.openTabsPage('teacher/doGetStuInfoPageForTeacher?indexSearch='+search_type+':'+search_val, '分类查询');
+            //teacher/doGetStuInfoPageForTeacher
+            //$('#teacher').attr('class','layui-nav-item layui-nav-itemed');
+            layui.index.openTabsPage('teacher/doGetStuInfoPageForTeacher?indexSearch=' + search_type + ':' + search_val, '分类查询');
             return;
         };
-        
+
     });
 
 

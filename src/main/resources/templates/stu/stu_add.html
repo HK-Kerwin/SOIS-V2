@@ -486,12 +486,12 @@
                         let index = parent.layer.getFrameIndex(window.name);
                         parent.layer.close(index);
                     } else{
-                        lock = true;
+                        lock = false;
                         layer.msg(res.msg);
                     }
                 },
                 error: function (data) {
-                    lock = true;
+                    lock = false;
                     layer.msg(data.msg)
                 }
             });
