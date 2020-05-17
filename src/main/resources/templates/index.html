@@ -126,19 +126,19 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 </div>
 
                 <ul class="layui-nav layui-nav-tree" lay-shrink="all" id="LAY-system-side-menu"
-                    lay-filter="layadmin-system-side-menu" th:each="um:${userMenus}">
+                    lay-filter="layadmin-system-side-menu">
 
-                    <li data-name="home" class="layui-nav-item">
+                    <li data-name="home" class="layui-nav-item" th:each="um:${userMenus}">
                         <a href="javascript:;" lay-tips="${um.menuName}" lay-direction="2">
                             <i class="layui-icon layui-icon-home"></i>
                             <cite>[[${um.menuName}]]</cite>
                             <span class="layui-nav-more"></span>
                         </a>
-                        <dl class="layui-nav-child">
+                        <dl th:class="${um.children}==null?'':'layui-nav-child'">
                             <dd th:each="chOne:${um.children}">
                                 <a th:lay-href="${chOne.url}==null?'javascript:;':${chOne.url}">[[${chOne.menuName}]]</a>
 
-                                <dl class="layui-nav-child">
+                                <dl th:class="${chOne.children}==null?'':'layui-nav-child'">
                                     <dd th:each="chTwo:${chOne.children}">
                                         <a th:lay-href="${chTwo.url}==null?'javascript:;':${chTwo.url}">[[${chTwo.menuName}]]</a>
                                     </dd>
@@ -146,137 +146,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             </dd>
                         </dl>
                     </li>
-
-                    <!--<li data-name="xyl" class="layui-nav-item">&lt;!&ndash;layui-nav-itemed&ndash;&gt;
-                    <a href="javascript:;" lay-tips="训练营" lay-direction="2">
-                        <i class="layui-icon layui-icon-user"></i>
-                        <cite>训练营</cite>
-                        <span class="layui-nav-more"></span>
-                    </a>
-                    <dl class="layui-nav-child">
-                        <dd>
-                            <a lay-href="doErrorUI">试听申请</a>
-                        </dd>
-                        <dd>
-                            <a lay-href="doErrorUI">笔记下载</a>
-                        </dd>
-                        <dd>
-                            <a lay-href="doErrorUI">学员签到</a>
-                        </dd>
-                        <dd>
-                            <a lay-href="doErrorUI">座位表</a>
-                        </dd>
-                    </dl>
-                </li>
-                    <li data-name="show" class="layui-nav-item">&lt;!&ndash;layui-nav-itemed&ndash;&gt;
-                        <a href="javascript:;" lay-tips="达内之星" lay-direction="2">
-                            <i class="layui-icon layui-icon-star"></i>
-                            <cite>达内之星</cite>
-                            <span class="layui-nav-more"></span>
-                        </a>
-                        <dl class="layui-nav-child">
-                            <dd>
-                                <a lay-href="doErrorUI">就业明星</a>
-                            </dd>
-                            <dd>
-                                <a lay-href="doErrorUI">奖学金</a>
-                            </dd>
-                        </dl>
-                    </li>
-                    <li data-name="user" class="layui-nav-item">
-                        <a href="javascript:;" lay-tips="学员功能" lay-direction="2">
-                            <i class="layui-icon layui-icon-user"></i>
-                            <cite>学员功能</cite>
-                            <span class="layui-nav-more"></span>
-                        </a>
-                        <dl class="layui-nav-child">
-                            <dd>
-                                <a lay-href="stu/getStuSingleListPage">查询录入</a>
-                            </dd>
-                            <dd>
-                                <a lay-href="doErrorUI">性格测试</a>
-                            </dd>
-                            <dd>
-                                <a lay-href="stu/score_ranking">成绩排名</a>
-                            </dd>
-                            <dd>
-                                <a lay-href="doErrorUI">考勤记录</a>
-                            </dd>
-                            <dd>
-                                <a lay-href="doErrorUI">投诉建议</a>
-                            </dd>
-                            <dd>
-                                <a lay-href="doErrorUI">匿名调查</a>
-                            </dd>
-                        </dl>
-                    </li>
-
-                    <li data-name="teacher" class="layui-nav-item">&lt;!&ndash;layui-nav-item layui-nav-itemed&ndash;&gt;
-                        <a href="javascript:;" lay-tips="教师功能" lay-direction="2">
-                            <i class="layui-icon layui-icon-group"></i>
-                            <cite>教师功能</cite>
-                            <span class="layui-nav-more"></span>
-                        </a>
-                        <dl class="layui-nav-child">
-                            <dd><a lay-href="teacher/doGetStuInfoPageForTeacher">分类查询</a></dd>
-                            <dd><a lay-href="javascript:;">考勤信息</a></dd>
-                            <dd><a lay-href="javascript:;">成绩信息</a></dd>
-                            <dd><a lay-href="javascript:;" target="_blank">访谈记录</a></dd>
-                            <dd>
-                                <a lay-href="javascript:;">模拟面试</a>
-                                <dl class="layui-nav-child">
-                                    <dd><a lay-href="javascript:;">模拟面一</a></dd>
-                                    <dd><a lay-href="javascript:;">模拟面二</a></dd>
-                                    <dd><a lay-href="javascript:;">模拟面三</a></dd>
-                                </dl>
-                            </dd>
-                            <dd><a lay-href="javascript:;">项目答辩</a></dd>
-                            <dd><a lay-href="javascript:;" target="_blank">学员预警</a></dd>
-                            <dd><a lay-href="javascript:;" target="_blank">学习报告</a></dd>
-                            <dd><a lay-href="javascript:;">异动信息</a></dd>
-                            <dd><a lay-href="javascript:;">教室管理</a></dd>
-                        </dl>
-                    </li>
-                    <li data-name="income" class="layui-nav-item">
-                        <a href="javascript:;" lay-tips="增值业务" lay-direction="2">
-                            <i class="layui-icon layui-icon-rmb"></i>
-                            <cite>增值业务</cite>
-                            <span class="layui-nav-more"></span>
-                        </a>
-                        <dl class="layui-nav-child">
-                            <dd><a lay-href="javascript:;">口碑信息</a></dd>
-                            <dd><a lay-href="javascript:;">证书增值</a></dd>
-                            <dd><a lay-href="javascript:;">学历增值</a></dd>
-                        </dl>
-                    </li>
-                    <li data-name="manage" class="layui-nav-item">
-                        <a href="javascript:;" lay-tips="系统管理" lay-direction="2">
-                            <i class="layui-icon layui-icon-set"></i>
-                            <cite>系统管理</cite>
-                            <span class="layui-nav-more"></span>
-                        </a>
-                        <dl class="layui-nav-child">
-                            <dd>
-                                <a lay-href="sys/doGetUserListInfoPage">用户管理</a>
-                            </dd>
-                            <dd>
-                                <a lay-href="sys/doGetRoleListInfoPage">角色管理</a>
-                            </dd>
-                            <dd>
-                                <a lay-href="sys/doGetDeptListInfoPage">部门管理</a>
-                            </dd>
-                            <dd>
-                                <a lay-href="sys/doGetMenuListInfoPage">菜单管理</a>
-                            </dd>
-                            <dd>
-                                <a lay-href="sys/doGetLogListInfoPage">日志管理</a>
-                                <dl class="layui-nav-child">
-                                    <dd><a lay-href="javascript:;">登录日志</a></dd>
-                                    <dd><a lay-href="javascript:;">操作日志</a></dd>
-                                </dl>
-                            </dd>
-                        </dl>
-                    </li>-->
 
                 </ul>
             </div>
@@ -329,7 +198,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     }).use('index', function () {
         var layer = layui.layer,
             $ = layui.$;
-        layui.element.render();
+        layui.element.render('nav', 'layadmin-system-side-menu');
 
         layer.ready(function () {
 
