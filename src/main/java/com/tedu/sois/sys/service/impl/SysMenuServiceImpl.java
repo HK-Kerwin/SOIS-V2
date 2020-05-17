@@ -126,7 +126,7 @@ public class SysMenuServiceImpl implements SysMenuService {
         //List<SysUserMenuVo> sysUserMenuVos = sysMenuDao.selectMenusByIds(menuIds);//mybatis二级
         List<SysUserMenuVo> sysUserMenuVos = sysMenuDao.selectMenusListByIds(menuIds);//获取全部使用递归
         sysUserMenuVos = treeSelectByMenuVo(sysUserMenuVos,8);
-        return sysUserMenuVos;
+        return treeSelectByMenuVoClear(sysUserMenuVos);
     }
 
     /**
@@ -145,5 +145,17 @@ public class SysMenuServiceImpl implements SysMenuService {
             }
         }
         return result;
+    }
+
+    private List<SysUserMenuVo> treeSelectByMenuVoClear(List<SysUserMenuVo> sysUserMenuVo){
+        for (SysUserMenuVo menuVo: sysUserMenuVo) {
+            if (menuVo.getChildren().size() != 0){
+                treeSelectByMenuVoClear(menuVo.getChildren());
+            }
+            if (menuVo.getChildren().size() == 0){
+                menuVo.setChildren(null);
+            }
+        }
+        return sysUserMenuVo;
     }
 }

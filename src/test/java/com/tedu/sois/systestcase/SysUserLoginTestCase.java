@@ -60,7 +60,7 @@ public class SysUserLoginTestCase {
     @Autowired
     private SysMenuService sysMenuService;
 
-    //@Test
+    @Test
     public void findSysMenusByUserId(){
         List<SysUserMenuVo> menus = sysMenuService.findMenusByUserId(2L);
         for (SysUserMenuVo sysUserMenuVo: menus) {
