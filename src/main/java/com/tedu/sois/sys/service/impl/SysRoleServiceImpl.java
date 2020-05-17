@@ -78,9 +78,6 @@ public class SysRoleServiceImpl implements SysRoleService {
             throw new IllegalArgumentException("角色名不允许为空");
         if (menuIds == null || menuIds.length == 0)
             throw new ServiceException("必须为角色分配权限");
-        int row = sysRoleDao.getRoleInfoRowCount(entity.getRoleName());
-        if (row > 0)
-            throw new ServiceException("角色已经存在,请查询");
         entity.setModifiedUser(ShiroUtils.getUsername());
         entity.setModifiedTime(new Date());
         //2.保存角色自身信息
