@@ -85,6 +85,11 @@
                 defaultClose: true,	//是否默认折叠
                 linkage: false,	//父级展开时是否自动展开所有子级
                 getIcon: function (d) {  // 自定义图标
+
+                    if (d.icon != null){
+                        return '<i class="'+d.icon+'"></i>';
+                    }
+
                     // d是当前行的数据
                     if (d.type == 1) {  // 判断是否有子集
                         return '<i class="ew-tree-icon layui-icon layui-icon-layer"></i>';
