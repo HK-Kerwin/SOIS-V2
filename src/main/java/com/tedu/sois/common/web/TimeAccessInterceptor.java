@@ -42,7 +42,7 @@ public class TimeAccessInterceptor implements HandlerInterceptor {
         Map<String, String[]> mapIn = httpServletRequest.getParameterMap();
         JSON jsonObject = JSONUtil.parseObj(mapIn);
         StringBuffer stringBuffer = httpServletRequest.getRequestURL();
-
+        httpServletResponse.addHeader("Access-Control-Allow-Origin","*");
         LOG.info("httpServletRequest ,路径:" + stringBuffer + ",入参:" + JSONUtil.toJsonStr(jsonObject));
 
         //校验APP的登陆状态，如果token 没有过期
