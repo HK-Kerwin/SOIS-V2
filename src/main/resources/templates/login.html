@@ -183,13 +183,11 @@
                                     value: res.data.token
                                 }
                             );
-                            lock = true;
                             //登入成功的提示与跳转
                             layer.msg(res.msg+',欢迎'+res.data.user.userName,{offset: '15px', icon: 1, time: 2000}, function () {
                                 //刷新父页面
                                 parent.location.reload();
                             })
-                            lock = true;
                         } else {
                             $("#LAY-user-login-password").val("");
                             $("#user-login-verCode").val("");
