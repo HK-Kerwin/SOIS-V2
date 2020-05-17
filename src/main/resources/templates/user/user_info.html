@@ -199,7 +199,6 @@
         /*提交信息*/
         form.on('submit(setMyInfo)', function (obj) {
             if (lock) {
-                layer.msg('请勿重复提交', {offset: '15px'});
                 lock = false;
                 return false;
             }

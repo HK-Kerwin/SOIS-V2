@@ -240,7 +240,6 @@
 							let lock = false;
 							form.on('submit(formRole)', function (data) {
 								if (lock) {
-									layer.msg('请勿重复提交', {offset: '15px'});
 									lock = false;
 									return false;
 								}

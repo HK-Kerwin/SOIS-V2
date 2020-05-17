@@ -471,7 +471,6 @@
         //监听提交
         form.on('submit(stuSaveFrom)', function (data) {
             if (lock) {
-                layer.msg('请勿重复提交', {offset: '15px'});
                 lock = false;
                 return false;
             }
