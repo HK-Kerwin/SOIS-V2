@@ -157,9 +157,14 @@
             }
         })
 
-
+        let lock = false;
         //提交
         form.on('submit(LAY-user-login-submit)', function (obj) {
+            if (lock) {
+                layer.msg('请勿重复提交', {offset: '15px'});
+                return false;
+            }
+            lock = true;
 
             let val = $("#user-login-verCode").val().toLowerCase();
             let num = show_num.join("");
