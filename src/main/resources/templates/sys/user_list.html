@@ -165,13 +165,43 @@
         };
 
 
+
+
         /* tr右侧点击功能 */
         table.on('tool(user-list-table-toolbar)', function (obj) {
             let data = obj.data;
-            if (obj.event === 'edit') {
-                edit(data);
+            switch(obj.event) {
+                case 'edit':
+                    edit(data)
+                    break;
+                case 'del':
+                    deleteUser(data);
+                    break;
             };
         });
+        /* 删除用户信息*/
+        function deleteUser(data) {
+            let userId = data.userId;
+            layer.confirm('确定删除选定行的数据吗?', function (index) {
+                $.ajax({
+                    url: '../user/doRemoveSysUserInfoById',
+                    data: {userId: userId},
+                    headers: {"token": layui.data(layui.setter.tableName)['token']},
+                    success: function (res) {
+                        if (res.code == 0) {
+                            layer.msg(res.msg, {offset: '15px'});
+                            layer.close(index);
+                            active['reload'].call(this,'reload');
+                        } else {
+                            layer.msg(res.msg, {offset: '15px'});
+                        }
+                    },
+                    error: function (res) {
+                        layer.msg(res.msg, {offset: '15px'});
+                    }
+                });
+            });
+        }
 
         /* 编辑用户个人信息功能 */
         function edit(data) {

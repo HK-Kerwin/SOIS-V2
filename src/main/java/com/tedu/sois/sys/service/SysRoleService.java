@@ -37,7 +37,7 @@ public interface SysRoleService {
 	 * @param stuId 用户编号
 	 * @return 角色
 	 */
-	String findRoleNameByUserId(Long stuId);
+	List<SysRole> findRoleByUserId(Long stuId);
 
 	List<CheckBox> findObjects();
 
@@ -57,5 +57,11 @@ public interface SysRoleService {
 	 * @return
 	 */
 	JsonResult findPageRoleInfoByRoleName(String roleName, Integer page, Integer limit);
+
+	/**
+	 * 查找所有角色信息
+	 * @return
+	 */
+	List<SysRole> findRoleInfoList();
 
 }

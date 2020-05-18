@@ -23,103 +23,115 @@
                     <div class="layui-form" lay-filter="">
 
                         <form class="layui-form" action="">
-                            <input name="userId" th:value="${userInfo.userId}" style="display: none" disabled>
+                            <div class="layui-col-md6">
+                                <input name="userId" th:value="${userInfo.userId}" style="display: none" disabled>
 
-                            <div class="layui-form-item">
-                                <label class="layui-form-label">我的角色</label>
-                                <div class="layui-input-inline">
-                                    <select name="roleName" lay-verify="" lay-filter="aihao">
-                                        <option th:value="${roleName}" th:text="${roleName}">请选择</option>
-                                    </select>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">登录账号</label>
+                                    <div class="layui-input-inline">
+                                        <input type="text" name="loginName" th:value="${userInfo.loginName}" readonly
+                                               class="layui-input" disabled>
+                                    </div>
+                                    <div class="layui-form-mid layui-word-aux">登录账号不可修改</div>
                                 </div>
-                                <div class="layui-form-mid layui-word-aux">当前角色不可更改为其它角色</div>
-                            </div>
 
-                            <div class="layui-form-item">
-                                <label class="layui-form-label">登录账号</label>
-                                <div class="layui-input-inline">
-                                    <input type="text" name="loginName" th:value="${userInfo.loginName}" readonly
-                                           class="layui-input" disabled>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">昵称</label>
+                                    <div class="layui-input-inline">
+                                        <input type="text" name="userName" th:value="${userInfo.userName}"
+                                               lay-verify="nickname"
+                                               autocomplete="off" placeholder="" class="layui-input" disabled>
+                                    </div>
+                                    <div class="layui-form-mid layui-word-aux">昵称固定不可修改</div>
                                 </div>
-                                <div class="layui-form-mid layui-word-aux">登录账号不可修改</div>
-                            </div>
 
-                            <div class="layui-form-item">
-                                <label class="layui-form-label">昵称</label>
-                                <div class="layui-input-inline">
-                                    <input type="text" name="userName" th:value="${userInfo.userName}"
-                                           lay-verify="nickname"
-                                           autocomplete="off" placeholder="" class="layui-input" disabled>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">性别</label>
+                                    <div class="layui-input-block">
+                                        <input type="radio" name="sex" value="男" title="男" th:field="*{userInfo.sex}"
+                                               checked>
+                                        <input type="radio" name="sex" value="女" title="女" th:field="*{userInfo.sex}">
+                                    </div>
                                 </div>
-                                <div class="layui-form-mid layui-word-aux">昵称固定不可修改</div>
-                            </div>
 
-                            <div class="layui-form-item">
-                                <label class="layui-form-label">性别</label>
-                                <div class="layui-input-block">
-                                    <input type="radio" name="sex" value="男" title="男" th:field="*{userInfo.sex}"
-                                           checked>
-                                    <input type="radio" name="sex" value="女" title="女" th:field="*{userInfo.sex}">
-                                </div>
-                            </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">头像</label>
+                                    <div class="layui-input-inline">
 
-                            <div class="layui-form-item">
-                                <label class="layui-form-label">头像</label>
-                                <div class="layui-input-inline">
+                                        <input name="avatar" lay-verify="required" id="LAY_avatarSrc" placeholder="图片地址"
+                                               th:value="(*{userInfo.avatar} == '') ? @{../dist/layuiadmin/img/defualt.png} : @{*{userInfo.avatar}}"
+                                               class="layui-input" type="hidden">
+                                        <div class="layui-upload-drag" id="chooseFileBtn">
+                                            <i class="layui-icon layui-icon-picture"></i>
+                                            <p>点击或拖拽文件到此</p>
+                                            <div class="" id="uploadDemoView">
+                                                <hr>
+                                                <img th:src="(*{userInfo.avatar} == '') ? @{../dist/layuiadmin/img/defualt.png} : @{*{userInfo.avatar}}"
+                                                     class="layui-upload-img" id="showImg" width="115px" height="150px">
+                                            </div>
 
-                                    <input name="avatar" lay-verify="required" id="LAY_avatarSrc" placeholder="图片地址"
-                                           th:value="(*{userInfo.avatar} == '') ? @{../dist/layuiadmin/img/defualt.png} : @{*{userInfo.avatar}}"
-                                           class="layui-input" type="hidden">
-                                    <div class="layui-upload-drag" id="chooseFileBtn">
-                                        <i class="layui-icon layui-icon-picture"></i>
-                                        <p>点击或拖拽文件到此</p>
-                                        <div class="" id="uploadDemoView">
-                                            <hr>
-                                            <img th:src="(*{userInfo.avatar} == '') ? @{../dist/layuiadmin/img/defualt.png} : @{*{userInfo.avatar}}"
-                                                 class="layui-upload-img" id="showImg" width="115px" height="150px">
                                         </div>
 
                                     </div>
-
+                                    <div class="layui-input-inline " style="width: auto;">
+                                        <button type="button" class="layui-btn layhi ui-btn-primary"
+                                                id="LAY_avatarUpload">
+                                            <i class="layui-icon">&#xe67c;</i>上传图片
+                                        </button>
+                                    </div>
                                 </div>
-                                <div class="layui-input-inline " style="width: auto;">
-                                    <button type="button" class="layui-btn layhi ui-btn-primary"
-                                            id="LAY_avatarUpload">
-                                        <i class="layui-icon">&#xe67c;</i>上传图片
-                                    </button>
+
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">手机</label>
+                                    <div class="layui-input-inline">
+                                        <input type="text" name="phoneNumber" th:value="${userInfo.phoneNumber}"
+                                               lay-verify="phone" autocomplete="off" class="layui-input">
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">邮箱</label>
+                                    <div class="layui-input-inline">
+                                        <input type="text" name="email" th:value="${userInfo.email}" lay-verify="email"
+                                               autocomplete="off" class="layui-input" list="stuEmail_list" id="email">
+                                        <datalist id="stuEmail_list"></datalist>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item layui-form-text">
+                                    <label class="layui-form-label">备注</label>
+                                    <div class="layui-input-block">
+                                        <textarea name="remark" placeholder="请输入内容" class="layui-textarea">[[*{userInfo.remark}]]</textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="layui-col-md6">
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">角色选择</label>
+                                    <div class="layui-input-block">
+                                            <span th:each="role:${role}">
+                                                <input name="roleIds" type="checkbox" th:value="${role.roleId}"
+                                                       th:checked="${#lists.contains(optRoleId, role.roleId)}"
+                                                       th:title="${role.roleName}" lay-skin="primary" />
+                                            </span>
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">上级部门</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="deptId" id="tree" value="0" lay-filter="tree"
+                                               class="layui-input"/>
+                                    </div>
                                 </div>
                             </div>
 
                             <div class="layui-form-item">
-                                <label class="layui-form-label">手机</label>
-                                <div class="layui-input-inline">
-                                    <input type="text" name="phoneNumber" th:value="${userInfo.phoneNumber}"
-                                           lay-verify="phone" autocomplete="off" class="layui-input">
-                                </div>
-                            </div>
-
-                            <div class="layui-form-item">
-                                <label class="layui-form-label">邮箱</label>
-                                <div class="layui-input-inline">
-                                    <input type="text" name="email" th:value="${userInfo.email}" lay-verify="email"
-                                           autocomplete="off" class="layui-input" list="stuEmail_list" id="email">
-                                    <datalist id="stuEmail_list"></datalist>
-                                </div>
-                            </div>
-
-                            <div class="layui-form-item layui-form-text">
-                                <label class="layui-form-label">备注</label>
                                 <div class="layui-input-block">
-                                    <textarea name="remark" placeholder="请输入内容" class="layui-textarea">[[*{userInfo.remark}]]</textarea>
-                                </div>
-                            </div>
-
-                            <div class="layui-form-item">
-                                <div class="layui-input-block">
-                                    <button class="layui-btn" lay-submit lay-filter="setMyInfo">确认修改</button>
+                                    <button class="layui-btn" lay-submit lay-filter="setUserInfo">确认修改</button>
                                     <button type="reset" class="layui-btn layui-btn-primary">恢复原样</button>
                                 </div>
                             </div>
+
                         </form>
 
                     </div>
@@ -136,27 +148,57 @@
     layui.config({
         base: '../dist/layuiadmin/' //静态资源所在路径
     }).extend({
-        index: 'lib/index' //主入口模块
-    }).use(['index', 'form', 'upload'], function () {
+        index: 'lib/index', //主入口模块
+        treeSelect: 'treeSelect/treeSelect'
+    }).use(['index', 'form', 'upload', 'treeSelect'], function () {
         var $ = layui.$
             , form = layui.form
             , admin = layui.admin
             , layer = layui.layer
-            , upload = layui.upload;
-        ;
+            , upload = layui.upload
+            , treeSelect = layui.treeSelect;
 
         form.render();
 
         /* 邮箱后缀自动补全 */
         inputList($("#email"), $("#stuEmail_list"));
 
+        treeSelect.render({
+            // 选择器
+            elem: '#tree',
+            // 数据
+            data: '../dept/doFindZTreeDeptNodes',
+            headers: {"token": layui.data(layui.setter.tableName)['token']},
+            // 异步加载方式：get/post，默认get
+            // type: 'post',
+            // 占位符
+            placeholder: '上级部门',
+            // 是否开启搜索功能：true/false，默认false
+            search: true,
+            // 一些可定制的样式
+            style: {
+                folder: {
+                    enable: true
+                },
+                line: {
+                    enable: true
+                }
+            },
+            // 加载完成后的回调函数
+            success: function (d) {
+                // 选中节点，根据id筛选
+                treeSelect.checkNode('tree', [[${userInfo.deptId == null? 0: userInfo.deptId}]]);
+                // 刷新树结构
+                treeSelect.refresh('tree');
+            }
+        });
 
         let files;
         upload.render({
             elem: '#chooseFileBtn'
             , url: 'avatarChange'
             , data: {
-                userId: function(){
+                userId: function () {
                     return [[${userInfo.userId}]];
                 }
             }
@@ -171,7 +213,7 @@
                 layer.load();
             }
             , done: function (res, index, upload) {
-                if(res.code == '0'){ //上传成功
+                if (res.code == '0') { //上传成功
                     let fileupload = $("#LAY_avatarSrc");
                     fileupload.attr("value", res.data.src);
                     $('#showImg').attr('src', res.data.file);
@@ -197,28 +239,56 @@
 
         let lock = false;
         /*提交信息*/
-        form.on('submit(setMyInfo)', function (obj) {
+        form.on('submit(setUserInfo)', function (obj) {
             if (lock) {
                 lock = false;
                 return false;
             }
             lock = true;
+
             let field = obj.field;
+            let roleIds = [];
+            $('input[name="roleIds"]:checked').each(function(){
+                roleIds.push($(this).val());
+            });
+            field.roleIds = roleIds.toString();
+
+            if (roleIds.length == 0){
+                layer.msg('必须为用户分配角色', {offset: '15px'});
+                return false;
+            }
+
+            let optRoleId = [[${optRoleId}]];
+            console.log(optRoleId);
+            let optNum = 0;
+            for (let i = 0; i < optRoleId.length; i++) {
+                for (let j = 0; j < roleIds.length; j++) {
+                    if (optRoleId[i]==roleIds[j].roleId){
+                        optNum++;
+                    }
+                }
+            }
+
+            let url;
+            if (roleIds.length == optRoleId.length && roleIds.length == optNum) {
+                url = 'doModifySingleUserInfoBySingle';
+            } else {
+                url = 'doModifySingleUserInfo';
+            }
             admin.req({
-                url: 'doModifySingleUserInfo',
+                url: url,
                 method: 'post',
                 data: field,
                 dataType: 'JSON',
                 success: function (res) {
                     if (res.code == 0) {
-                        layer.msg(res.msg == null ? '提交失败' : res.msg + ',退出登录重新刷新页面', {
+                        layer.msg(res.msg == null ? '提交失败' : res.msg + ',即将重新刷新页面', {
                             offset: '15px'
                             , icon: 1
-                            , time: 1000
-                        }, function () {
-                            //刷新父页面
-                            parent.location.reload();
+                            , time: 2000
                         });
+
+                        parent.active['reload'].call(this,'reload')
                     }
                     layer.msg(res.msg, {offset: '15px'});
                     lock = false;

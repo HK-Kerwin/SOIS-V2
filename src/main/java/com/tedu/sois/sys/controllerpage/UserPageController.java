@@ -2,15 +2,19 @@ package com.tedu.sois.sys.controllerpage;
 
 import com.tedu.sois.common.util.ShiroUtils;
 import com.tedu.sois.common.vo.JsonResult;
+import com.tedu.sois.sys.entity.SysRole;
 import com.tedu.sois.sys.entity.SysUser;
 import com.tedu.sois.sys.service.SysRoleService;
 import com.tedu.sois.sys.service.SysUserService;
+import com.tedu.sois.sys.vo.SysRoleMenuVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -38,16 +42,27 @@ public class UserPageController {
      */
     @RequestMapping("getUserInfoPage")
     public String getUserInfoPage(Long userId, Model model) {
-        SysUser user;
+        SysUser user = ShiroUtils.getUser();
+        List<SysRole> onLineUserRole = sysRoleService.findRoleByUserId(user.getUserId());
         if (userId != null && userId > 0) {
             user = sysUserService.findUserInfoById(userId);
             userId = user.getUserId();
         } else {
-            user = ShiroUtils.getUser();
             userId = user.getUserId();
         }
-        String roleName = sysRoleService.findRoleNameByUserId(userId);
-        model.addAttribute("roleName", roleName);
+        for (SysRole sysRole: onLineUserRole) {
+            if ("admin".equals(sysRole.getRoleKey())){
+                onLineUserRole = sysRoleService.findRoleInfoList();
+                break;
+            }
+        }
+        List<SysRole> role = sysRoleService.findRoleByUserId(userId);
+        Integer[] optRoleId = new Integer[role.size()];
+        for (int i = 0; i < role.size(); i++) {
+            optRoleId[i] = role.get(i).getRoleId();
+        }
+        model.addAttribute("role", onLineUserRole);
+        model.addAttribute("optRoleId", optRoleId);
         model.addAttribute("userInfo", user);
         return "user/user_info";
     }

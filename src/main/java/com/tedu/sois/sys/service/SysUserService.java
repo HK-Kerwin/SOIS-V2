@@ -30,7 +30,7 @@ public interface SysUserService {
      * @param entity 用户信息
      * @return 受影响行数
      */
-    int modifySingleUserInfo(SysUser entity);
+    void modifySingleUserInfoBySingle(SysUser entity);
 
 
     /**
@@ -49,7 +49,7 @@ public interface SysUserService {
      * @param roleIds
      * @return
      */
-    int modifySysUserInfo(SysUser entity, Integer[] roleIds);
+    void modifySysUserInfo(SysUser entity, Integer[] roleIds);
 
     /**
      * 禁用启用业务方法
@@ -98,4 +98,9 @@ public interface SysUserService {
      */
     void changeAvatar(SysUser user,String avatar);
 
+    /**
+     * 根据用户ID删除信息
+     * @param userId
+     */
+    void removeSysUserInfoById(Long userId);
 }

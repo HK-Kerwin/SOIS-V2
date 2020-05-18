@@ -82,6 +82,20 @@ public interface SysRoleDao {
             @Param("roleName") String roleName,
             @Param("startIndex") Integer startIndex,
             @Param("pageSize") Integer pageSize);
+
+    /**
+     * 查找所有角色信息
+     * @return
+     */
+    @Select("select * from sys_role")
+    List<SysRole> selectRoleInfoList();
+
+    /**
+     * 根据多个角色ID查询角色信息
+     * @param roleIds
+     * @return
+     */
+    List<SysRole> selectRoleInfoById(@Param("roleIds") List<Integer> roleIds);
 }
 
 

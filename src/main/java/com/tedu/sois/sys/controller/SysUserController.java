@@ -63,7 +63,7 @@ public class SysUserController {
         user.setUserId(data.getUserId());
         user.setLoginDate(new Date());
         user.setLoginIp(IPUtils.getIpAddr());
-        sysUserService.modifySingleUserInfo(user);
+        sysUserService.modifySingleUserInfoBySingle(user);
 
         return new JsonResult("登录成功", new JWTToken(jwtToken, data));
     }
@@ -79,6 +79,16 @@ public class SysUserController {
         return new JsonResult(ShiroUtils.getUser());
     }
 
+    /**
+     * 根据用户ID删除用户信息
+     * @param userId
+     * @return
+     */
+    @RequestMapping("doRemoveSysUserInfoById")
+    public JsonResult doRemoveSysUserInfoById(Long userId){
+        sysUserService.removeSysUserInfoById(userId);
+        return new JsonResult("删除用户成功");
+    }
 
     /**
      * 修改密码
@@ -102,20 +112,11 @@ public class SysUserController {
      * @param entity
      * @return
      */
-    @PostMapping("doModifySingleUserInfo")
-    public JsonResult doModifySingleUserInfo(SysUser entity) {
-        sysUserService.modifySingleUserInfo(entity);
+    @PostMapping("doModifySingleUserInfoBySingle")
+    public JsonResult doModifySingleUserInfoBySingle(SysUser entity) {
+        sysUserService.modifySingleUserInfoBySingle(entity);
         return new JsonResult("修改信息成功");
     }
-
-
-
-    @PostMapping("doSaveObject")
-    public JsonResult doSaveObject( SysUser entity, Integer[] roleIds) {
-        sysUserService.saveSysUser(entity, roleIds);
-        return new JsonResult("save ok");
-    }
-
 
     /**
      * 更新用户自身信息以及用户对应的角色关系数据
@@ -124,11 +125,18 @@ public class SysUserController {
      * @param roleIds
      * @return
      */
-    @PostMapping("doUpdateObject")
-    public JsonResult doModifySysUserInfo(SysUser entity, Integer[] roleIds) {
+    @PostMapping("doModifySingleUserInfo")
+    public JsonResult doModifySingleUserInfo(SysUser entity, Integer[] roleIds) {
         sysUserService.modifySysUserInfo(entity, roleIds);
         return new JsonResult("修改信息成功");
     }
+
+    @PostMapping("doSaveUserInfo")
+    public JsonResult doSaveUserInfo( SysUser entity, Integer[] roleIds) {
+        sysUserService.saveSysUser(entity, roleIds);
+        return new JsonResult("save ok");
+    }
+
 
     /**
      * 禁用启用业务方法
@@ -157,7 +165,6 @@ public class SysUserController {
     }
 
     /**
-     * 原来doFindPageObject请求URL
      * 根据用户名分页查询
      * @param userName 用户名
      * @param page 页码

@@ -34,7 +34,7 @@ public interface SysUserRoleDao {
      * @return
      */
     @Delete("delete from sys_user_role where user_id=#{userId}")
-    int deleteObjectsByUserId(Long userId);
+    int deleteSysUserRoleByUserId(Long userId);
 
     /**
      * 基于角色id删除用户与角色的关系数据

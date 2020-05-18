@@ -79,9 +79,10 @@ public class SysUserServiceImpl implements SysUserService {
     //@CacheEvict表示清空缓存
     //在本应用中清空cache中key为指定id的对象
     //#entity.userId表示获取参数entity对象的id值
+    @RequiresPermissions("sys:user:update")
     @CacheEvict(value = "userCache",allEntries = true)
     @Override
-    public int modifySysUserInfo(SysUser entity, Integer[] roleIds) {
+    public void modifySysUserInfo(SysUser entity, Integer[] roleIds) {
         //1.参数检验
         if (entity == null)
             throw new IllegalArgumentException("保存对象不能为空");
@@ -90,15 +91,13 @@ public class SysUserServiceImpl implements SysUserService {
         if (roleIds == null || roleIds.length == 0)
             throw new ServiceException("必须为用户分配角色");
         //2.保存用户自身信息
-        int rows = sysUserDao.updateSysUserInfo(entity);
-        //3.保存用户和角色关系数据
-        sysUserRoleDao.deleteObjectsByUserId(entity.getUserId());
+        updateSysUserInfoSQL(entity);
+        //3.更改用户和角色关系数据
+        sysUserRoleDao.deleteSysUserRoleByUserId(entity.getUserId());
         sysUserRoleDao.insertSysUserRole(entity.getUserId(), roleIds);
-        //4.返回结果
-        return rows;
     }
 
-    //    @RequiresPermissions("sys:user:save")
+    @RequiresPermissions("sys:user:save")
     @CacheEvict(value = "userCache",allEntries = true)
     @Override
     public int saveSysUser(SysUser entity, Integer[] roleIds) {
@@ -145,7 +144,7 @@ public class SysUserServiceImpl implements SysUserService {
      * 3、拥有权限时则可以由Shiro框架进行授权访问
      */
     @Async
-    //@RequiresPermissions("sys:user:update")
+    @RequiresPermissions("sys:user:status")
     @CacheEvict(value = "userCache",allEntries = true)
     @RequiredLog("禁用启用用户")
     @Override
@@ -244,9 +243,8 @@ public class SysUserServiceImpl implements SysUserService {
         data.setAvatar(avatarPath);
         data.setModifiedUser(userName);
         data.setModifiedTime(date);
-        int row = sysUserDao.updateSysUserInfo(data);
-        if (row == 0)
-            throw new ServiceException("更新失败");
+
+        updateSysUserInfoSQL(data);
 
         //更新Shiro中用户信息
         SysUser userData = ShiroUtils.getUser();
@@ -255,12 +253,21 @@ public class SysUserServiceImpl implements SysUserService {
         userData.setModifiedTime(date);
     }
 
+    @RequiresPermissions("sys:user:delete")
+    @CacheEvict(value = "userCache",allEntries = true)
+    @RequiredLog("删除用户")
     @Override
-    public int modifySingleUserInfo(SysUser entity) {
+    public void removeSysUserInfoById(Long userId) {
+        int row = sysUserDao.deleteSysUserInfoById(userId);
+        if (row == 0)
+            throw new ServiceException("删除失败");
+    }
+
+    @Override
+    public void modifySingleUserInfoBySingle(SysUser entity) {
         int row = updateSysUserInfoSQL(entity);
         if (row == 0)
             throw new ServiceException("提交失败,账号信息更新失败");
-        return row;
     }
 
     private int updateSysUserInfoSQL(SysUser entity) {

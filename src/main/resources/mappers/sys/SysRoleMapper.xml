@@ -91,6 +91,18 @@
         select count(*)
         <include refid="queryWhereId"/>
     </select>
+
+
+    <select id="selectRoleInfoById" resultType="com.tedu.sois.sys.entity.SysRole">
+        select * from sys_role where role_id in
+        <foreach collection="roleIds"
+                 open="("
+                 close=")"
+                 separator=","
+                 item="roleId">
+            #{roleId}
+        </foreach>
+    </select>
 </mapper>
 
 

@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.tedu.sois.stu.entity.StuBaseInfo;
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -56,6 +57,13 @@ public interface SysUserDao extends BaseMapper<SysUser> {
     int insertSysUser(SysUser entity);
 
     /**
+     * 根据ID删除数据
+     * @param userId
+     */
+    @Delete("delete from sys_user where user_id=#{userId}")
+    int deleteSysUserInfoById(Long userId);
+
+    /**
      * 用户禁用启用数据状态的修改
      *
      * @param userId       用户id
@@ -92,6 +100,8 @@ public interface SysUserDao extends BaseMapper<SysUser> {
 
     @Select("select count(*) from sys_user where dept_id=#{deptId}")
     int getUserCountByDeptId(Integer deptId);
+
+
 }
 
 

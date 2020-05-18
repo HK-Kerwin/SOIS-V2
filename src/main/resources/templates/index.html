@@ -128,7 +128,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 <ul class="layui-nav layui-nav-tree" lay-shrink="all" id="LAY-system-side-menu"
                     lay-filter="layadmin-system-side-menu">
 
-                    <li data-name="home" class="layui-nav-item" th:each="um:${userMenus}">
+                    <li th:data-name="${um.menuName}" class="layui-nav-item" th:each="um:${userMenus}">
                         <a href="javascript:;" th:lay-tips="${um.menuName}" lay-direction="2">
                             <i th:class="${um.icon}"></i>
                             <cite>[[${um.menuName}]]</cite>

@@ -5,9 +5,14 @@ import java.util.List;
 
 import com.tedu.sois.common.util.ShiroUtils;
 import com.tedu.sois.common.vo.JsonResult;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import com.tedu.sois.common.annotation.RequiredLog;
@@ -22,6 +27,10 @@ import com.tedu.sois.sys.service.SysRoleService;
 import com.tedu.sois.sys.vo.SysRoleMenuVo;
 
 @Service
+@Transactional(isolation = Isolation.READ_COMMITTED, //隔离级别
+        rollbackFor = Throwable.class,//什么异常回滚
+        timeout = 30,//单位:秒
+        propagation = Propagation.REQUIRED)//传播特性
 public class SysRoleServiceImpl implements SysRoleService {
 
     //@Autowired
@@ -39,26 +48,26 @@ public class SysRoleServiceImpl implements SysRoleService {
         this.sysUserRoleDao = sysUserRoleDao;
     }
 
+    @Transactional(readOnly = true)
     @Override
-    public String findRoleNameByUserId(Long stuId) {
-		List<Integer> roleIds = sysUserRoleDao.selectRoleIdsByUserId(stuId);
-		if (roleIds == null || roleIds.size() == 0)
+    public List<SysRole> findRoleByUserId(Long stuId) {
+        List<Integer> roleIds = sysUserRoleDao.selectRoleIdsByUserId(stuId);
+        if (roleIds == null || roleIds.size() == 0)
             throw new ServiceException("没有找到角色编号");
-        Integer roleId = roleIds.get(0);
-        SysRoleMenuVo data = sysRoleDao.selectRoleAndMenuInfoById(roleId);
-        if(data == null)
+        List<SysRole> data = sysRoleDao.selectRoleInfoById(roleIds);
+        if (data == null || data.size() == 0)
             throw new ServiceException("没有找到角色的信息");
 
-        return data.getRoleName();
+        return data;
     }
 
-    @RequiredLog
-    @Cacheable("roleCache")
+
     @Override
     public List<CheckBox> findObjects() {
         return sysRoleDao.findObjects();
     }
 
+    @Transactional(readOnly = true)
     @Override
     public SysRoleMenuVo findRoleAndMenuInfoByRoleId(Integer roleId) {
         if (roleId == null || roleId < 1)
@@ -69,6 +78,9 @@ public class SysRoleServiceImpl implements SysRoleService {
         return rm;
     }
 
+    @RequiresPermissions("sys:role:update")
+    @CacheEvict(value = "roleCache", allEntries = true)
+    @RequiredLog("修改角色信息")
     @Override
     public int modifyRoleInfo(SysRole entity, Integer[] menuIds) {
         //1.参数有效性校验
@@ -91,6 +103,9 @@ public class SysRoleServiceImpl implements SysRoleService {
         return rows;
     }
 
+    @RequiresPermissions("sys:role:add")
+    @CacheEvict(value = "roleCache", allEntries = true)
+    @RequiredLog("添加角色信息")
     @Override
     public void saveRoleInfo(SysRole entity, Integer[] menuIds) {
         //1.参数有效性校验
@@ -114,10 +129,13 @@ public class SysRoleServiceImpl implements SysRoleService {
         //3.保存角色菜单关系数据
         sysRoleMenuDao.insertSysRoleMenu(entity.getRoleId(), menuIds);
         //4.返回业务结果
-        if(rows == 0)
+        if (rows == 0)
             throw new ServiceException("保存失败");
     }
 
+    @RequiresPermissions("sys:role:delete")
+    @CacheEvict(value = "roleCache", allEntries = true)
+    @RequiredLog("删除角色信息")
     @Override
     public void removeRoleInfo(Integer roleId) {
         //1.参数校验
@@ -129,10 +147,14 @@ public class SysRoleServiceImpl implements SysRoleService {
         //3.删除自身信息
         int rows = sysRoleDao.deleteSysRoleInfo(roleId);
         //4.返回结果
-        if(rows == 0)
+        if (rows == 0)
             throw new ServiceException("删除失败");
     }
 
+    @RequiresPermissions("sys:role:view")
+    @Cacheable("roleCache")
+    @RequiredLog("分页查询角色信息")
+    @Transactional(readOnly = true)
     @Override
     public JsonResult findPageRoleInfoByRoleName(String roleName, Integer page, Integer limit) {
         //1.对参数进行有效性验证
@@ -147,6 +169,12 @@ public class SysRoleServiceImpl implements SysRoleService {
         List<SysRole> records = sysRoleDao.selectRoleInfoPage(roleName, startIndex, limit);
         //4.封装结果并返回.
         return new JsonResult(page, limit, rowCount, records);
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public List<SysRole> findRoleInfoList() {
+        return sysRoleDao.selectRoleInfoList();
     }
 
 }

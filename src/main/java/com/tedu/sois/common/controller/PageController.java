@@ -41,9 +41,6 @@ public class PageController {
             user.setAvatar("dist/layuiadmin/img/defualt.png");
             model.addAttribute("userData", user);
             List<SysUserMenuVo> userMenus = sysMenuService.findMenusByUserId(7L);
-            for(SysUserMenuVo data: userMenus){
-                System.err.println(userMenus);
-            }
             model.addAttribute("userMenus", userMenus);
         }
         return "index";
@@ -70,24 +67,5 @@ public class PageController {
     }
 
 
-    /**返回日志列表页面*/
-//	 @RequestMapping("log/log_list")
-//	 public String doLogUI() {
-//		 return "stu/log_list";
-//	 }
-    /**返回菜单列表页面*/
-//	 @RequestMapping("menu/menu_list")
-//	 public String doMenuUI() {
-//		 return "stu/menu_list";
-//	 }
 
-
-    /**
-     * 返回左侧列表网页-备用
-     * @return
-     */
-    @RequestMapping("common/")
-    public String doCommonPage() {
-        return "common/index_li_page";
-    }
 }
