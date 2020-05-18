@@ -25,10 +25,6 @@ public class SysUser extends BaseEntity {
 
 	/**部门编号*/
 	private Long deptId;
-	@TableField(exist = false)
-	private Long parentId;
-	@TableField(exist = false)
-	private Long roleId;
 
 	/**登录名称*/
 	private String loginName;
@@ -67,17 +63,6 @@ public class SysUser extends BaseEntity {
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date loginDate;
 
-	/**部门*/
-	@TableField(exist = false)
-	private SysDept dept;
-
-	@TableField(exist = false)
-	private List roles;
-	@TableField(exist = false)
-	private Long[] roleIds;
-	@TableField(exist = false)
-	private Long[] postIds;
-
 	public Long getUserId() {
 		return userId;
 	}
@@ -100,22 +85,6 @@ public class SysUser extends BaseEntity {
 
 	public void setDeptId(Long deptId) {
 		this.deptId = deptId;
-	}
-
-	public Long getParentId() {
-		return parentId;
-	}
-
-	public void setParentId(Long parentId) {
-		this.parentId = parentId;
-	}
-
-	public Long getRoleId() {
-		return roleId;
-	}
-
-	public void setRoleId(Long roleId) {
-		this.roleId = roleId;
 	}
 
 	public String getLoginName() {
@@ -214,50 +183,17 @@ public class SysUser extends BaseEntity {
 		this.loginDate = loginDate;
 	}
 
-	public SysDept getDept() {
-		return dept;
-	}
-
-	public void setDept(SysDept dept) {
-		this.dept = dept;
-	}
-
-	public List getRoles() {
-		return roles;
-	}
-
-	public void setRoles(List roles) {
-		this.roles = roles;
-	}
-
-	public Long[] getRoleIds() {
-		return roleIds;
-	}
-
-	public void setRoleIds(Long[] roleIds) {
-		this.roleIds = roleIds;
-	}
-
-	public Long[] getPostIds() {
-		return postIds;
-	}
-
-	public void setPostIds(Long[] postIds) {
-		this.postIds = postIds;
-	}
-
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
 		SysUser sysUser = (SysUser) o;
-		return Objects.equals(userId, sysUser.userId) &&
-				Objects.equals(stuId, sysUser.stuId);
+		return Objects.equals(userId, sysUser.userId);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(userId, stuId);
+		return Objects.hash(userId);
 	}
 
 	@Override
@@ -266,8 +202,6 @@ public class SysUser extends BaseEntity {
 				"userId=" + userId +
 				", stuId=" + stuId +
 				", deptId=" + deptId +
-				", parentId=" + parentId +
-				", roleId=" + roleId +
 				", loginName='" + loginName + '\'' +
 				", userName='" + userName + '\'' +
 				", userType='" + userType + '\'' +
@@ -280,10 +214,6 @@ public class SysUser extends BaseEntity {
 				", status='" + status + '\'' +
 				", loginIp='" + loginIp + '\'' +
 				", loginDate=" + loginDate +
-				", dept=" + dept +
-				", roles=" + roles +
-				", roleIds=" + Arrays.toString(roleIds) +
-				", postIds=" + Arrays.toString(postIds) +
 				", createdTime=" + createdTime +
 				", modifiedTime=" + modifiedTime +
 				", createdUser='" + createdUser + '\'' +
