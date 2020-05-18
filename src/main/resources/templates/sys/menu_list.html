@@ -86,7 +86,7 @@
                 linkage: false,	//父级展开时是否自动展开所有子级
                 getIcon: function (d) {  // 自定义图标
 
-                    if (d.icon != null){
+                    if (d.icon != null && d.icon.trim() != ''){
                         return '<i class="'+d.icon+'"></i>';
                     }
 
