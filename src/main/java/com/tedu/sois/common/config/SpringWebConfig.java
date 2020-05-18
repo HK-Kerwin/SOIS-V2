@@ -45,6 +45,7 @@ public class SpringWebConfig implements WebMvcConfigurer {
         patterns.add("/upload/**");
 
         //单独的页面跳转请求
+        patterns.add("/user/getUserRegisterPage");
         patterns.add("/user/getUserInfoPage");
         patterns.add("/user/getModifyPasswordPage");
 
