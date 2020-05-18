@@ -24,7 +24,7 @@ public class SysUser extends BaseEntity {
 	private Long stuId;
 
 	/**部门编号*/
-	private Long deptId;
+	private Integer deptId;
 
 	/**登录名称*/
 	private String loginName;
@@ -79,11 +79,11 @@ public class SysUser extends BaseEntity {
 		this.stuId = stuId;
 	}
 
-	public Long getDeptId() {
+	public Integer getDeptId() {
 		return deptId;
 	}
 
-	public void setDeptId(Long deptId) {
+	public void setDeptId(Integer deptId) {
 		this.deptId = deptId;
 	}
 

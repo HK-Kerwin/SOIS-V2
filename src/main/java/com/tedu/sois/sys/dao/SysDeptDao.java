@@ -36,10 +36,11 @@ public interface SysDeptDao {
 	int getChildCount(Integer deptId);
 
     /**
-     * 根据ID编号查询部门信息
+     * 根据部门ID编号查询部门信息
      * @param deptId
      * @return
      */
+    @Select("select * from sys_dept where dept_id=#{deptId}")
     SysDept selectDeptInfoById(Integer deptId);
 
     /**

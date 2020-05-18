@@ -44,11 +44,6 @@
         where dept_id=#{deptId}
     </update>
 
-    <!-- 基于部门id查询部门信息 -->
-    <select id="selectDeptInfoById" resultType="com.tedu.sois.sys.entity.SysDept">
-          select * from sys_dept
-          where dept_id=#{deptId}
-   </select>
 
     <select id="selectDeptInfoList" resultType="java.util.Map">
         select c.dept_id deptId,c.dept_name deptName,

@@ -119,8 +119,9 @@
                                 <div class="layui-form-item">
                                     <label class="layui-form-label">上级部门</label>
                                     <div class="layui-input-block">
-                                        <input type="text" name="deptId" id="tree" value="0" lay-filter="tree"
-                                               class="layui-input"/>
+                                        <input type="text" name="deptId" id="tree"
+                                               th:value="${userInfo.deptId}"
+                                               lay-filter="tree" class="layui-input"/>
                                     </div>
                                 </div>
                             </div>
@@ -128,7 +129,7 @@
                             <div class="layui-form-item">
                                 <div class="layui-input-block">
                                     <button class="layui-btn" lay-submit lay-filter="setUserInfo">确认修改</button>
-                                    <button type="reset" class="layui-btn layui-btn-primary">恢复原样</button>
+                                    <button id="userModifyInfo-reset-btn" type="reset" class="layui-btn layui-btn-primary">恢复原样</button>
                                 </div>
                             </div>
 
@@ -192,6 +193,7 @@
                 treeSelect.refresh('tree');
             }
         });
+
 
         let files;
         upload.render({
@@ -259,7 +261,6 @@
             }
 
             let optRoleId = [[${optRoleId}]];
-            console.log(optRoleId);
             let optNum = 0;
             for (let i = 0; i < optRoleId.length; i++) {
                 for (let j = 0; j < roleIds.length; j++) {
@@ -285,10 +286,9 @@
                         layer.msg(res.msg == null ? '提交失败' : res.msg + ',即将重新刷新页面', {
                             offset: '15px'
                             , icon: 1
-                            , time: 2000
+                        },function () {
+                            parent.location.reload();
                         });
-
-                        parent.active['reload'].call(this,'reload')
                     }
                     layer.msg(res.msg, {offset: '15px'});
                     lock = false;

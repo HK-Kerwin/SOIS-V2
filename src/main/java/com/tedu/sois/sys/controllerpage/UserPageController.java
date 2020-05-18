@@ -4,6 +4,7 @@ import com.tedu.sois.common.util.ShiroUtils;
 import com.tedu.sois.common.vo.JsonResult;
 import com.tedu.sois.sys.entity.SysRole;
 import com.tedu.sois.sys.entity.SysUser;
+import com.tedu.sois.sys.service.SysDeptService;
 import com.tedu.sois.sys.service.SysRoleService;
 import com.tedu.sois.sys.service.SysUserService;
 import com.tedu.sois.sys.vo.SysRoleMenuVo;
@@ -32,6 +33,7 @@ public class UserPageController {
 
     @Autowired
     private SysUserService sysUserService;
+
 
     /**
      * 用户获取用户个人信息HTML页面

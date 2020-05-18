@@ -22,7 +22,7 @@ public interface StatusCodeConfig {
     String REGEX_EX = "[`~!@#$%^&*()+=|{}':;',\\[\\].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？]";
 
     /** 学生部门号*/
-    Long STU_DEPT_CODE = 13L;
+    int STU_DEPT_CODE = 13;
 
 
 

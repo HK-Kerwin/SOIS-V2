@@ -205,7 +205,6 @@
 
         /* 编辑用户个人信息功能 */
         function edit(data) {
-            window.reqData = data;
             let url = '../user/getUserInfoPage?userId=' + data.userId;
             layer.open({
                 type: 2 //此处以iframe举例

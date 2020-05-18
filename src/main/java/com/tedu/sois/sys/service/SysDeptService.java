@@ -36,8 +36,8 @@ public interface SysDeptService {
 
 	/**
 	 * 根据ID查询部门信息
-	 * @param roleId
+	 * @param deptId
 	 * @return
 	 */
-	SysDept findSysDeptInfoByRoleId(Integer roleId);
+	SysDept findSysDeptInfoByRoleId(Integer deptId);
 }
