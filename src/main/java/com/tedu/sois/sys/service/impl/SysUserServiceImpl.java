@@ -36,69 +36,15 @@ import com.tedu.sois.sys.vo.SysUserDeptVo;
         propagation = Propagation.REQUIRED)//传播特性
 //readOnly = false,默认
 public class SysUserServiceImpl implements SysUserService {
+
     @Autowired
     private SysUserDao sysUserDao;
+
     @Autowired
     private SysUserRoleDao sysUserRoleDao;
 
-    //@RequiresPermissions("sys:user:updatePassword")
-    //@CacheEvict(value = "userCache")
-    @Override
-    public int modifyUserPassword(String password, String newPassword, String cfgPassword) {
-        //1.判定新密码与密码确认是否相同
-        if (StringUtils.isEmpty(newPassword))
-            throw new IllegalArgumentException("新密码不能为空");
-        if (StringUtils.isEmpty(cfgPassword))
-            throw new IllegalArgumentException("确认密码不能为空");
-        if (newPassword.length() < 6 || cfgPassword.length() > 16)
-            throw new IllegalArgumentException("密码长度6-16");
-        if (!newPassword.equals(cfgPassword))
-            throw new IllegalArgumentException("两次输入的密码不相等");
-        //2.判定原密码是否正确
-        if (StringUtils.isEmpty(password))
-            throw new IllegalArgumentException("原密码不能为空");
-
-        //获取登陆用户
-        SysUser user = ShiroUtils.getUser();
-
-        SimpleHash sh = new SimpleHash("MD5",
-                password, user.getSalt(), 5);
-        if (!user.getPassword().equals(sh.toHex()))
-            throw new IllegalArgumentException("原密码不正确");
-        //3.对新密码进行加密
-        String salt = UUID.randomUUID().toString();
-        sh = new SimpleHash("MD5", newPassword, salt, 5);
-
-        //4.将新密码加密以后的结果更新到数据库
-        int rows = sysUserDao.updatePassword(sh.toHex(), salt, user.getUserId(), user.getUserName());
-        if (rows == 0)
-            throw new ServiceException("修改失败");
-        return rows;
-    }
-
-    //@CacheEvict表示清空缓存
-    //在本应用中清空cache中key为指定id的对象
-    //#entity.userId表示获取参数entity对象的id值
-    @RequiresPermissions("sys:user:update")
-    @CacheEvict(value = "userCache",allEntries = true)
-    @Override
-    public void modifySysUserInfo(SysUser entity, Integer[] roleIds) {
-        //1.参数检验
-        if (entity == null)
-            throw new IllegalArgumentException("保存对象不能为空");
-        if (StringUtils.isEmpty(entity.getUserName()))
-            throw new IllegalArgumentException("用户名不能为空");
-        if (roleIds == null || roleIds.length == 0)
-            throw new ServiceException("必须为用户分配角色");
-        //2.保存用户自身信息
-        updateSysUserInfoSQL(entity);
-        //3.更改用户和角色关系数据
-        sysUserRoleDao.deleteSysUserRoleByUserId(entity.getUserId());
-        sysUserRoleDao.insertSysUserRole(entity.getUserId(), roleIds);
-    }
-
     @RequiresPermissions("sys:user:save")
-    @CacheEvict(value = "userCache",allEntries = true)
+    @CacheEvict(value = "userCache", allEntries = true)
     @Override
     public int saveSysUser(SysUser entity, Integer[] roleIds) {
         //1.参数检验
@@ -146,6 +92,72 @@ public class SysUserServiceImpl implements SysUserService {
         return userRoleRows;
     }
 
+    //@RequiresPermissions("sys:user:updatePassword")
+    //@CacheEvict(value = "userCache")
+    @Override
+    public int modifyUserPassword(String password, String newPassword, String cfgPassword) {
+        //1.判定新密码与密码确认是否相同
+        if (StringUtils.isEmpty(newPassword))
+            throw new IllegalArgumentException("新密码不能为空");
+        if (StringUtils.isEmpty(cfgPassword))
+            throw new IllegalArgumentException("确认密码不能为空");
+        if (newPassword.length() < 6 || cfgPassword.length() > 16)
+            throw new IllegalArgumentException("密码长度6-16");
+        if (!newPassword.equals(cfgPassword))
+            throw new IllegalArgumentException("两次输入的密码不相等");
+        //2.判定原密码是否正确
+        if (StringUtils.isEmpty(password))
+            throw new IllegalArgumentException("原密码不能为空");
+
+        //获取登陆用户
+        SysUser user = ShiroUtils.getUser();
+
+        SimpleHash sh = new SimpleHash("MD5",
+                password, user.getSalt(), 5);
+        if (!user.getPassword().equals(sh.toHex()))
+            throw new IllegalArgumentException("原密码不正确");
+        //3.对新密码进行加密
+        String salt = UUID.randomUUID().toString();
+        sh = new SimpleHash("MD5", newPassword, salt, 5);
+
+        //4.将新密码加密以后的结果更新到数据库
+        int rows = sysUserDao.updatePassword(sh.toHex(), salt, user.getUserId(), user.getUserName());
+        if (rows == 0)
+            throw new ServiceException("修改失败");
+        return rows;
+    }
+
+    @RequiresPermissions("sys:user:delete")
+    @CacheEvict(value = "userCache", allEntries = true)
+    @RequiredLog("删除用户")
+    @Override
+    public void removeSysUserInfoById(Long userId) {
+        int row = sysUserDao.deleteSysUserInfoById(userId);
+        if (row == 0)
+            throw new ServiceException("删除失败");
+    }
+
+    //@CacheEvict表示清空缓存
+    //在本应用中清空cache中key为指定id的对象
+    //#entity.userId表示获取参数entity对象的id值
+    @RequiresPermissions("sys:user:update")
+    @CacheEvict(value = "userCache", allEntries = true)
+    @Override
+    public void modifySysUserInfo(SysUser entity, Integer[] roleIds) {
+        //1.参数检验
+        if (entity == null)
+            throw new IllegalArgumentException("保存对象不能为空");
+        if (StringUtils.isEmpty(entity.getUserName()))
+            throw new IllegalArgumentException("用户名不能为空");
+        if (roleIds == null || roleIds.length == 0)
+            throw new ServiceException("必须为用户分配角色");
+        //2.保存用户自身信息
+        updateSysUserInfoSQL(entity);
+        //3.更改用户和角色关系数据
+        sysUserRoleDao.deleteSysUserRoleByUserId(entity.getUserId());
+        sysUserRoleDao.insertSysUserRole(entity.getUserId(), roleIds);
+    }
+
     /**
      * Shiro框架通过@RequiresPermissions注解定义切入点
      * 在这里表示访问此方法需要进行授权,需要具备这个注解中的权限标识
@@ -155,7 +167,7 @@ public class SysUserServiceImpl implements SysUserService {
      */
     @Async
     @RequiresPermissions("sys:user:status")
-    @CacheEvict(value = "userCache",allEntries = true)
+    @CacheEvict(value = "userCache", allEntries = true)
     @RequiredLog("禁用启用用户")
     @Override
     public void modifyStatusById(Long userId, Integer status, String modifiedUser) {
@@ -196,7 +208,7 @@ public class SysUserServiceImpl implements SysUserService {
             }
         }
         //4.封装查询结果
-        return new JsonResult( page, limit, rowCount, records);
+        return new JsonResult(page, limit, rowCount, records);
     }
 
     @Transactional(readOnly = true)
@@ -243,7 +255,7 @@ public class SysUserServiceImpl implements SysUserService {
     }
 
     @Override
-    public void changeAvatar(SysUser user,String avatarPath) {
+    public void changeAvatar(SysUser user, String avatarPath) {
         SysUser data = new SysUser();
         String userName = user.getUserName();
         Date date = new Date();
@@ -260,16 +272,6 @@ public class SysUserServiceImpl implements SysUserService {
         userData.setAvatar(avatarPath);
         userData.setModifiedUser(userName);
         userData.setModifiedTime(date);
-    }
-
-    @RequiresPermissions("sys:user:delete")
-    @CacheEvict(value = "userCache",allEntries = true)
-    @RequiredLog("删除用户")
-    @Override
-    public void removeSysUserInfoById(Long userId) {
-        int row = sysUserDao.deleteSysUserInfoById(userId);
-        if (row == 0)
-            throw new ServiceException("删除失败");
     }
 
     @Override
@@ -299,7 +301,7 @@ public class SysUserServiceImpl implements SysUserService {
             if (rows == 0)
                 throw new ServiceException("记录可能已经不存在");
             return rows;
-        }catch (Exception e){
+        } catch (Exception e) {
             System.err.println("updateStatusByIdSQL()存在问题 : " + e.getMessage());
         }
         return 0;
