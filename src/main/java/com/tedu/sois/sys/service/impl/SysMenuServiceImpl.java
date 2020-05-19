@@ -5,11 +5,18 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import com.tedu.sois.common.annotation.RequiredLog;
 import com.tedu.sois.common.util.ShiroUtils;
 import com.tedu.sois.sys.dao.SysUserRoleDao;
 import com.tedu.sois.sys.vo.SysUserMenuVo;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import com.tedu.sois.common.exception.ServiceException;
@@ -23,6 +30,10 @@ import com.tedu.sois.sys.service.SysMenuService;
  * 此类中负责菜单业务的具体处理
  */
 @Service
+@Transactional(isolation = Isolation.READ_COMMITTED, //隔离级别
+        rollbackFor = Throwable.class,//什么异常回滚
+        timeout = 30,//单位:秒
+        propagation = Propagation.REQUIRED)//传播特性
 public class SysMenuServiceImpl implements SysMenuService {
 
     @Autowired
@@ -33,6 +44,10 @@ public class SysMenuServiceImpl implements SysMenuService {
     @Autowired
     private SysUserRoleDao sysUserRoleDao;
 
+
+    @RequiresPermissions("sys:menu:add")
+    @CacheEvict(value = "menuCache", allEntries = true)
+    @RequiredLog("添加菜单信息")
     @Override
     public void saveSysMenuInfo(SysMenu entity) {
         if (entity == null)
@@ -46,7 +61,9 @@ public class SysMenuServiceImpl implements SysMenuService {
             throw new ServiceException("保存失败");
     }
 
-
+    @RequiresPermissions("sys:menu:delete")
+    @CacheEvict(value = "menuCache", allEntries = true)
+    @RequiredLog("删除菜单信息")
     @Override
     public int deleteSysMenuInfoById(Integer menuId) {
         //1.参数有效性校验
@@ -65,6 +82,9 @@ public class SysMenuServiceImpl implements SysMenuService {
         return rows;
     }
 
+    @RequiresPermissions("sys:menu:update")
+    @CacheEvict(value = "menuCache", allEntries = true)
+    @RequiredLog("修改菜单信息")
     @Override
     public int modifySysMenuInfo(SysMenu entity) {
         if (entity == null)
@@ -81,7 +101,10 @@ public class SysMenuServiceImpl implements SysMenuService {
         return rows;
     }
 
-
+    @RequiresPermissions("sys:menu:view")
+    @Cacheable("menuCache")
+    @RequiredLog("查询菜单信息")
+    @Transactional(readOnly = true)
     @Override
     public List<Map<String, Object>> findMenuList() {
         List<Map<String, Object>> list = sysMenuDao.selectMenuList();

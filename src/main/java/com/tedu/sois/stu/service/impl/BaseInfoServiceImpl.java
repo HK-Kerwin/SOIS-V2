@@ -10,6 +10,7 @@ import com.tedu.sois.stu.service.StuBaseInfoService;
 import com.tedu.sois.common.config.StatusCodeConfig;
 import com.tedu.sois.sys.entity.SysUser;
 import com.tedu.sois.sys.service.SysUserService;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -137,8 +138,8 @@ public class BaseInfoServiceImpl implements StuBaseInfoService, StatusCodeConfig
         return regUser;
     }
 
-    //@RequiresPermissions("stu:user:update")
-    //@CacheEvict(value = "stuInfoCache", key = "#stuBaseInfo.stuId")
+    @RequiresPermissions("stu:user:update")
+    @CacheEvict(value = "stuInfoCache", allEntries = true)
     @RequiredLog("修改学生信息")
     @Override
     public int modifyStuBaseInfo(StuBaseInfo stuBaseInfo) {
@@ -159,26 +160,8 @@ public class BaseInfoServiceImpl implements StuBaseInfoService, StatusCodeConfig
         return selectStuClassNumListSQL();
     }
 
-    @Transactional(readOnly = true)
-    @RequiredLog("查询学生个人信息")
-    @Override
-    public List<StuBaseInfo> findByAfterFour(String afterFour) {
-        if (afterFour == null || "".equals(afterFour))
-            throw new ServiceException("请输入查询信息");
-        List<StuBaseInfo> list = selectByIdCardAndPhoneNumberSQL(afterFour.toUpperCase());
-        if (list.size() == 0)
-            throw new ServiceException("无信息.请重新输入身份证后四位手机号后四位.如需帮助请联系管理员");
-        if (list != null && list.size() > 0) {
-            for (StuBaseInfo data : list) {
-                //如果没有头像路径则设置默认图片
-                if ("".equals(data.getAvatar()) || data.getAvatar() == null) {
-                    data.setAvatar("../dist/layuiadmin/img/defualt.png");
-                }
-            }
-        }
-        return list;
-    }
 
+    @RequiresPermissions("sys:stuInfo:view")
     @Cacheable(value = "stuInfoCache"
             ,key="#stuBaseInfo.stuClass+'-'+#stuBaseInfo.stuName+'-'+#stuBaseInfo.phoneNumber+'-'+#stuBaseInfo.educationBackground+'-'+#stuBaseInfo.classRoom+'-'+#stuBaseInfo.stuState+'-'+#stuBaseInfo.delFlag+'-'+#stuBaseInfo.idCard+'-'+#stuBaseInfo.nativePlace+'-'+#page+'-'+#pageSize")
     @Transactional(readOnly = true)
@@ -208,6 +191,26 @@ public class BaseInfoServiceImpl implements StuBaseInfoService, StatusCodeConfig
 
         //传入
         return new JsonResult(page, limit, rowCount, records);
+    }
+
+    @Transactional(readOnly = true)
+    @RequiredLog("查询学生个人信息")
+    @Override
+    public List<StuBaseInfo> findByAfterFour(String afterFour) {
+        if (afterFour == null || "".equals(afterFour))
+            throw new ServiceException("请输入查询信息");
+        List<StuBaseInfo> list = selectByIdCardAndPhoneNumberSQL(afterFour.toUpperCase());
+        if (list.size() == 0)
+            throw new ServiceException("无信息.请重新输入身份证后四位手机号后四位.如需帮助请联系管理员");
+        if (list != null && list.size() > 0) {
+            for (StuBaseInfo data : list) {
+                //如果没有头像路径则设置默认图片
+                if ("".equals(data.getAvatar()) || data.getAvatar() == null) {
+                    data.setAvatar("../dist/layuiadmin/img/defualt.png");
+                }
+            }
+        }
+        return list;
     }
 
 

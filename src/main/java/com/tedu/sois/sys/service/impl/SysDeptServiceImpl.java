@@ -5,10 +5,17 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import com.tedu.sois.common.annotation.RequiredLog;
 import com.tedu.sois.common.util.ShiroUtils;
 import com.tedu.sois.sys.dao.SysUserDao;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import com.tedu.sois.common.exception.ServiceException;
@@ -18,6 +25,10 @@ import com.tedu.sois.sys.entity.SysDept;
 import com.tedu.sois.sys.service.SysDeptService;
 
 @Service
+@Transactional(isolation = Isolation.READ_COMMITTED, //隔离级别
+        rollbackFor = Throwable.class,//什么异常回滚
+        timeout = 30,//单位:秒
+        propagation = Propagation.REQUIRED)//传播特性
 public class SysDeptServiceImpl implements SysDeptService {
 
     @Autowired
@@ -26,6 +37,9 @@ public class SysDeptServiceImpl implements SysDeptService {
     @Autowired
     private SysUserDao sysUserDao;
 
+    @RequiresPermissions("sys:dept:add")
+    @CacheEvict(value = "deptCache", allEntries = true)
+    @RequiredLog("添加部门信息")
     @Override
     public void saveSysDeptInfo(SysDept entity) {
         //1.合法验证
@@ -45,6 +59,9 @@ public class SysDeptServiceImpl implements SysDeptService {
             throw new ServiceException("新增失败");
     }
 
+    @RequiresPermissions("sys:dept:delete")
+    @CacheEvict(value = "deptCache", allEntries = true)
+    @RequiredLog("删除部门信息")
     @Override
     public void removeSysDeptInfo(Integer deptId) {
         //1.合法性验证
@@ -66,6 +83,9 @@ public class SysDeptServiceImpl implements SysDeptService {
             throw new ServiceException("此信息可能已经不存在");
     }
 
+    @RequiresPermissions("sys:dept:update")
+    @CacheEvict(value = "deptCache", allEntries = true)
+    @RequiredLog("修改部门信息")
     @Override
     public void modifySysDeptInfo(SysDept entity) {
         //1.合法验证
@@ -86,12 +106,10 @@ public class SysDeptServiceImpl implements SysDeptService {
         }
     }
 
-
-    @Override
-    public SysDept findSysDeptInfoByRoleId(Integer deptId) {
-        return sysDeptDao.selectDeptInfoById(deptId);
-    }
-
+    @RequiresPermissions("sys:dept:view")
+    @Cacheable("deptCache")
+    @RequiredLog("查询所有部门信息")
+    @Transactional(readOnly = true)
     @Override
     public List<Map<String, Object>> findDeptInfoList() {
         List<Map<String, Object>> list = sysDeptDao.selectDeptInfoList();
@@ -99,6 +117,12 @@ public class SysDeptServiceImpl implements SysDeptService {
             throw new ServiceException("没有部门信息");
         return list;
     }
+
+    @Override
+    public SysDept findSysDeptInfoByRoleId(Integer deptId) {
+        return sysDeptDao.selectDeptInfoById(deptId);
+    }
+
 
     @Override
     public List<Node> findZTreeDeptNodes() {

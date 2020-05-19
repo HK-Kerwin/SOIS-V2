@@ -30,6 +30,10 @@
                             data-method="searchBtn" id="search-userInfoList-btn">
                         <i class="layui-icon layui-icon-search"></i>搜索
                     </button>
+                    <button class="layui-btn layui-btn-warm layui-btn-radius" data-type="userReg"
+                            data-method="userRegBtn">
+                        <i class="layui-icon layui-icon-friends"></i>添加用户
+                    </button>
 
                 </div>
 
@@ -161,6 +165,21 @@
                     }, 'data');
                     layer.close(index);
                 }, 500);
+            },
+            userReg:function () {
+                layer.open({
+                    type: 2 //此处以iframe举例
+                    , title: '添加用户'
+                    , area: ['100%', '100%']
+                    , shade: 0
+                    , maxmin: true
+                    , offset: 'auto'
+                    , content: '../user/getUserRegisterPage'
+                    , zIndex: layer.zIndex //重点1
+                    , success: function (layero, index) {
+                        layer.setTop(layero); //重点2
+                    }
+                });
             }
         };
 
@@ -171,11 +190,11 @@
         table.on('tool(user-list-table-toolbar)', function (obj) {
             let data = obj.data;
             switch(obj.event) {
-                case 'edit':
-                    edit(data)
-                    break;
                 case 'del':
                     deleteUser(data);
+                    break;
+                case 'edit':
+                    edit(data)
                     break;
             };
         });
@@ -228,7 +247,8 @@
         /*禁用启用账号*/
         function switchStatus(userId,checked) {
             let param = {
-                userId: userId
+                userId: userId,
+                status: checked?'0':'1'
             };
             $.ajax({
                 url: '../user/doModifyStatusById',
@@ -240,17 +260,14 @@
                     if (res.code == '0') {
                         //监听指定开关
                         if (checked) {
-                            param.status = '0';
                             layer.msg('启用', {
                                 offset: '6px', time: 2000
                             });
                         } else {
-                            param.status = '1';
                             layer.msg('禁用', {
                                 offset: '6px', time: 2000
                             });
                         }
-                        //layer.msg(res.msg, {offset: '6px'});
                         form.render();
                     } else {
                         layer.msg(res.msg, {offset: '15px', icon: 2, time: 2000})

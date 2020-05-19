@@ -217,9 +217,10 @@ function inputList(input,list){
         "@126.com",
         "@yahoo.com.cn",
         "@gmail.com",
-        "@sohu.com"
+        "@sohu.com",
+        "@tedu.cn"
     ];
-    input.bind('input propertychange', function() {
+    input.on('input propertychange', function() {
         var key = input.val();
         if(key.indexOf("@") != -1){
             key = key.slice(0,key.indexOf("@"));

@@ -78,7 +78,7 @@
             url: '../menu/doFindMenuList',
             headers: {"token": layui.data(layui.setter.tableName)['token']},
             tree: {
-                iconIndex: 2,	//树形图标显示在第几列
+                iconIndex: 3,	//树形图标显示在第几列
                 isPidData: true,	// 是否是id、pid形式数据
                 idName: 'menuId',	//id字段的名称
                 pidName: 'parentId', 	//父级节点字段
@@ -101,7 +101,8 @@
             cols: [
                 [
                     {type: 'radio', title: '选择'}
-                    , {type: 'numbers', title: '编号', align: 'center', minWidth: 80, unresize: false}
+                    , {type: 'numbers', title: '序号', align: 'center', minWidth: 70, unresize: false}
+                    , {type: 'menuId', title: '编号', align: 'center', minWidth: 70, unresize: false}
                     , {field: 'menuName', title: '菜单名称', align: 'left', minWidth: 200, unresize: true}
                     , {field: 'haveChild', title: '菜单图标', align: 'left', minWidth: 20, hide: true}
                     , {

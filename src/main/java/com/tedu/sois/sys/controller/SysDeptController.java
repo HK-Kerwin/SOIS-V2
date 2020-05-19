@@ -31,7 +31,6 @@ public class SysDeptController {
 	}
 
 	@RequestMapping("doRemoveSysDeptInfo")
-	@ResponseBody
 	public JsonResult doRemoveSysDeptInfo(Integer deptId) {
 		sysDeptService.removeSysDeptInfo(deptId);
 		return new JsonResult("删除部门信息成功");

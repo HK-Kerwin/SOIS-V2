@@ -35,6 +35,13 @@ public class UserPageController {
     private SysUserService sysUserService;
 
 
+    @RequestMapping("getUserRegisterPage")
+    public String getUserRegisterPage(Model model) {
+        List<SysRole> onLineUserRole = sysRoleService.findRoleInfoList();
+        model.addAttribute("role", onLineUserRole);
+        return "user/user_reg";
+    }
+
     /**
      * 用户获取用户个人信息HTML页面
      *

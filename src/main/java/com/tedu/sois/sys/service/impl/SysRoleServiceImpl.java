@@ -48,60 +48,6 @@ public class SysRoleServiceImpl implements SysRoleService {
         this.sysUserRoleDao = sysUserRoleDao;
     }
 
-    @Transactional(readOnly = true)
-    @Override
-    public List<SysRole> findRoleByUserId(Long stuId) {
-        List<Integer> roleIds = sysUserRoleDao.selectRoleIdsByUserId(stuId);
-        if (roleIds == null || roleIds.size() == 0)
-            throw new ServiceException("没有找到角色编号");
-        List<SysRole> data = sysRoleDao.selectRoleInfoById(roleIds);
-        if (data == null || data.size() == 0)
-            throw new ServiceException("没有找到角色的信息");
-
-        return data;
-    }
-
-
-    @Override
-    public List<CheckBox> findObjects() {
-        return sysRoleDao.findObjects();
-    }
-
-    @Transactional(readOnly = true)
-    @Override
-    public SysRoleMenuVo findRoleAndMenuInfoByRoleId(Integer roleId) {
-        if (roleId == null || roleId < 1)
-            throw new IllegalArgumentException("id值无效");
-        SysRoleMenuVo rm = sysRoleDao.selectRoleAndMenuInfoById(roleId);
-        if (rm == null)
-            throw new ServiceException("记录可能已不存在");
-        return rm;
-    }
-
-    @RequiresPermissions("sys:role:update")
-    @CacheEvict(value = "roleCache", allEntries = true)
-    @RequiredLog("修改角色信息")
-    @Override
-    public int modifyRoleInfo(SysRole entity, Integer[] menuIds) {
-        //1.参数有效性校验
-        if (entity == null)
-            throw new IllegalArgumentException("保存对象不能为空");
-        if (StringUtils.isEmpty(entity.getRoleName()))
-            throw new IllegalArgumentException("角色名不允许为空");
-        if (menuIds == null || menuIds.length == 0)
-            throw new ServiceException("必须为角色分配权限");
-        entity.setModifiedUser(ShiroUtils.getUsername());
-        entity.setModifiedTime(new Date());
-        //2.保存角色自身信息
-        int rows = sysRoleDao.updateRoleInfo(entity);
-        //3.保存角色菜单关系数据
-        //3.1)先删除原有关系数据
-        sysRoleMenuDao.deleteSysRoleMenuByRoleId(entity.getRoleId());
-        //3.2)添加新的关系数据
-        sysRoleMenuDao.insertSysRoleMenu(entity.getRoleId(), menuIds);
-        //4.返回业务结果
-        return rows;
-    }
 
     @RequiresPermissions("sys:role:add")
     @CacheEvict(value = "roleCache", allEntries = true)
@@ -151,6 +97,31 @@ public class SysRoleServiceImpl implements SysRoleService {
             throw new ServiceException("删除失败");
     }
 
+    @RequiresPermissions("sys:role:update")
+    @CacheEvict(value = "roleCache", allEntries = true)
+    @RequiredLog("修改角色信息")
+    @Override
+    public int modifyRoleInfo(SysRole entity, Integer[] menuIds) {
+        //1.参数有效性校验
+        if (entity == null)
+            throw new IllegalArgumentException("保存对象不能为空");
+        if (StringUtils.isEmpty(entity.getRoleName()))
+            throw new IllegalArgumentException("角色名不允许为空");
+        if (menuIds == null || menuIds.length == 0)
+            throw new ServiceException("必须为角色分配权限");
+        entity.setModifiedUser(ShiroUtils.getUsername());
+        entity.setModifiedTime(new Date());
+        //2.保存角色自身信息
+        int rows = sysRoleDao.updateRoleInfo(entity);
+        //3.保存角色菜单关系数据
+        //3.1)先删除原有关系数据
+        sysRoleMenuDao.deleteSysRoleMenuByRoleId(entity.getRoleId());
+        //3.2)添加新的关系数据
+        sysRoleMenuDao.insertSysRoleMenu(entity.getRoleId(), menuIds);
+        //4.返回业务结果
+        return rows;
+    }
+
     @RequiresPermissions("sys:role:view")
     @Cacheable("roleCache")
     @RequiredLog("分页查询角色信息")
@@ -170,6 +141,37 @@ public class SysRoleServiceImpl implements SysRoleService {
         //4.封装结果并返回.
         return new JsonResult(page, limit, rowCount, records);
     }
+
+    @Transactional(readOnly = true)
+    @Override
+    public List<SysRole> findRoleByUserId(Long stuId) {
+        List<Integer> roleIds = sysUserRoleDao.selectRoleIdsByUserId(stuId);
+        if (roleIds == null || roleIds.size() == 0)
+            throw new ServiceException("没有找到角色编号");
+        List<SysRole> data = sysRoleDao.selectRoleInfoById(roleIds);
+        if (data == null || data.size() == 0)
+            throw new ServiceException("没有找到角色的信息");
+
+        return data;
+    }
+
+
+    @Override
+    public List<CheckBox> findObjects() {
+        return sysRoleDao.findObjects();
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public SysRoleMenuVo findRoleAndMenuInfoByRoleId(Integer roleId) {
+        if (roleId == null || roleId < 1)
+            throw new IllegalArgumentException("id值无效");
+        SysRoleMenuVo rm = sysRoleDao.selectRoleAndMenuInfoById(roleId);
+        if (rm == null)
+            throw new ServiceException("记录可能已不存在");
+        return rm;
+    }
+
 
     @Transactional(readOnly = true)
     @Override

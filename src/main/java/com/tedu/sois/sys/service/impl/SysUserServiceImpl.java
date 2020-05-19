@@ -106,6 +106,11 @@ public class SysUserServiceImpl implements SysUserService {
             throw new IllegalArgumentException("保存对象不能为空");
         if (StringUtils.isEmpty(entity.getUserName()))
             throw new IllegalArgumentException("用户名不能为空");
+        if (StringUtils.isEmpty(entity.getLoginName()))
+            throw new IllegalArgumentException("登录账号不能为空");
+        SysUser userByLoginName = sysUserDao.findUserByLoginName(entity.getLoginName());
+        if (userByLoginName != null)
+            throw new ServiceException("登录账号已经存在");
         if (StringUtils.isEmpty(entity.getPassword()))
             throw new IllegalArgumentException("密码不能为空");
         if (roleIds == null || roleIds.length == 0)
@@ -128,12 +133,17 @@ public class SysUserServiceImpl implements SysUserService {
         //2.2将盐值和密码存储SysUser对象
         entity.setSalt(salt);
         entity.setPassword(pwd);
+        entity.setCreatedUser(ShiroUtils.getUsername());
+        entity.setCreatedTime(new Date());
         //2.3将SysUser对象持久化到数据库
-        int rows = sysUserDao.insertSysUser(entity);
+        int userRows = sysUserDao.insertSysUser(entity);
+        if (userRows == 0)
+            throw new ServiceException("保存用户信息失败");
         //3.保存用户和角色关系数据
-        sysUserRoleDao.insertSysUserRole(entity.getUserId(), roleIds);
-        //4.返回结果
-        return rows;
+        int userRoleRows = sysUserRoleDao.insertSysUserRole(entity.getUserId(), roleIds);
+        if (userRows == 0)
+            throw new ServiceException("保存用户和角色关系数据失败");
+        return userRoleRows;
     }
 
     /**

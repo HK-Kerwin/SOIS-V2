@@ -30,7 +30,12 @@ public interface SysUserDao extends BaseMapper<SysUser> {
             , @Param("userId") Long userId
             , @Param("modifiedUser") String modifiedUser);
 
-    SysUser findUserByLoginName(String username);
+    /**
+     * 根据登录名字查询
+     * @param loginName
+     * @return
+     */
+    SysUser findUserByLoginName(String loginName);
 
     /**
      * 根据用户id查询用户信息和部门信息

@@ -79,6 +79,20 @@ public class SysUserController {
         return new JsonResult(ShiroUtils.getUser());
     }
 
+
+    /**
+     * 新增用户信息
+     * @param entity
+     * @param roleIds
+     * @return
+     */
+    @PostMapping("doSaveUserInfo")
+    public JsonResult doSaveUserInfo(SysUser entity, Integer[] roleIds) {
+        sysUserService.saveSysUser(entity, roleIds);
+        return new JsonResult("保存成功");
+    }
+
+
     /**
      * 根据用户ID删除用户信息
      * @param userId
@@ -129,12 +143,6 @@ public class SysUserController {
     public JsonResult doModifySingleUserInfo(SysUser entity, Integer[] roleIds) {
         sysUserService.modifySysUserInfo(entity, roleIds);
         return new JsonResult("修改信息成功");
-    }
-
-    @PostMapping("doSaveUserInfo")
-    public JsonResult doSaveUserInfo( SysUser entity, Integer[] roleIds) {
-        sysUserService.saveSysUser(entity, roleIds);
-        return new JsonResult("save ok");
     }
 
 
