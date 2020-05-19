@@ -32,6 +32,8 @@ public class PageController {
     public String goToIndex(Model model) {
         SysUser user = ShiroUtils.getUser();
         if (user != null) {
+            if (user.getAvatar() == null || "".equals(user.getAvatar()))
+                user.setAvatar("dist/layuiadmin/img/defualt.png");
             model.addAttribute("userData", user);
             List<SysUserMenuVo> userMenus = sysMenuService.findMenusByUserId(user.getUserId());
             model.addAttribute("userMenus", userMenus);
