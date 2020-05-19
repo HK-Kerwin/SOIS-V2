@@ -192,7 +192,7 @@
             let data = obj.data;
             switch(obj.event) {
                 case 'del':
-                    deleteUser(data);
+                    deleteUser(data.userId);
                     break;
                 case 'edit':
                     edit(data)
@@ -200,8 +200,7 @@
             };
         });
         /* 删除用户信息*/
-        function deleteUser(data) {
-            let userId = data.userId;
+        function deleteUser(userId) {
             layer.confirm('确定删除选定行的数据吗?', function (index) {
                 $.ajax({
                     url: '../user/doRemoveSysUserInfoById',
