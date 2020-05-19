@@ -3,6 +3,18 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.tedu.sois.stu.dao.StuBaseInfoDao">
 
+    <delete id="deleteStuInfoById">
+        delete from stu_base_info
+        where stu_id in
+        <foreach collection="stuIds"
+                 item="stuId"
+                 open="("
+                 close=")"
+                 separator=",">
+            #{stuId}
+        </foreach>
+    </delete>
+
     <resultMap type="com.tedu.sois.stu.entity.StuBaseInfo" id="StuBaseInfoResult">
         <result property="stuId"    column="stu_id"    />
         <result property="stuClass"    column="stu_class"    />
@@ -57,7 +69,6 @@
         from
             stu_base_info
     </sql>
-
 
     <select id="selectStuClassNumList" resultType="java.lang.String">
         SELECT stu_class FROM stu_base_info

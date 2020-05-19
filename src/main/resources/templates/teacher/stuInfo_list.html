@@ -155,6 +155,10 @@
                                      id="from-chang-Hidden-btn" lay-event="from-chang-Hidden-btn">
                                 <i class="layui-icon layui-icon-form"></i>查询条件
                             </button>
+                            <button class="layui-btn layui-btn-radius layui-btn-danger layui-anim-scale"
+                                    data-type="batchDelete" lay-event="batch-delete-btn">
+                                <i class="layui-icon layui-icon-delete"></i>批量删除
+                            </button>
                         </div>
                     </script>
 
@@ -411,12 +415,11 @@
         }
 
         /* 删除用户信息*/
-        function deleteStuInfo(data) {
-            let stuId = data.stuId;
+        function deleteStuInfo(stuIds) {
             layer.confirm('确定删除选定行的数据吗?', function (index) {
                 $.ajax({
                     url: '../teacher/doRemoveStuInfoById',
-                    data: {stuId: stuId},
+                    data: {stuIds: stuIds},
                     headers: {"token": layui.data(layui.setter.tableName)['token']},
                     success: function (res) {
                         if (res.code == 0) {
@@ -440,7 +443,7 @@
             let data = obj.data;
             switch (obj.event) {
                 case 'del':
-                    deleteStuInfo(data);
+                    deleteStuInfo(data.stuId);
                     break;
                 case 'edit':
                     edit(data)
@@ -456,6 +459,18 @@
                     break;
                 case 'from-chang-Hidden-btn':
                     active['changeShowHidden'].call('changeShowHidden');
+                    break;
+                case 'batch-delete-btn':
+                    let stuIds = []
+                    let data = table.checkStatus(obj.config.id).data;
+                    for (let i = 0; i < data.length; i++) {
+                        stuIds.push(data[i].stuId);
+                    }
+                    layer.confirm('真的删除行么', function(index){
+                        deleteStuInfo(stuIds.toString())
+                        layer.close(index);
+                        //向服务端发送删除指令
+                    });
                     break;
             }
             ;

@@ -16,11 +16,10 @@ public interface StuBaseInfoDao extends BaseMapper<StuBaseInfo> {
 
     /**
      * 根据学员ID删除学员信息
-     * @param stuId
+     * @param stuIds 一个或多个ID
      * @return
      */
-    @Delete("delete from stu_base_info where stu_id=#{stuId}")
-    int deleteStuInfoById(Long stuId);
+    int deleteStuInfoById(@Param("stuIds") Long[] stuIds);
 
     /**
      * 查询注册过信息学生的班级名称

@@ -142,8 +142,8 @@ public class BaseInfoServiceImpl implements StuBaseInfoService, StatusCodeConfig
     @CacheEvict(value = "stuInfoCache", allEntries = true)
     @RequiredLog("删除学生信息")
     @Override
-    public void removeStuInfoById(Long stuId) {
-        int row = stuBaseInfoDao.deleteStuInfoById(stuId);
+    public void removeStuInfoById(Long[] stuIds) {
+        int row = stuBaseInfoDao.deleteStuInfoById(stuIds);
         if (row == 0)
             throw new ServiceException("删除失败,请重新尝试或联系管理员");
     }

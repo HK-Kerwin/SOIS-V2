@@ -17,12 +17,12 @@ public class TeacherController {
 
     /**
      * 根据学生ID删除用户信息
-     * @param stuId
+     * @param stuIds 一个或多个ID
      * @return
      */
     @RequestMapping("doRemoveStuInfoById")
-    public JsonResult doRemoveStuInfoById(Long stuId){
-        stuBaseInfoService.removeStuInfoById(stuId);
+    public JsonResult doRemoveStuInfoById(Long[] stuIds){
+        stuBaseInfoService.removeStuInfoById(stuIds);
         return new JsonResult("删除学员信息成功");
     }
 

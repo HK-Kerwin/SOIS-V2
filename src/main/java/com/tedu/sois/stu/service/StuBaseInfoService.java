@@ -26,9 +26,9 @@ public interface StuBaseInfoService {
 
     /**
      * 根据学员ID删除学员信息
-     * @param stuId
+     * @param stuIds
      */
-    void removeStuInfoById(Long stuId);
+    void removeStuInfoById(Long[] stuIds);
 
     /**
      * 修改学员信息
