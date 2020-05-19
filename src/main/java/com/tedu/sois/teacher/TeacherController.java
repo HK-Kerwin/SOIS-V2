@@ -16,6 +16,17 @@ public class TeacherController {
     private StuBaseInfoService stuBaseInfoService;
 
     /**
+     * 根据学生ID删除用户信息
+     * @param stuId
+     * @return
+     */
+    @RequestMapping("doRemoveStuInfoById")
+    public JsonResult doRemoveStuInfoById(Long stuId){
+        stuBaseInfoService.removeStuInfoById(stuId);
+        return new JsonResult("删除学员信息成功");
+    }
+
+    /**
      * 分页查询所有学生信息
      * @param stuBaseInfo 查询条件封装到学生对象
      * @param page 页码

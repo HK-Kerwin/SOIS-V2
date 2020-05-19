@@ -295,7 +295,7 @@
 
 
         /*表格重载,搜索方法*/
-        var active = {
+        let active = {
             reload: function () {
                 let index = layer.msg('查询中,请稍等', {icon: 16, time: 10000, shade: 0})
                 //执行重载
@@ -410,12 +410,41 @@
             });
         }
 
+        /* 删除用户信息*/
+        function deleteStuInfo(data) {
+            let stuId = data.stuId;
+            layer.confirm('确定删除选定行的数据吗?', function (index) {
+                $.ajax({
+                    url: '../teacher/doRemoveStuInfoById',
+                    data: {stuId: stuId},
+                    headers: {"token": layui.data(layui.setter.tableName)['token']},
+                    success: function (res) {
+                        if (res.code == 0) {
+                            layer.msg(res.msg, {offset: '15px'});
+                            layer.close(index);
+                            active['reload'].call(this,'reload');
+                        } else {
+                            layer.msg(res.msg, {offset: '15px'});
+                        }
+                    },
+                    error: function (res) {
+                        layer.msg(res.msg, {offset: '15px'});
+                    }
+                });
+            });
+        }
+
 
         /* tr右侧点击功能 */
         table.on('tool(stu-list-table-toolbar)', function (obj) {
             let data = obj.data;
-            if (obj.event === 'edit') {
-                edit(data);
+            switch (obj.event) {
+                case 'del':
+                    deleteStuInfo(data);
+                    break;
+                case 'edit':
+                    edit(data)
+                    break;
             }
         });
 

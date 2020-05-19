@@ -3,6 +3,7 @@ package com.tedu.sois.stu.dao;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.tedu.sois.stu.entity.ScoreTable;
 import com.tedu.sois.stu.entity.StuBaseInfo;
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -13,6 +14,13 @@ import java.util.List;
  */
 public interface StuBaseInfoDao extends BaseMapper<StuBaseInfo> {
 
+    /**
+     * 根据学员ID删除学员信息
+     * @param stuId
+     * @return
+     */
+    @Delete("delete from stu_base_info where stu_id=#{stuId}")
+    int deleteStuInfoById(Long stuId);
 
     /**
      * 查询注册过信息学生的班级名称
@@ -70,6 +78,5 @@ public interface StuBaseInfoDao extends BaseMapper<StuBaseInfo> {
      * @return 条数
      */
     int getStuInfoRowCount(StuBaseInfo stuBaseInfo);
-
 
 }

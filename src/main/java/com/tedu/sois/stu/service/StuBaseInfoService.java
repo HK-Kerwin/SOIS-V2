@@ -17,12 +17,18 @@ public interface StuBaseInfoService {
      * 插入用户信息使用mybatis-Puls 提供接口实现
      * 其中在业务层实现了注册基本信息时创建账号
      * 登录账号：注册时填入的邮箱
-     * 登录密码：身份证后四位拼接手机号后四位
+     * 初始登录密码：身份证后四位拼接手机号后四位
      * @param stuBaseInfo 学生信息实体对象
      * @param state 判断是新添加还是修改的状态码
      * @return 受影响行数
      */
     int saveStuBaseInfo(StuBaseInfo stuBaseInfo,int state);
+
+    /**
+     * 根据学员ID删除学员信息
+     * @param stuId
+     */
+    void removeStuInfoById(Long stuId);
 
     /**
      * 修改学员信息
@@ -59,7 +65,6 @@ public interface StuBaseInfoService {
      * @return 学生对象集合
      */
     JsonResult showStuInfoList(StuBaseInfo data, int page, int limit);
-
 
 
 }

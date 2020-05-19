@@ -138,7 +138,17 @@ public class BaseInfoServiceImpl implements StuBaseInfoService, StatusCodeConfig
         return regUser;
     }
 
-    @RequiresPermissions("stu:user:update")
+    @RequiresPermissions("sys:stuInfo:delete")
+    @CacheEvict(value = "stuInfoCache", allEntries = true)
+    @RequiredLog("删除学生信息")
+    @Override
+    public void removeStuInfoById(Long stuId) {
+        int row = stuBaseInfoDao.deleteStuInfoById(stuId);
+        if (row == 0)
+            throw new ServiceException("删除失败,请重新尝试或联系管理员");
+    }
+
+    @RequiresPermissions("stu:stuInfo:update")
     @CacheEvict(value = "stuInfoCache", allEntries = true)
     @RequiredLog("修改学生信息")
     @Override
