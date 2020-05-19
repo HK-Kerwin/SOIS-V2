@@ -79,7 +79,7 @@ public class SysEditPageController {
     public String doGetDeptEditPage(Integer deptId, Model model) {
         SysDept dept = new SysDept();
         if (deptId != null)
-            dept = sysDeptService.findSysDeptInfoByRoleId(deptId);
+            dept = sysDeptService.findSysDeptInfoByDeptId(deptId);
         model.addAttribute("dept",dept);
         List<Node> nodes = sysDeptService.findZTreeDeptNodes();
         model.addAttribute("nodes",nodes);

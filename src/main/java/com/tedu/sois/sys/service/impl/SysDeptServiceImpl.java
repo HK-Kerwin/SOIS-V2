@@ -119,7 +119,7 @@ public class SysDeptServiceImpl implements SysDeptService {
     }
 
     @Override
-    public SysDept findSysDeptInfoByRoleId(Integer deptId) {
+    public SysDept findSysDeptInfoByDeptId(Integer deptId) {
         return sysDeptDao.selectDeptInfoById(deptId);
     }
 

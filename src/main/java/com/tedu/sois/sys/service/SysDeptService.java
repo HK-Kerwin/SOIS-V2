@@ -39,5 +39,5 @@ public interface SysDeptService {
 	 * @param deptId
 	 * @return
 	 */
-	SysDept findSysDeptInfoByRoleId(Integer deptId);
+	SysDept findSysDeptInfoByDeptId(Integer deptId);
 }
