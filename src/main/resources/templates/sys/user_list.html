@@ -107,18 +107,19 @@
                         return '<div><img src="' + d.avatar + '" style="height:35px;width:35px;border-radius:50%;line-height:50px!important;"></div>'
                     }
                 }
-                    , {field: 'userName', title: '用户名', align: 'center', minWidth: 130}
-                    , {field: 'status', title: '账号状态', sort: true, align: 'center', minWidth: 130, templet: '#switchStatus'}
-                    , {field: 'sex', title: '性别', sort: true, align: 'center'}
-                    , {field: 'phoneNumber', title: '手机号', align: 'center', minWidth: 130}
-                    , {field: 'email', title: '邮箱', align: 'center', minWidth: 200}
-                    , {field: 'loginIp', title: '最后登录IP', align: 'center', minWidth: 230}
-                    , {field: 'loginDate', title: '最后登录时间', sort: true, align: 'center', minWidth: 240}
-                    , {field: 'createdTime', title: '创建时间', sort: true, align: 'center', minWidth: 240}
-                    , {field: 'modifiedTime', title: '修改时间', sort: true, align: 'center', minWidth: 240}
-                    , {field: 'createdUser', title: '创建者', sort: true, align: 'center', minWidth: 135}
-                    , {field: 'modifiedUser', title: '修改者', sort: true, align: 'center', minWidth: 135}
-                    , {field: 'remark', title: '备注', align: 'center', minWidth: 135}
+                    , {field: 'userName', title: '用户名', align: 'center', minWidth: 130, unresize: true}
+                    , {field: 'loginName', title: '登录账号', align: 'center', minWidth: 130, unresize: true}
+                    , {field: 'status', title: '账号状态', sort: true, align: 'center', minWidth: 130, unresize: true, templet: '#switchStatus'}
+                    , {field: 'sex', title: '性别', sort: true, align: 'center', unresize: true}
+                    , {field: 'phoneNumber', title: '手机号', align: 'center', minWidth: 130, unresize: true}
+                    , {field: 'email', title: '邮箱', align: 'center', minWidth: 200, unresize: true}
+                    , {field: 'loginIp', title: '最后登录IP', align: 'center', minWidth: 230, unresize: true}
+                    , {field: 'loginDate', title: '最后登录时间', sort: true, align: 'center', minWidth: 200, unresize: true}
+                    , {field: 'createdTime', title: '创建时间', sort: true, align: 'center', minWidth: 200, unresize: true}
+                    , {field: 'modifiedTime', title: '修改时间', sort: true, align: 'center', minWidth: 200, unresize: true}
+                    , {field: 'createdUser', title: '创建者', sort: true, align: 'center', minWidth: 135, unresize: true}
+                    , {field: 'modifiedUser', title: '修改者', sort: true, align: 'center', minWidth: 135, unresize: true}
+                    , {field: 'remark', title: '备注', align: 'center', minWidth: 135, unresize: true}
                     , {fixed: 'right', title: '操作', width: 120, align: 'center', toolbar: '#table-toolbar-bar'}
 
                 ]
