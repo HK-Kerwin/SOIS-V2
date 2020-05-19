@@ -78,7 +78,7 @@
             url: '../menu/doFindMenuList',
             headers: {"token": layui.data(layui.setter.tableName)['token']},
             tree: {
-                iconIndex: 3,	//树形图标显示在第几列
+                iconIndex: 2,	//树形图标显示在第几列
                 isPidData: true,	// 是否是id、pid形式数据
                 idName: 'menuId',	//id字段的名称
                 pidName: 'parentId', 	//父级节点字段
@@ -101,8 +101,7 @@
             cols: [
                 [
                     {type: 'radio', title: '选择'}
-                    , {type: 'numbers', title: '序号', align: 'center', minWidth: 70, unresize: false}
-                    , {type: 'menuId', title: '编号', align: 'center', minWidth: 70, unresize: false}
+                    , {type: 'numbers', title: '序号', align: 'center', unresize: false}
                     , {field: 'menuName', title: '菜单名称', align: 'left', minWidth: 200, unresize: true}
                     , {field: 'haveChild', title: '菜单图标', align: 'left', minWidth: 20, hide: true}
                     , {
@@ -111,7 +110,7 @@
                     }
                 }
                     , {field: 'sort', title: '排序号', align: 'center', unresize: true}
-                    , {field: 'url', title: '请求路径', align: 'center', minWidth: 150, unresize: true}
+                    , {field: 'url', title: '请求路径', align: 'center', minWidth: 270, unresize: true}
                     , {field: 'permission', title: '授权标识', align: 'center', minWidth: 140, unresize: true}
                     , {field: 'note', title: '备注', align: 'center', minWidth: 140, unresize: true}
                     , {field: 'icon', title: '图标样式', align: 'center', minWidth: 140, unresize: true}
