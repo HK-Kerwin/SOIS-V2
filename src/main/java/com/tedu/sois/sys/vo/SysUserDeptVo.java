@@ -13,8 +13,11 @@ public class SysUserDeptVo extends BaseEntity{
 	/**用户编号*/
 	private Integer userId;
 
-	/**用户名*/
+	/**用户名字*/
 	private String userName;
+
+	/**登录账号*/
+	private  String login_name;
 
 	/**手机号码*/
 	private String phoneNumber;
@@ -65,6 +68,14 @@ public class SysUserDeptVo extends BaseEntity{
 
 	public void setUserName(String userName) {
 		this.userName = userName;
+	}
+
+	public String getLogin_name() {
+		return login_name;
+	}
+
+	public void setLogin_name(String login_name) {
+		this.login_name = login_name;
 	}
 
 	public String getPhoneNumber() {
@@ -160,6 +171,7 @@ public class SysUserDeptVo extends BaseEntity{
 		return "SysUserDeptVo{" +
 				"userId=" + userId +
 				", userName='" + userName + '\'' +
+				", login_name='" + login_name + '\'' +
 				", phoneNumber='" + phoneNumber + '\'' +
 				", sex='" + sex + '\'' +
 				", avatar='" + avatar + '\'' +

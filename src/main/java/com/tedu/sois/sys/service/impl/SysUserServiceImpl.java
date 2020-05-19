@@ -177,7 +177,6 @@ public class SysUserServiceImpl implements SysUserService {
     @RequiredLog("分页查询用户信息")
     @Override
     public JsonResult findUserDeptByUserName(String userName, Integer page, Integer limit) {
-        System.out.println("SysUserServiceImpl.findUserDeptByUserName().thread.name:" + Thread.currentThread().getName());
         //参数校验
         if (page < 1)
             throw new IllegalArgumentException("页码值不正确");
@@ -288,7 +287,7 @@ public class SysUserServiceImpl implements SysUserService {
                 throw new ServiceException("更新失败,请重新尝试或联系管理员");
             return row;
         } catch (Exception e) {
-            System.out.println("updateStuBaseInfoSQL()存在问题 : " + e.getMessage());
+            System.err.println("updateStuBaseInfoSQL()存在问题 : " + e.getMessage());
         }
         return 0;
     }
@@ -301,7 +300,7 @@ public class SysUserServiceImpl implements SysUserService {
                 throw new ServiceException("记录可能已经不存在");
             return rows;
         }catch (Exception e){
-            System.out.println("updateStatusByIdSQL()存在问题 : " + e.getMessage());
+            System.err.println("updateStatusByIdSQL()存在问题 : " + e.getMessage());
         }
         return 0;
     }
