@@ -1,4 +1,4 @@
-package com.tedu.sois.teacher;
+package com.tedu.sois.teacher.controller;
 
 import com.tedu.sois.common.vo.JsonResult;
 import com.tedu.sois.stu.entity.StuBaseInfo;

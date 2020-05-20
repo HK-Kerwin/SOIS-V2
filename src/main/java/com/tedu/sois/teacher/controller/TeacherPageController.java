@@ -1,4 +1,4 @@
-package com.tedu.sois.teacher;
+package com.tedu.sois.teacher.controller;
 
 import com.tedu.sois.common.exception.ServiceException;
 import com.tedu.sois.common.util.ShiroUtils;
