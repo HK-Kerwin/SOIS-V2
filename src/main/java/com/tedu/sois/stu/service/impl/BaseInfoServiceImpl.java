@@ -151,7 +151,7 @@ public class BaseInfoServiceImpl implements StuBaseInfoService, StatusCodeConfig
     @CacheEvict(value = "stuInfoCache", allEntries = true)
     @RequiredLog("修改学生信息")
     @Override
-    public int modifyStuBaseInfo(StuBaseInfo stuBaseInfo) {
+    public void modifyStuBaseInfo(StuBaseInfo stuBaseInfo) {
         stuBaseInfo.setDelFlag("1");
         stuBaseInfo.setModifiedTime(new Date());
         SysUser user = ShiroUtils.getUser();
@@ -161,7 +161,7 @@ public class BaseInfoServiceImpl implements StuBaseInfoService, StatusCodeConfig
         } else {
             stuBaseInfo.setModifiedUser(data.getStuName());
         }
-        return updateStuBaseInfoSQL(stuBaseInfo);
+        updateStuBaseInfoSQL(stuBaseInfo);
     }
 
     @Override
@@ -250,17 +250,14 @@ public class BaseInfoServiceImpl implements StuBaseInfoService, StatusCodeConfig
         return 0;
     }
 
-    private int updateStuBaseInfoSQL(StuBaseInfo data) {
-        int row;
+    private void updateStuBaseInfoSQL(StuBaseInfo data) {
         try {
-            row = stuBaseInfoDao.updateById(data);
+            int row = stuBaseInfoDao.updateById(data);
             if (row == 0)
                 throw new ServiceException("更新失败,请重新尝试或联系管理员");
-            return row;
         } catch (Exception e) {
             System.out.println("updateStuBaseInfoSQL()存在问题 : " + e.getMessage());
         }
-        return 0;
     }
 
     private List<String> selectStuClassNumListSQL() {

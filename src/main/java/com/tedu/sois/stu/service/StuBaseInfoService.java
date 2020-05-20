@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 用户信息操作接口
+ * 学员信息操作接口
  * @author LYS
  */
 public interface StuBaseInfoService {
@@ -35,7 +35,7 @@ public interface StuBaseInfoService {
      * @param data 传过来的学员数据
      * @return 受影响行数
      */
-    int modifyStuBaseInfo(StuBaseInfo data);
+    void modifyStuBaseInfo(StuBaseInfo data);
 
 
     /**
