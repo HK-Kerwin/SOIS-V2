@@ -500,10 +500,12 @@
                 dataType: 'JSON',
                 success: function (res) {
                     if (res.code == '0') {
-                        layui.layer.alert(res.msg==null?'提交失败':res.msg+',重新刷新页面');
-                        let index = parent.layer.getFrameIndex(window.name);
-                        parent.layer.close(index);
-                        parent.location.reload();
+                        layui.layer.msg(res.msg==null?'提交失败':res.msg+',重新刷新页面',{offers:'15px',icon:1,time:2000},function () {
+                            let index = parent.layer.getFrameIndex(window.name);
+                            parent.layer.close(index);
+                            parent.location.reload();
+                        });
+
                     } else{
                         lock = false;
                         layui.layer.alert(res.msg);

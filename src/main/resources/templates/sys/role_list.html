@@ -185,9 +185,10 @@
 						headers: {"token": layui.data(layui.setter.tableName)['token']},
 						success: function (res) {
 							if (res.code == 0) {
-								layer.msg(res.msg, {offset: '15px'});
-								layer.close(index);
-								active['reload'].call(this,'reload');
+								layer.msg(res.msg, {offset: '15px'},function () {
+									layer.close(index);
+									active['reload'].call(this,'reload');
+								});
 							} else {
 								layer.msg(res.msg, {offset: '15px'});
 							}

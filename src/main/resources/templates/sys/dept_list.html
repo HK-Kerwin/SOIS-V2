@@ -198,11 +198,12 @@
 										headers: {"token": layui.data(layui.setter.tableName)['token']},
 										success: function (res) {
 											if (res.code == 0) {
-												layer.msg(res.msg, {offset: '15px'});
-												layer.close(index);
-												//刷新，重新渲染表格
-												insTb.refresh();
-												return;
+												layer.msg(res.msg, {offset: '15px'},function () {
+													layer.close(index);
+													//刷新，重新渲染表格
+													insTb.refresh();
+													return;
+												});
 											}
 											lock = false;
 											layer.msg(res.msg, {offset: '15px'});
@@ -232,9 +233,10 @@
 							headers: {"token": layui.data(layui.setter.tableName)['token']},
 							success: function (res) {
 								if (res.code == 0) {
-									layer.msg(res.msg, {offset: '15px'});
-									layer.close(index);
-									insTb.refresh();
+									layer.msg(res.msg, {offset: '15px'},function () {
+										layer.close(index);
+										insTb.refresh();
+									});
 								} else {
 									layer.msg(res.msg, {offset: '15px'});
 								}

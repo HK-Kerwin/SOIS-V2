@@ -482,7 +482,7 @@
                 dataType: 'JSON',
                 success: function (res) {
                     if (res.code == '0') {
-                        alert(res.msg);
+                        layui.layer.alert(res.msg);
                         let index = parent.layer.getFrameIndex(window.name);
                         parent.layer.close(index);
                     } else{

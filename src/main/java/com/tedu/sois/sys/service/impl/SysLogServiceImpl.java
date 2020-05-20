@@ -1,5 +1,6 @@
 package com.tedu.sois.sys.service.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import com.tedu.sois.common.vo.JsonResult;
@@ -36,7 +37,7 @@ public class SysLogServiceImpl implements SysLogService {
 
     //@RequiresPermisssion("sys:log:delete")
     @Override
-    public int deleteObjects(Integer... ids) {
+    public void deleteObjects(Integer... ids) {
         //1.验证参数的有效性
         if (ids == null || ids.length == 0)
             throw new IllegalArgumentException("请选择删除的记录");
@@ -45,7 +46,13 @@ public class SysLogServiceImpl implements SysLogService {
         //3.验证并返回结果
         if (rows == 0)
             throw new ServiceException("记录可能已经不存在");
-        return 0;
+    }
+
+    @Override
+    public void removeLogInfoByTime(Date beginDate, Date endDate) {
+        int rows = sysLogDao.deleteLogInfoByTime(beginDate, endDate);
+        if (rows == 0)
+            throw new ServiceException("删除失败");
     }
 
     @Override
