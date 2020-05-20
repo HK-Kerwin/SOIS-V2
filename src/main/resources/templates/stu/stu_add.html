@@ -450,9 +450,10 @@
                 dataType: 'JSON',
                 success: function (res) {
                     if (res.code == '0') {
-                        layer.alert(res.msg);
-                        let index = parent.layer.getFrameIndex(window.name);
-                        parent.layer.close(index);
+                        layer.msg(res.msg,{offers:'15px',icon: 1,time: 2000},function () {
+                            let index = parent.layer.getFrameIndex(window.name);
+                            parent.layer.close(index);
+                        });
                     } else{
                         lock = false;
                         layer.msg(res.msg);
