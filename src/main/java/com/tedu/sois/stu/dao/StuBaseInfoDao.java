@@ -35,6 +35,13 @@ public interface StuBaseInfoDao extends BaseMapper<StuBaseInfo> {
     List<StuBaseInfo> selectByIdCardAndPhoneNumber(@Param("afterFour") String afterFour);
 
     /**
+     * 根据对象中不为空的字段进行查询,统计满足条件数据条数
+     * @param stuBaseInfo 学生对象
+     * @return 条数
+     */
+    int getStuInfoRowCount(@Param("stuBaseInfo")StuBaseInfo stuBaseInfo);
+
+    /**
      * 根据不为空的字段查询信息
      * @param stuBaseInfo 学生对象
      * @return 防止部分信息重复,用集合接收
@@ -71,11 +78,5 @@ public interface StuBaseInfoDao extends BaseMapper<StuBaseInfo> {
      */
     List<StuBaseInfo> selectStuBaseInfoByStuName(@Param("stuName")String stuName);
 
-    /**
-     * 根据对象中不为空的字段进行查询,统计满足条件数据条数
-     * @param stuBaseInfo 学生对象
-     * @return 条数
-     */
-    int getStuInfoRowCount(StuBaseInfo stuBaseInfo);
 
 }

@@ -88,6 +88,12 @@
         </where>
     </select>
 
+
+    <select id="getStuInfoRowCount" resultType="java.lang.Integer" parameterType="java.lang.String">
+        select count(stu_id) from stu_base_info
+        <include refid="queryWhereSelectCondition"/>
+    </select>
+
     <select id="selectStuBaseInfoList" parameterType="com.tedu.sois.stu.entity.StuBaseInfo" resultMap="StuBaseInfoResult" >
         <include refid="selectStuBaseInfoVo"/>
         <include refid="queryWhereSelectCondition"/>
@@ -137,46 +143,6 @@
         </where>
     </select>
 
-    <select id="getStuInfoRowCount" resultType="java.lang.Integer" parameterType="java.lang.String">
-        select count(stu_id) from stu_base_info
-        <where>
-            <if test="stuId != null and stuId != ''"> and stu_id = #{stuId} </if>
-            <if test="stuClass != null and stuClass != ''"> and stu_class like concat('%',#{stuClass},'%') </if>
-            <if test="stuName != null and stuName != ''"> and stu_name like concat('%',#{stuName},'%') </if>
-            <if test="phoneNumber != null and phoneNumber != ''"> and phone_number = #{phoneNumber} </if>
-            <if test="stuEmail != null and stuEmail != ''"> and stu_email = #{stuEmail} </if>
-            <if test="wechat != null and wechat != ''"> and wechat = #{wechat} </if>
-            <if test="idCard != null and idCard != ''"> and id_card = #{idCard} </if>
-            <if test="gender != null and gender != ''"> and gender = #{gender} </if>
-            <if test="birth != null and birth != ''"> and birth = #{birth} </if>
-            <if test="nativePlace != null and nativePlace != ''"> and native_place = #{nativePlace} </if>
-            <if test="maritalStatus != null and maritalStatus != ''"> and marital_status = #{maritalStatus} </if>
-            <if test="educationBackground != null and educationBackground != ''"> and education_background = #{educationBackground} </if>
-            <if test="ebDirection != null and ebDirection != ''"> and eb_direction = #{ebDirection} </if>
-            <if test="ebReal != null and ebReal != ''"> and eb_real = #{ebReal} </if>
-            <if test="ebDouble != null and ebDouble != ''"> and eb_double = #{ebDouble} </if>
-            <if test="englishLevel != null and englishLevel != ''"> and english_level = #{englishLevel} </if>
-            <if test="graduationSchool != null and graduationSchool != ''"> and graduation_school = #{graduationSchool} </if>
-            <if test="professional != null and professional != ''"> and professional = #{professional} </if>
-            <if test="graduationTime != null and graduationTime != ''"> and graduation_time = #{graduationTime} </if>
-            <if test="oldJobs != null and oldJobs != ''"> and old_jobs = #{oldJobs} </if>
-            <if test="oldJobsSalary != null and oldJobsSalary != ''"> and old_jobs_salary = #{oldJobsSalary} </if>
-            <if test="oldJobsMonth != null and oldJobsMonth != ''"> and old_jobs_month = #{oldJobsMonth} </if>
-            <if test="urgentContactP1 != null and urgentContactP1 != ''"> and urgent_contact_p1 = #{urgentContactP1} </if>
-            <if test="p1Relation != null and p1Relation != ''"> and p1_relation = #{p1Relation} </if>
-            <if test="p1PhoneNumber != null and p1PhoneNumber != ''"> and p1_phone_number = #{p1PhoneNumber} </if>
-            <if test="urgentContactP2 != null and urgentContactP2 != ''"> and urgent_contact_p2 = #{urgentContactP2} </if>
-            <if test="p2Relation != null and p2Relation != ''"> and p2_relation = #{p2Relation} </if>
-            <if test="p2PhoneNumber != null and p2PhoneNumber != ''"> and p2_phone_number = #{p2PhoneNumber} </if>
-            <if test="classRoom != null and classRoom != ''"> and class_room = #{classRoom} </if>
-            <if test="stuWhere != null and stuWhere != ''"> and stu_where = #{stuWhere} </if>
-            <if test="stuState != null and stuState != ''"> and stu_state = #{stuState} </if>
-            <if test="createdTime != null "> and created_time = #{createdTime} </if>
-            <if test="modifiedTime != null "> and modified_time = #{modifiedTime} </if>
-            <if test="delFlag != null and delFlag != ''"> and del_flag = #{delFlag} </if>
-        </where>
-    </select>
-
 
     <sql id="queryWhereSelectCondition">
         <where>
@@ -189,7 +155,7 @@
             <if test="stuBaseInfo.idCard != null and stuBaseInfo.idCard != ''"> and id_card = #{stuBaseInfo.idCard} </if>
             <if test="stuBaseInfo.gender != null and stuBaseInfo.gender != ''"> and gender = #{stuBaseInfo.gender} </if>
             <if test="stuBaseInfo.birth != null and stuBaseInfo.birth != ''"> and birth = #{stuBaseInfo.birth} </if>
-            <if test="stuBaseInfo.nativePlace != null and stuBaseInfo.nativePlace != ''"> and native_place = #{stuBaseInfo.nativePlace} </if>
+            <if test="stuBaseInfo.nativePlace != null and stuBaseInfo.nativePlace != ''"> and native_place like concat('%',#{stuBaseInfo.nativePlace},'%') </if>
             <if test="stuBaseInfo.maritalStatus != null and stuBaseInfo.maritalStatus != ''"> and marital_status = #{stuBaseInfo.maritalStatus} </if>
             <if test="stuBaseInfo.educationBackground != null and stuBaseInfo.educationBackground != ''"> and education_background = #{stuBaseInfo.educationBackground} </if>
             <if test="stuBaseInfo.ebDirection != null and stuBaseInfo.ebDirection != ''"> and eb_direction = #{stuBaseInfo.ebDirection} </if>
