@@ -408,7 +408,7 @@
         base: '../dist/layuiadmin/' //静态资源所在路径
     }).extend({
         index: 'lib/index' //主入口模块
-    }).use(['form', 'layedit', 'laydate','upload'], function () {
+    }).use(['index','form', 'layedit', 'laydate','upload'], function () {
         let form = layui.form
             , layer = layui.layer
             , layedit = layui.layedit
@@ -441,8 +441,7 @@
 
         /* 邮箱后缀自动补全 */
         inputList($("#stuEmail"),$("#stuEmail_list"));
-
-        var files;
+        let files;
         upload.render({
             elem: '#chooseFileBtn'
             , url: '../user/avatarChange'
