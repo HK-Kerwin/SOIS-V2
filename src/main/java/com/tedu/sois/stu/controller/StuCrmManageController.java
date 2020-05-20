@@ -17,6 +17,12 @@ public class StuCrmManageController {
     @Autowired
     private StuCrmManageService service;
 
+    /**
+     * 更新CRM学生信息表数据
+     * 会更新班级表和CRM学生信息表
+     * @param excelFile
+     * @return
+     */
     @PostMapping("uploadExcel")
     public JsonResult uploadExcel(MultipartFile excelFile){
         service.addCrmExcel(excelFile);
@@ -26,8 +32,8 @@ public class StuCrmManageController {
 
 
     /**
-     * 查询crm下载的Excel文件中包含的班级数
-     * 时间在当前时间4个月内
+     * 查询crm下载的Excel文件中包含的班级信息
+     * 后续老师自行添加
      * @return
      */
     @GetMapping("findStuClass")

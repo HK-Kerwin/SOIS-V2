@@ -8,6 +8,7 @@ import java.util.Map;
 import com.tedu.sois.common.annotation.RequiredLog;
 import com.tedu.sois.common.util.ShiroUtils;
 import com.tedu.sois.sys.dao.SysUserDao;
+import com.tedu.sois.sys.entity.SysUser;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
@@ -126,10 +127,17 @@ public class SysDeptServiceImpl implements SysDeptService {
 
     @Override
     public List<Node> findZTreeDeptNodes() {
-        List<Node> list = sysDeptDao.findZTreeNodes();
+        SysUser user = ShiroUtils.getUser();
+        Integer deptId = user.getDeptId();
+        List<Node> list;
+        if (deptId.equals(10) || deptId == 10){
+            list = sysDeptDao.findZTreeNodes();
+            list = treeSelect(list,0);
+        }else {
+            list = sysDeptDao.findZTreeNodesIsParentId(deptId);
+        }
         if (list == null || list.size() == 0)
             throw new ServiceException("没有部门信息");
-        list = treeSelect(list,0);
         return list;
     }
 

@@ -167,6 +167,7 @@
 
         form.render();
 
+
         /* 邮箱后缀自动补全 */
         inputList($("#email"), $("#stuEmail_list"));
 
@@ -181,7 +182,7 @@
             // 占位符
             placeholder: '上级部门',
             // 是否开启搜索功能：true/false，默认false
-            search: true,
+            search: 'admin' == [[${dept.leader}]],
             // 一些可定制的样式
             style: {
                 folder: {
@@ -226,9 +227,13 @@
                     fileupload.attr("value", res.data.src);
                     $('#showImg').attr('src', res.data.file);
                     layer.closeAll('loading');
-                    layer.msg(res.msg, {offset: '15px', time: 1000})
+                    layer.msg(res.msg, {offset: '15px', time: 2000})
                     return delete this.files[index]; //删除文件队列已经上传成功的文件
+                } else {
+                    layer.closeAll('loading');
+                    layer.msg(res.msg, {offset: '15px', time: 2000})
                 }
+
             }, choose: function (obj) {
 
                 files = this.files = obj.pushFile();

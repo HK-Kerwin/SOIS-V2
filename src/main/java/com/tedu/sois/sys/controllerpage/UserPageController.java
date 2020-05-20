@@ -2,6 +2,7 @@ package com.tedu.sois.sys.controllerpage;
 
 import com.tedu.sois.common.util.ShiroUtils;
 import com.tedu.sois.common.vo.JsonResult;
+import com.tedu.sois.sys.entity.SysDept;
 import com.tedu.sois.sys.entity.SysRole;
 import com.tedu.sois.sys.entity.SysUser;
 import com.tedu.sois.sys.service.SysDeptService;
@@ -34,6 +35,9 @@ public class UserPageController {
     @Autowired
     private SysUserService sysUserService;
 
+    @Autowired
+    private SysDeptService sysDeptService;
+
 
     @RequestMapping("getUserRegisterPage")
     public String getUserRegisterPage(Model model) {
@@ -53,6 +57,7 @@ public class UserPageController {
     public String getUserInfoPage(Long userId, Model model) {
         SysUser user = ShiroUtils.getUser();
         List<SysRole> onLineUserRole = sysRoleService.findRoleByUserId(user.getUserId());
+        SysDept dept = sysDeptService.findSysDeptInfoByDeptId(user.getDeptId());
         if (userId != null && userId > 0) {
             user = sysUserService.findUserInfoById(userId);
             userId = user.getUserId();
@@ -70,9 +75,13 @@ public class UserPageController {
         for (int i = 0; i < role.size(); i++) {
             optRoleId[i] = role.get(i).getRoleId();
         }
+        if ("dist/layuiadmin/img/defualt.png".equals(user.getAvatar())){
+            user.setAvatar("");
+        }
         model.addAttribute("role", onLineUserRole);
         model.addAttribute("optRoleId", optRoleId);
         model.addAttribute("userInfo", user);
+        model.addAttribute("dept", dept);
         return "user/user_info";
     }
 

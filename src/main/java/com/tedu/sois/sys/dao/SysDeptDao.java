@@ -29,8 +29,12 @@ public interface SysDeptDao {
      */
     List<Map<String, Object>> selectDeptInfoList();
 
-    @Select("select dept_id id,dept_name name ,parent_id parentId from sys_dept")
+    @Select("select dept_id id, dept_name name , parent_id parentId from sys_dept")
     List<Node> findZTreeNodes();
+
+
+    List<Node> findZTreeNodesIsParentId(Integer deptId);
+
 
 	@Select("select count(*) from sys_dept where parent_id=#{deptId}")
 	int getChildCount(Integer deptId);
@@ -50,6 +54,7 @@ public interface SysDeptDao {
      */
     @Select("select count(*) from sys_dept where dept_name=#{deptName}")
     int selectDeptInfoByName(String deptName);
+
 }
 
 

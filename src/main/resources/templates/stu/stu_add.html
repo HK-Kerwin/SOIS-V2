@@ -356,9 +356,7 @@
                 <div class="layui-col-md4">
                     <div class="layui-form-item">
                         <div class="layui-input-inline">
-                            <input name="avatar" lay-verify="required" id="LAY_avatarSrc" placeholder="图片地址"
-                                   value="../dist/layuiadmin/img/defualt.png"
-                                   class="layui-input" type="hidden">
+                            <input name="avatar"  placeholder="图片地址" class="layui-input" type="hidden">
                             <div class="layui-upload-drag" id="chooseFileBtn">
                                 <i class="layui-icon layui-icon-picture"></i>
                                 <p>点击或拖拽文件到此</p>
@@ -375,7 +373,7 @@
 
                     <div class="layui-input-inline " style="width: auto;">
                         <button type="button" class="layui-btn layhi ui-btn-primary"
-                                id="LAY_avatarUpload">
+                                id="stu-reg-avatarUpload">
                             <i class="layui-icon">&#xe67c;</i>上传一寸照
                         </button>
                     </div>
@@ -399,7 +397,9 @@
 
     layui.config({
         base: '../dist/layuiadmin/' //静态资源所在路径
-    }).use(['form', 'layedit', 'laydate','upload'], function () {
+    }).extend({
+        index: 'lib/index' //主入口模块
+    }).use(['index','form', 'layedit', 'laydate','upload'], function () {
         var form = layui.form
             , layer = layui.layer
             , layedit = layui.layedit
@@ -407,7 +407,7 @@
             , upload = layui.upload
             , $ = layui.jquery;
 
-        layer.msg('注册页面')
+        layer.msg('注册页面',{offers:'15px',time:2000})
 
         //日期
         laydate.render({
@@ -429,43 +429,11 @@
         /* 邮箱后缀自动补全 */
         inputList($("#stuEmail"), $("#stuEmail_list"));
 
-        var files;
-        upload.render({
-            elem: '#chooseFileBtn'
-            , url: '../user/avatarChange'
-            , accept: 'avatarImg'
-            , auto: false
-            , field: "avatarImg"
-            , bindAction: '#LAY_avatarUpload'
-            , acceptMime: 'image/*'
-            , size: 3 * 1024 * 1024
-            , headers: {"token": layui.data(layui.setter.tableName)['token']}
-            , before: function (obj) {
-                layer.load();
-            }
-            , done: function (res, index, upload) {
-                console.log(res)
-                if(res.code == '0'){ //上传成功
-                    //传文件名给需要提交表单的input
-                    $("#LAY_avatarSrc").val(res.data.src);
-                    $('#showImg').attr('src', res.data.file);
-                    layer.closeAll('loading');
-                    layer.msg(res.msg, {offset: '15px', time: 1000})
-                    return delete this.files[index]; //删除文件队列已经上传成功的文件
-                }
-            }, choose: function (obj) {
+        let files;
 
-                files = this.files = obj.pushFile();
-
-                obj.preview(function (index, file, result) {
-                    //需要回显给img
-                    $('#showImg').attr('src', result);
-                });
-            },error: function (res, index) {
-                layer.closeAll('loading');
-                layer.msg(res.msg, {offset: '15px', time: 1000})
-            }
-        });
+        $('#stu-reg-avatarUpload,#chooseFileBtn').on('click',function () {
+            layui.layer.msg('注册完毕,查询后进行编辑,再做上传',{offers:'10px'});
+        })
 
         let lock = false;
         //监听提交
@@ -482,7 +450,7 @@
                 dataType: 'JSON',
                 success: function (res) {
                     if (res.code == '0') {
-                        layui.layer.alert(res.msg);
+                        layer.alert(res.msg);
                         let index = parent.layer.getFrameIndex(window.name);
                         parent.layer.close(index);
                     } else{

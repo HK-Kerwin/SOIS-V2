@@ -60,6 +60,14 @@
         on c.parent_id=p.dept_id
     </select>
 
+    <select id="findZTreeNodesIsParentId" resultType="com.tedu.sois.common.vo.Node">
+        select
+        p.dept_id id, p.dept_name name , p.parent_id parentId
+        from sys_dept p join sys_dept c
+        on p.dept_id=c.parent_id
+        where c.dept_id=#{deptId}
+    </select>
+
 </mapper>
 
 

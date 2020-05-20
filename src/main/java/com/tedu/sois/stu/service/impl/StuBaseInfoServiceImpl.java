@@ -127,7 +127,6 @@ public class StuBaseInfoServiceImpl implements StuBaseInfoService, StatusCodeCon
             regUser.setUserName(data.getStuName());
             regUser.setStatus("0");
             regUser.setDelFlag("0");
-            regUser.setCreatedTime(new Date());
             regUser.setCreatedUser(data.getStuName());
         }
         if (state == MODIFY) {
@@ -147,18 +146,17 @@ public class StuBaseInfoServiceImpl implements StuBaseInfoService, StatusCodeCon
             throw new ServiceException("删除失败,请重新尝试或联系管理员");
     }
 
-    @RequiresPermissions("stu:stuInfo:update")
+    @RequiresPermissions("stu:single:update")
     @CacheEvict(value = "stuInfoCache", allEntries = true)
     @RequiredLog("修改学生信息")
     @Override
     public void modifyStuBaseInfo(StuBaseInfo stuBaseInfo) {
         stuBaseInfo.setModifiedTime(new Date());
         SysUser user = ShiroUtils.getUser();
-        StuBaseInfo data = stuBaseInfoDao.selectById(stuBaseInfo.getStuId());
         if (user != null) {
             stuBaseInfo.setModifiedUser(user.getUserName());
         } else {
-            stuBaseInfo.setModifiedUser(data.getStuName());
+            stuBaseInfo.setModifiedUser(stuBaseInfo.getStuName());
         }
         updateStuBaseInfoSQL(stuBaseInfo);
     }

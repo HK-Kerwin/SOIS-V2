@@ -43,7 +43,7 @@ public class SysUserServiceImpl implements SysUserService {
     @Autowired
     private SysUserRoleDao sysUserRoleDao;
 
-    @RequiresPermissions("sys:user:save")
+
     @CacheEvict(value = "userCache", allEntries = true)
     @Override
     public int saveSysUser(SysUser entity, Integer[] roleIds) {
@@ -79,7 +79,10 @@ public class SysUserServiceImpl implements SysUserService {
         //2.2将盐值和密码存储SysUser对象
         entity.setSalt(salt);
         entity.setPassword(pwd);
-        entity.setCreatedUser(ShiroUtils.getUsername());
+        SysUser user = ShiroUtils.getUser();
+        if(user != null){
+            entity.setCreatedUser(user.getUserName());
+        }
         entity.setCreatedTime(new Date());
         //2.3将SysUser对象持久化到数据库
         int userRows = sysUserDao.insertSysUser(entity);
