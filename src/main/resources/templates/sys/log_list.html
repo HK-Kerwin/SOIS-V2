@@ -27,8 +27,20 @@
                                style="width:220px;border-radius:20px;outline: none;text-indent: 3px;">
                     </div>
                     <button class="layui-btn layui-btn-normal layui-btn-radius" data-type="reload"
-                            data-method="searchBtn" id="search-userInfoList-btn">
+                            data-method="searchBtn" id="search-logList-btn">
                         <i class="layui-icon layui-icon-search"></i>搜索
+                    </button>
+
+                    <div class="layui-inline">
+                        <div class="layui-input-inline">
+                            <input id="chooseDate" type="text" class="layui-input" placeholder="时间范围" readonly
+                                   style="width:280px;border-radius:20px;outline: none;text-indent: 3px;">
+                        </div>
+                    </div>
+
+                    <button class="layui-btn layui-btn-danger layui-btn-radius" data-type=""
+                            data-method="" id="delete-logList-btn">
+                        <i class="layui-icon layui-icon-delete"></i>批量删除
                     </button>
 
                 </div>
@@ -64,7 +76,7 @@
         base: '../dist/layuiadmin/' //静态资源所在路径
     }).extend({
         index: 'lib/index' //主入口模块
-    }).use(['table', 'index',], function () {
+    }).use(['table', 'index','laydate'], function () {
         let table = layui.table
             , $ = layui.$;
 
@@ -98,7 +110,7 @@
 					, {field: 'address', title: '地区', align: 'center', minWidth: 200}
 					, {field: 'isp', title: '服务商', align: 'center', minWidth: 200}
 					, {field: 'createdTime', title: '创建时间', align: 'center', minWidth: 240, sort: true}
-                    , {fixed: 'right', title: '操作', width: 60, toolbar: '#table-toolbar-bar'}
+                    , {fixed: 'right', title: '操作', width: 70, toolbar: '#table-toolbar-bar'}
 
                 ]
             ]
@@ -127,14 +139,13 @@
         /*表格重载,搜索方法*/
         var active = {
             reload: function () {
-                let demoReload = $('#table-demoReload-input');
                 let index = layer.msg('查询中,请稍等', {icon: 16, time: 1000, shade: 0})
                 //执行重载
                 setTimeout(function () {
                     table.reload('logInfoReload', {
-                        url: '../user/doFindUserDeptByUsername'
+                        url: '../log/doFindPageLogInfoListByUserName'
                         , where: {
-                            userName: demoReload.val()
+                            userName: $('#table-demoReload-input').val()
                         }, error: function (res, curr, count) {
                             layer.msg(res.msg);
                         }
@@ -144,8 +155,48 @@
             }
         };
 
+        $('#delete-logList-btn').on('click',function () {
+            let value = $('#chooseDate').val();
+            if (value == '' ||value == null || value == undefined) {
+                layer.msg("请选择日期后进行删除", {offset: '15px'});
+            } else {
+                let beginDate = new Date(value.toString().split('~')[0].trim());
+                let endDate = new Date(value.toString().split('~')[1].trim());
+                let param = {
+                    beginDate:beginDate,
+                    endDate:endDate
+                }
+                layer.confirm('确定删除数据吗?', function (index) {
+                    $.ajax({
+                        url: '../log/doRemoveLogInfoByTime',
+                        data: param,
+                        headers: {"token": layui.data(layui.setter.tableName)['token']},
+                        success: function (res) {
+                            if (res.code == 0) {
+                                layer.msg(res.msg, {offset: '15px'});
+                                layer.close(index);
+                                active['reload'].call(this,'reload');
+                            } else {
+                                layer.msg(res.msg, {offset: '15px'});
+                            }
+                        },
+                        error: function (res) {
+                            layer.msg(res.msg, {offset: '15px'});
+                        }
+                    });
+                });
+            }
+        });
+
+        layui.laydate.render({
+            elem: '#chooseDate'
+            ,type: 'datetime'
+            ,range: '~'
+            ,format: 'yyyy-M-d H:m:s'
+        });
+
         //回车键监听
-        keyupByBindId("search-userInfoList-btn");
+        keyupByBindId("search-logList-btn");
 
         $('.table-reload-btn .layui-btn').on('click', function () {
             var type = $(this).data('type');

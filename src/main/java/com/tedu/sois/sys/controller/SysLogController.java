@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.tedu.sois.common.vo.JsonResult;
 
+import java.util.Date;
+
 //@Controller
 //@ResponseBody
 @RestController
@@ -22,6 +24,17 @@ public class SysLogController {
     public JsonResult doDeleteObjects(Integer... ids) {
         sysLogService.deleteObjects(ids);
         return new JsonResult("delete ok");
+    }
+
+    /**
+     * 根据时间删除日志信息
+     * @param beginDate 开始时间
+     * @param endDate 结束时间
+     */
+    @RequestMapping("doRemoveLogInfoByTime")
+    public JsonResult doRemoveLogInfoByTime(Date beginDate,Date endDate) {
+        sysLogService.removeLogInfoByTime(beginDate,endDate);
+        return new JsonResult("删除成功");
     }
 
     /***

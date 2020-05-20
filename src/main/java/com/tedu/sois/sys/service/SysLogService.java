@@ -2,6 +2,9 @@ package com.tedu.sois.sys.service;
 import com.tedu.sois.common.vo.JsonResult;
 import com.tedu.sois.common.vo.PageObject;
 import com.tedu.sois.sys.entity.SysLog;
+
+import java.util.Date;
+
 /**
  * 日志业务处理接口对象
  */
@@ -18,7 +21,14 @@ public interface SysLogService {
 	 * @param ids 多个日志id
 	 * @return 删除的行数
 	 */
-	int deleteObjects(Integer...ids);
+	void deleteObjects(Integer...ids);
+
+	/**
+	 * 根据时间删除日志信息
+	 * @param beginDate 开始时间
+	 * @param endDate 结束时间
+	 */
+	void removeLogInfoByTime(Date beginDate, Date endDate);
 	
      /**
             * 分页查询当前页记录
@@ -28,4 +38,5 @@ public interface SysLogService {
       * @return 封装了分页信息和当前页记录的值对象
       */
 	 JsonResult findPageLogInfoListByUserName(String userName, Integer page, Integer limit);
+
 }
