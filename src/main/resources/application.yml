@@ -10,10 +10,10 @@ sois:
   demoEnabled: true
   #获取id地址开关
   addressEnabled: true
-  # 文件路径 示例（ Windows配置D:/SOIS/upload/img/，Linux配置 /home/sois/upload/img/）
-  profile: D:/SOIS/upload/img/
+  # 文件路径 示例（ Windows配置D:/SOIS/upload/，Linux配置 /home/SOIS/upload/）
+  profile: D:/SOIS/upload/
   #静态资源对外暴露的访问路径(访问图片的路径)
-  staticAccessPath: /upload/img/**
+  staticAccessPath: /upload/**
 
 #开发环境配置
 server:
