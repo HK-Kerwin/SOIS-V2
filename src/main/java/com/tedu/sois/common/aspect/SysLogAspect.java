@@ -91,10 +91,10 @@ public class SysLogAspect {//SysLogAspect.class
             userName = user.getUserName();
         }
         String ip = IPUtils.getIpAddr();
-        IPGeolocation data = AddressUtils.getAddresses(ip);
+        IPGeolocation data = null;//AddressUtils.getAddresses(ip);
         String addresses = "未知地点";
         String ips = "未知服务商";
-        if("success".equals(data.getStatus())){
+        if(data != null && "success".equals(data.getStatus())){
             addresses = data.getCountry()+data.getRegionName()+data.getCity();
             ips = data.getIsp();
         }
