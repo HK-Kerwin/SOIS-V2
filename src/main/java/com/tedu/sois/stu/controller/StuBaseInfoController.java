@@ -42,7 +42,7 @@ public class StuBaseInfoController implements StatusCodeConfig {
     @PostMapping("doModifyStuBaseInfo")
     public JsonResult doModifyStuBaseInfo(StuBaseInfo entity) {
         StuBaseInfo data = stuBaseInfoService.findStuInfoById(entity.getStuId());
-        //data.setDelFlag("1");//业务层已经设置了
+        data.setDelFlag("1");//必须在控制层设置好状态值,不然其他地方调用修改就会废弃当前信息
         stuBaseInfoService.modifyStuBaseInfo(data);
 
         entity.setStuId(null);

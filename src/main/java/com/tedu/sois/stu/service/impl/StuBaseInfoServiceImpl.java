@@ -29,7 +29,7 @@ import java.util.regex.Pattern;
 @Transactional(isolation = Isolation.READ_COMMITTED, //隔离级别
         rollbackFor = Throwable.class,//什么异常回滚
         propagation = Propagation.REQUIRED)//传播特性
-public class BaseInfoServiceImpl implements StuBaseInfoService, StatusCodeConfig {
+public class StuBaseInfoServiceImpl implements StuBaseInfoService, StatusCodeConfig {
 
 
     @Autowired
@@ -152,7 +152,6 @@ public class BaseInfoServiceImpl implements StuBaseInfoService, StatusCodeConfig
     @RequiredLog("修改学生信息")
     @Override
     public void modifyStuBaseInfo(StuBaseInfo stuBaseInfo) {
-        stuBaseInfo.setDelFlag("1");
         stuBaseInfo.setModifiedTime(new Date());
         SysUser user = ShiroUtils.getUser();
         StuBaseInfo data = stuBaseInfoDao.selectById(stuBaseInfo.getStuId());
