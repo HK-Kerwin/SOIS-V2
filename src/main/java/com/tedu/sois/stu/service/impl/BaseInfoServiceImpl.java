@@ -43,7 +43,6 @@ public class BaseInfoServiceImpl implements StuBaseInfoService, StatusCodeConfig
 
 
     @CacheEvict(value = "stuInfoCache", allEntries = true)
-    @RequiredLog("保存学生信息")
     @Override
     public int saveStuBaseInfo(StuBaseInfo stuBaseInfo, int state) {
 
@@ -203,6 +202,7 @@ public class BaseInfoServiceImpl implements StuBaseInfoService, StatusCodeConfig
         return new JsonResult(page, limit, rowCount, records);
     }
 
+    @RequiresPermissions("stu:single:view")
     @Transactional(readOnly = true)
     @RequiredLog("查询学生个人信息")
     @Override
