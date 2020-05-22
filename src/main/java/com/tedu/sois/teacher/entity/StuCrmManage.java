@@ -1,4 +1,4 @@
-package com.tedu.sois.stu.entity;
+package com.tedu.sois.teacher.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;

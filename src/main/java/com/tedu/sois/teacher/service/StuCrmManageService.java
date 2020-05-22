@@ -1,7 +1,6 @@
-package com.tedu.sois.stu.service;
+package com.tedu.sois.teacher.service;
 
 
-import com.tedu.sois.stu.entity.ClassTable;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;

@@ -1,13 +1,12 @@
 package com.tedu.sois.crm;
 
 import com.alibaba.excel.EasyExcel;
-import com.alibaba.excel.exception.ExcelAnalysisException;
 import com.tedu.sois.common.exception.ServiceException;
 import com.tedu.sois.common.listener.StuCrmManageTemporaryListener;
-import com.tedu.sois.stu.dao.StuCrmManageDao;
-import com.tedu.sois.stu.entity.ClassTable;
-import com.tedu.sois.stu.entity.StuCrmManage;
-import com.tedu.sois.stu.entity.StuCrmManageTemporary;
+import com.tedu.sois.teacher.dao.StuCrmManageDao;
+import com.tedu.sois.teacher.entity.ClassTable;
+import com.tedu.sois.teacher.entity.StuCrmManage;
+import com.tedu.sois.teacher.entity.StuCrmManageTemporary;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

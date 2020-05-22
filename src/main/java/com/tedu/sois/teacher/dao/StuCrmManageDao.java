@@ -1,8 +1,8 @@
-package com.tedu.sois.stu.dao;
+package com.tedu.sois.teacher.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.tedu.sois.stu.entity.ClassTable;
-import com.tedu.sois.stu.entity.StuCrmManage;
+import com.tedu.sois.teacher.entity.ClassTable;
+import com.tedu.sois.teacher.entity.StuCrmManage;
 
 import java.util.List;
 import java.util.Set;

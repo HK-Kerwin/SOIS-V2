@@ -1,11 +1,7 @@
 package com.tedu.sois.teacher.controller;
 
 import com.tedu.sois.common.exception.ServiceException;
-import com.tedu.sois.common.util.ShiroUtils;
-import com.tedu.sois.stu.entity.StuBaseInfo;
 import com.tedu.sois.stu.service.StuBaseInfoService;
-import com.tedu.sois.stu.service.StuCrmManageService;
-import com.tedu.sois.sys.entity.SysUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

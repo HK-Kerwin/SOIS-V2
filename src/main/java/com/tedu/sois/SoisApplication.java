@@ -15,7 +15,7 @@ import javax.servlet.MultipartConfigElement;
 @EnableAsync
 @EnableCaching
 @SpringBootApplication(exclude = { DataSourceAutoConfiguration.class })
-@MapperScan({"com.tedu.sois.stu.dao","com.tedu.sois.sys.dao"})
+@MapperScan({"com.tedu.sois.*.dao"})
 public class SoisApplication {
 
     @Value("${sois.profile}")

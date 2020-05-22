@@ -1,14 +1,10 @@
 package com.tedu.sois.stu.controller;
 
 import com.tedu.sois.common.vo.JsonResult;
-import com.tedu.sois.stu.service.StuCrmManageService;
+import com.tedu.sois.teacher.service.StuCrmManageService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.io.File;
-import java.io.FileNotFoundException;
 
 @RestController
 @RequestMapping("crm/")

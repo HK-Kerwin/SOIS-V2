@@ -1,4 +1,4 @@
-package com.tedu.sois.stu.entity;
+package com.tedu.sois.teacher.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -18,7 +18,7 @@ public class ClassTable extends BaseEntity {
     private Integer classId;
 
     /**班级*/
-    private String ClassNum;
+    private String className;
 
     /**方向*/
     private String classDirection;
@@ -31,12 +31,12 @@ public class ClassTable extends BaseEntity {
         this.classId = classId;
     }
 
-    public String getClassNum() {
-        return ClassNum;
+    public String getClassName() {
+        return className;
     }
 
-    public void setClassNum(String classNum) {
-        ClassNum = classNum;
+    public void setClassName(String classNum) {
+        className = classNum;
     }
 
     public String getClassDirection() {
@@ -53,19 +53,19 @@ public class ClassTable extends BaseEntity {
         if (o == null || getClass() != o.getClass()) return false;
         ClassTable that = (ClassTable) o;
         return Objects.equals(classId, that.classId) &&
-                Objects.equals(ClassNum, that.ClassNum);
+                Objects.equals(className, that.className);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(classId, ClassNum);
+        return Objects.hash(classId, className);
     }
 
     @Override
     public String toString() {
         return "ClassTable{" +
                 "classId=" + classId +
-                ", ClassNum='" + ClassNum + '\'' +
+                ", ClassNum='" + className + '\'' +
                 ", classDirection='" + classDirection + '\'' +
                 ", createdTime=" + createdTime +
                 ", modifiedTime=" + modifiedTime +

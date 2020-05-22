@@ -4,9 +4,9 @@ import com.alibaba.excel.context.AnalysisContext;
 import com.alibaba.excel.event.AnalysisEventListener;
 import com.alibaba.excel.exception.ExcelDataConvertException;
 import com.alibaba.fastjson.JSON;
-import com.tedu.sois.stu.entity.ClassTable;
-import com.tedu.sois.stu.entity.StuCrmManage;
-import com.tedu.sois.stu.entity.StuCrmManageTemporary;
+import com.tedu.sois.teacher.entity.ClassTable;
+import com.tedu.sois.teacher.entity.StuCrmManage;
+import com.tedu.sois.teacher.entity.StuCrmManageTemporary;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -43,7 +43,7 @@ public class StuCrmManageTemporaryListener extends AnalysisEventListener<StuCrmM
         SimpleDateFormat sdfCreateTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         if (crmClass != null && !"".equals(crmClass)){
             System.out.println(crm);
-            ct.setClassNum(crmClass);
+            ct.setClassName(crmClass);
             ct.setClassDirection(crmClass.substring(0,3));
             try {
                 ct.setCreatedTime(sdfCreateTime.parse(createdTime));

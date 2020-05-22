@@ -1,4 +1,4 @@
-package com.tedu.sois.stu.entity;
+package com.tedu.sois.teacher.entity;
 
 
 import java.io.Serializable;
