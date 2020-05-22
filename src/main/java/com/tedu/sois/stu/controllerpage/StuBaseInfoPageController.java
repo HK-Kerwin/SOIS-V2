@@ -4,6 +4,7 @@ import com.tedu.sois.common.util.ShiroUtils;
 import com.tedu.sois.stu.entity.StuBaseInfo;
 import com.tedu.sois.stu.service.StuCrmManageService;
 import com.tedu.sois.sys.entity.SysUser;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

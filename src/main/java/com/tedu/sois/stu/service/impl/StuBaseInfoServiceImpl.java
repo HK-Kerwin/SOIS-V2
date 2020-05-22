@@ -199,9 +199,8 @@ public class StuBaseInfoServiceImpl implements StuBaseInfoService, StatusCodeCon
         return new JsonResult(page, limit, rowCount, records);
     }
 
-    @RequiresPermissions("stu:single:view")
+
     @Transactional(readOnly = true)
-    @RequiredLog("查询学生个人信息")
     @Override
     public List<StuBaseInfo> findByAfterFour(String afterFour) {
         if (afterFour == null || "".equals(afterFour))
