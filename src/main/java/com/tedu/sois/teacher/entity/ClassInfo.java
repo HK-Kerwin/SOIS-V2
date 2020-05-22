@@ -11,7 +11,7 @@ import java.util.Objects;
  * 班级表
  */
 @TableName("class_table")
-public class ClassTable extends BaseEntity {
+public class ClassInfo extends BaseEntity {
 
     /**自增id*/
     @TableId(type = IdType.AUTO)
@@ -51,7 +51,7 @@ public class ClassTable extends BaseEntity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ClassTable that = (ClassTable) o;
+        ClassInfo that = (ClassInfo) o;
         return Objects.equals(classId, that.classId) &&
                 Objects.equals(className, that.className);
     }

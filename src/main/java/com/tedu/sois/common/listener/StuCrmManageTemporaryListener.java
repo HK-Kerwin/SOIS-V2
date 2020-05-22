@@ -4,7 +4,7 @@ import com.alibaba.excel.context.AnalysisContext;
 import com.alibaba.excel.event.AnalysisEventListener;
 import com.alibaba.excel.exception.ExcelDataConvertException;
 import com.alibaba.fastjson.JSON;
-import com.tedu.sois.teacher.entity.ClassTable;
+import com.tedu.sois.teacher.entity.ClassInfo;
 import com.tedu.sois.teacher.entity.StuCrmManage;
 import com.tedu.sois.teacher.entity.StuCrmManageTemporary;
 import org.slf4j.Logger;
@@ -30,14 +30,14 @@ public class StuCrmManageTemporaryListener extends AnalysisEventListener<StuCrmM
 
     List<StuCrmManage> list = new ArrayList<>();
 
-    Set<ClassTable> seriesClassAll = new HashSet<>();
+    Set<ClassInfo> seriesClassAll = new HashSet<>();
 
 
     @Override
     public void invoke(StuCrmManageTemporary crm, AnalysisContext analysisContext) {
 
         //存储班级信息
-        ClassTable ct = new ClassTable();
+        ClassInfo ct = new ClassInfo();
         String crmClass = crm.getColumn3();
         String createdTime = crm.getColumn22();//创建时间
         SimpleDateFormat sdfCreateTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -133,7 +133,7 @@ public class StuCrmManageTemporaryListener extends AnalysisEventListener<StuCrmM
         return list;
     }
 
-    public Set<ClassTable> getSeriesClassAll(){
+    public Set<ClassInfo> getSeriesClassAll(){
         return seriesClassAll;
     }
 }

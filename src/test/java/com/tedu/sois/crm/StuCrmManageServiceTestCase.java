@@ -4,7 +4,7 @@ import com.alibaba.excel.EasyExcel;
 import com.tedu.sois.common.exception.ServiceException;
 import com.tedu.sois.common.listener.StuCrmManageTemporaryListener;
 import com.tedu.sois.teacher.dao.StuCrmManageDao;
-import com.tedu.sois.teacher.entity.ClassTable;
+import com.tedu.sois.teacher.entity.ClassInfo;
 import com.tedu.sois.teacher.entity.StuCrmManage;
 import com.tedu.sois.teacher.entity.StuCrmManageTemporary;
 import org.junit.jupiter.api.Test;
@@ -31,7 +31,7 @@ public class StuCrmManageServiceTestCase {
         if (row1 == 0)
             throw new ServiceException("基本信息无更新内容");
 
-        Set<ClassTable> seriesClassAll = listener.getSeriesClassAll();
+        Set<ClassInfo> seriesClassAll = listener.getSeriesClassAll();
         int row2 = dao.insertStuClass(seriesClassAll);
         if (row2 == 0)
             throw new ServiceException("班级号信息无更新内容");

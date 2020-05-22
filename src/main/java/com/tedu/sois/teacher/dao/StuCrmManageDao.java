@@ -1,7 +1,7 @@
 package com.tedu.sois.teacher.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.tedu.sois.teacher.entity.ClassTable;
+import com.tedu.sois.teacher.entity.ClassInfo;
 import com.tedu.sois.teacher.entity.StuCrmManage;
 
 import java.util.List;
@@ -21,7 +21,7 @@ public interface StuCrmManageDao extends BaseMapper<StuCrmManage> {
      * 插入班级信息
      * @return
      */
-    int insertStuClass(Set<ClassTable> date);
+    int insertStuClass(Set<ClassInfo> classInfo);
 
     /**
      * 查询最近一月的班级名称
