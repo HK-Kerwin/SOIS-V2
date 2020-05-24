@@ -28,4 +28,11 @@ public class TeacherEditPageController {
         return "teacher/classroom_edit";
     }
 
+    @RequestMapping("classTable/doGetClassTablePageForTeacher")
+    public String doGetClassRoomEditPageForTeacher(Model model){
+        List<String> list = crmManageService.showClassNumAllList();
+        model.addAttribute("classNum", list);
+        return "teacher/class_table";
+    }
+
 }

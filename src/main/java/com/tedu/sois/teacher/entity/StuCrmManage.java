@@ -44,7 +44,7 @@ public class StuCrmManage implements Serializable {
     /**咨询顾问*/
     private String consultName;
     /**创建人*/
-    private String createName;
+    private String createdName;
     /**创建时间*/
     private Date createdTime;
 
@@ -161,12 +161,12 @@ public class StuCrmManage implements Serializable {
         this.consultName = consultName;
     }
 
-    public String getCreateName() {
-        return createName;
+    public String getCreatedName() {
+        return createdName;
     }
 
-    public void setCreateName(String createName) {
-        this.createName = createName;
+    public void setCreatedName(String createName) {
+        this.createdName = createName;
     }
 
     public Date getCreatedTime() {
@@ -208,7 +208,7 @@ public class StuCrmManage implements Serializable {
                 ", teachingCenter='" + teachingCenter + '\'' +
                 ", salesCenter='" + salesCenter + '\'' +
                 ", consultName='" + consultName + '\'' +
-                ", createName='" + createName + '\'' +
+                ", createName='" + createdName + '\'' +
                 ", createdTime=" + createdTime +
                 '}';
     }

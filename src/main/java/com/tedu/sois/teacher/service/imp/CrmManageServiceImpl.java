@@ -2,6 +2,7 @@ package com.tedu.sois.teacher.service.imp;
 
 import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.exception.ExcelAnalysisException;
+import com.tedu.sois.common.annotation.RequiredLog;
 import com.tedu.sois.common.exception.ServiceException;
 import com.tedu.sois.common.listener.StuCrmManageTemporaryListener;
 import com.tedu.sois.teacher.dao.StuCrmManageDao;
@@ -9,6 +10,7 @@ import com.tedu.sois.teacher.entity.ClassInfo;
 import com.tedu.sois.teacher.entity.StuCrmManage;
 import com.tedu.sois.teacher.entity.StuCrmManageTemporary;
 import com.tedu.sois.teacher.service.CrmManageService;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -19,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Set;
 
@@ -36,22 +39,32 @@ public class CrmManageServiceImpl implements CrmManageService {
     @Autowired
     private StuCrmManageDao stuCrmManageDao;
 
-
-
+    @RequiresPermissions("crm:import:info")
     @Override
     public void addCrmExcel(MultipartFile file) {
         if (file == null || file.isEmpty())
             throw new ServiceException("请选择文件");
 
-        File upload = new File(uploadFolder);
+        File upload = new File(uploadFolder+"crm/excel/");
         if (!upload.exists()){
             upload.mkdirs();
         }
         String fileName = file.getOriginalFilename();
+        System.err.println("fileName = " + fileName);
+
+        String suffix = "";
+        int beginIndex = fileName.lastIndexOf(".");
+        if (beginIndex > 0) {
+            suffix = fileName.substring(beginIndex);
+        }
+
         if (fileName.indexOf("(") != -1){
             fileName = fileName.split("\\(")[0];
         }
-        File uploadPath = new File(uploadFolder, "crm/excel/");
+        if (fileName.indexOf("_") != -1){
+            fileName = fileName.split("_")[0];
+        }
+        File uploadPath = new File(uploadFolder+"crm/excel/", fileName+suffix);
         System.err.println("uploadPath = " + uploadPath);
         try {
             file.transferTo(uploadPath);
@@ -68,14 +81,15 @@ public class CrmManageServiceImpl implements CrmManageService {
 
         List<StuCrmManage> list = listener.getList();
         System.err.println(list);
-        int row1 = stuCrmManageDao.insertStuCrmManage(list);
-        if (row1 == 0)
-            throw new ServiceException("基本信息无更新内容");
+        try{
+            int row1 = stuCrmManageDao.insertStuCrmManage(list);
 
-        Set<ClassInfo> seriesClassAll = listener.getSeriesClassAll();
-        int row2 = stuCrmManageDao.insertStuClassSet(seriesClassAll);
-        if (row2 == 0)
-            throw new ServiceException("班级号信息无更新内容");
+            Set<ClassInfo> seriesClassAll = listener.getSeriesClassAll();
+            int row2 = stuCrmManageDao.insertStuClassSet(seriesClassAll);
+        } catch (Exception e){
+            e.printStackTrace();
+            throw new ServiceException("导入信息出现问题,请及时联系管理员");
+        }
     }
 
     @Transactional(readOnly = true)

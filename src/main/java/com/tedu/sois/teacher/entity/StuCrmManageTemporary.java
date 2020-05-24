@@ -57,6 +57,26 @@ public class StuCrmManageTemporary implements Serializable {
     private String column22;
     /**公司*/
     private String column23;
+    /**未知*/
+    private String column24;
+    /**未知*/
+    private String column25;
+    /**未知*/
+    private String column26;
+    /**未知*/
+    private String column27;
+    /**未知*/
+    private String column28;
+    /**未知*/
+    private String column29;
+    /**未知*/
+    private String column30;
+    /**未知*/
+    private String column31;
+    /**未知*/
+    private String column32;
+    /**未知*/
+    private String column33;
 
     public String getColumn0() {
         return column0;
@@ -250,6 +270,86 @@ public class StuCrmManageTemporary implements Serializable {
         this.column23 = column23;
     }
 
+    public String getColumn24() {
+        return column24;
+    }
+
+    public void setColumn24(String column24) {
+        this.column24 = column24;
+    }
+
+    public String getColumn25() {
+        return column25;
+    }
+
+    public void setColumn25(String column25) {
+        this.column25 = column25;
+    }
+
+    public String getColumn26() {
+        return column26;
+    }
+
+    public void setColumn26(String column26) {
+        this.column26 = column26;
+    }
+
+    public String getColumn27() {
+        return column27;
+    }
+
+    public void setColumn27(String column27) {
+        this.column27 = column27;
+    }
+
+    public String getColumn28() {
+        return column28;
+    }
+
+    public void setColumn28(String column28) {
+        this.column28 = column28;
+    }
+
+    public String getColumn29() {
+        return column29;
+    }
+
+    public void setColumn29(String column29) {
+        this.column29 = column29;
+    }
+
+    public String getColumn30() {
+        return column30;
+    }
+
+    public void setColumn30(String column30) {
+        this.column30 = column30;
+    }
+
+    public String getColumn31() {
+        return column31;
+    }
+
+    public void setColumn31(String column31) {
+        this.column31 = column31;
+    }
+
+    public String getColumn32() {
+        return column32;
+    }
+
+    public void setColumn32(String column32) {
+        this.column32 = column32;
+    }
+
+    public String getColumn33() {
+        return column33;
+    }
+
+    public void setColumn33(String column33) {
+        this.column33 = column33;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -290,6 +390,16 @@ public class StuCrmManageTemporary implements Serializable {
                 ", column21='" + column21 + '\'' +
                 ", column22='" + column22 + '\'' +
                 ", column23='" + column23 + '\'' +
+                ", column24='" + column24 + '\'' +
+                ", column25='" + column25 + '\'' +
+                ", column26='" + column26 + '\'' +
+                ", column27='" + column27 + '\'' +
+                ", column28='" + column28 + '\'' +
+                ", column29='" + column29 + '\'' +
+                ", column30='" + column30 + '\'' +
+                ", column31='" + column31 + '\'' +
+                ", column32='" + column32 + '\'' +
+                ", column33='" + column33 + '\'' +
                 '}';
     }
 }

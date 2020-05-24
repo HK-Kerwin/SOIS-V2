@@ -2,13 +2,15 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.tedu.sois.teacher.dao.StuCrmManageDao">
+
     <insert id="insertStuCrmManage" parameterType="java.util.List" keyProperty="crmManageId" useGeneratedKeys="true">
-        insert ignore into stu_crm_manage(
+        insert ignore into stu_crm_manage
+        (
             crm_id,crm_stu_name,series_class,
             crm_class,stu_state,contract_send_type,
             need_cost,cost_all,enter_class_time,
             monthly_time,teaching_center,sales_center,
-            consult_name,create_name,created_time
+            consult_name,created_name,created_time
         )
         values
         <foreach collection="list" item="scm" separator=",">
@@ -17,17 +19,18 @@
             #{scm.crmClass},#{scm.stuState},#{scm.contractSendType},
             #{scm.needCost},#{scm.costAll},#{scm.enterClassTime},
             #{scm.monthlyTime},#{scm.teachingCenter},#{scm.salesCenter},
-            #{scm.consultName},#{scm.createName},#{scm.createdTime}
+            #{scm.consultName},#{scm.createdName},#{scm.createdTime}
             )
         </foreach>
     </insert>
-    <insert id="insertStuClass" parameterType="java.util.Set" keyProperty="classId" useGeneratedKeys="true">
+
+    <insert id="insertStuClassSet" parameterType="java.util.Set" keyProperty="classId" useGeneratedKeys="true">
         insert ignore into class_table(
             class_name,class_direction,created_time
         )
         values
         <foreach collection="collection" item="ct" separator=",">
-            (#{ct.ClassName},#{ct.classDirection},#{ct.createdTime})
+            (#{ct.className},#{ct.classDirection},#{ct.createdTime})
         </foreach>
     </insert>
 
