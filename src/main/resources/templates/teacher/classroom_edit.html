@@ -101,7 +101,6 @@
         form.render();
 
         $(document).on("input propertychange", "select[lay-search] ~ div input", function () {
-            console.log($(this).val())
             if ($(this).val() == "") {
                 $("#className").val(''); //清空原选项值
                 $(this).parent().next().find(".layui-this").addClass(" layui-hide").removeClass("layui-this"); //清除layui选中状态
