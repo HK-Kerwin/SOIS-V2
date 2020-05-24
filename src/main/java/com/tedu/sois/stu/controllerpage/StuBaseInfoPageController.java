@@ -2,7 +2,7 @@ package com.tedu.sois.stu.controllerpage;
 
 import com.tedu.sois.common.util.ShiroUtils;
 import com.tedu.sois.stu.entity.StuBaseInfo;
-import com.tedu.sois.teacher.service.StuCrmManageService;
+import com.tedu.sois.teacher.service.CrmManageService;
 import com.tedu.sois.sys.entity.SysUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,7 +23,7 @@ public class StuBaseInfoPageController {
 
 
     @Autowired
-    private StuCrmManageService stuCrmManageService;
+    private CrmManageService crmManageService;
 
     /**
      * 页面有查询个人信息和注册功能
@@ -43,7 +43,7 @@ public class StuBaseInfoPageController {
      */
     @RequestMapping("getStuAddPage")
     public String getStuAddPage(Model model) {
-        List<String> list = stuCrmManageService.showClassNumAllList();
+        List<String> list = crmManageService.showClassNumAllList();
         model.addAttribute("classNum", list);
         return "stu/stu_add";
     }
@@ -57,7 +57,7 @@ public class StuBaseInfoPageController {
      */
     @RequestMapping("getStuEditPage")
     public String getStuEditPage(Model model) {
-        List<String> list = stuCrmManageService.showClassNumAllList();
+        List<String> list = crmManageService.showClassNumAllList();
         model.addAttribute("classNum", list);
         /*model.addAttribute("data",data);*/
         SysUser user = ShiroUtils.getUser();

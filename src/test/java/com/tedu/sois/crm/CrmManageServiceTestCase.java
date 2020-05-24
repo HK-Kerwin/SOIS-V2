@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Set;
 
 @SpringBootTest
-public class StuCrmManageServiceTestCase {
+public class CrmManageServiceTestCase {
     @Autowired
     private StuCrmManageDao dao;
 
@@ -32,7 +32,7 @@ public class StuCrmManageServiceTestCase {
             throw new ServiceException("基本信息无更新内容");
 
         Set<ClassInfo> seriesClassAll = listener.getSeriesClassAll();
-        int row2 = dao.insertStuClass(seriesClassAll);
+        int row2 = dao.insertStuClassSet(seriesClassAll);
         if (row2 == 0)
             throw new ServiceException("班级号信息无更新内容");
     }

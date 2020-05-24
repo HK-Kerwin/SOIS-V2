@@ -18,14 +18,21 @@ public interface StuCrmManageDao extends BaseMapper<StuCrmManage> {
     Integer insertStuCrmManage(List<StuCrmManage> list);
 
     /**
-     * 插入班级信息
+     * 批量插入班级信息
      * @return
      */
-    int insertStuClass(Set<ClassInfo> classInfo);
+    int insertStuClassSet(Set<ClassInfo> classInfo);
 
     /**
-     * 查询最近一月的班级名称
+     * 查询所有班级名称
      * @return 班级名称集合
      */
-    List<String> selectClassNumAllList();
+    List<String> selectClassNameAllList();
+
+    /**
+     * 根据班级名字查询方向
+     * @param className
+     * @return
+     */
+    String selectClassDirectionByClassName(String className);
 }

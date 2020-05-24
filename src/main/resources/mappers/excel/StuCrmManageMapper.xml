@@ -31,11 +31,16 @@
         </foreach>
     </insert>
 
-    <select id="selectClassNumAllList" resultType="java.lang.String">
+    <select id="selectClassNameAllList" resultType="string">
         SELECT class_name FROM class_table
         /*WHERE created_time between (SELECT DATE_ADD(now(),INTERVAL -6 MONTH)) and now()*/
         GROUP BY class_name
         ORDER BY class_name ASC
     </select>
-
+    
+    <select id="selectClassDirectionByClassName" resultType="string">
+        select class_direction from class_table
+        where class_name=#{className}
+        GROUP BY class_direction
+    </select>
 </mapper>

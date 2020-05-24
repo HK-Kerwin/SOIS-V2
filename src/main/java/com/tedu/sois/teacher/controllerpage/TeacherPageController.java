@@ -1,4 +1,4 @@
-package com.tedu.sois.teacher.controller;
+package com.tedu.sois.teacher.controllerpage;
 
 import com.tedu.sois.common.exception.ServiceException;
 import com.tedu.sois.stu.service.StuBaseInfoService;
@@ -45,5 +45,11 @@ public class TeacherPageController {
             model.addAttribute("searchResult",map);
         }
         return "teacher/stuInfo_list";
+    }
+
+
+    @RequestMapping("doGetClassRoomInfoPageForTeacher")
+    public String doGetClassRoomInfoPageForTeacher(){
+        return "teacher/classroom_list";
     }
 }

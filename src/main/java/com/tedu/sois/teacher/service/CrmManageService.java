@@ -5,7 +5,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
-public interface StuCrmManageService {
+public interface CrmManageService {
 
     /**
      * 把CRM导出管理学员信息表，读取后整理写入数据库
@@ -20,4 +20,6 @@ public interface StuCrmManageService {
      */
     List<String> showClassNumAllList();
 
+
+    String findClassDirectionByClassName(String className);
 }

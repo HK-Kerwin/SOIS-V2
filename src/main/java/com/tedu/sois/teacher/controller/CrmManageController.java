@@ -1,17 +1,17 @@
-package com.tedu.sois.stu.controller;
+package com.tedu.sois.teacher.controller;
 
 import com.tedu.sois.common.vo.JsonResult;
-import com.tedu.sois.teacher.service.StuCrmManageService;
+import com.tedu.sois.teacher.service.CrmManageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("crm/")
-public class StuCrmManageController {
+public class CrmManageController {
 
     @Autowired
-    private StuCrmManageService service;
+    private CrmManageService crmManageService;
 
     /**
      * 更新CRM学生信息表数据
@@ -21,8 +21,8 @@ public class StuCrmManageController {
      */
     @PostMapping("uploadExcel")
     public JsonResult uploadExcel(MultipartFile excelFile){
-        service.addCrmExcel(excelFile);
-        System.out.println("数据更新成功");
+        crmManageService.addCrmExcel(excelFile);
+        System.err.println("数据更新成功");
         return new JsonResult("数据更新成功");
     }
 
@@ -34,6 +34,15 @@ public class StuCrmManageController {
      */
     @GetMapping("findStuClass")
     public JsonResult findStuClass(){
-        return new JsonResult(service.showClassNumAllList());
+        return new JsonResult(crmManageService.showClassNumAllList());
     }
+
+    @RequestMapping("findClassDirectionByClassName")
+    public JsonResult findClassDirectionByClassName(String className){
+        if (className == null || "".equals(className))
+            return new JsonResult("此班级没有方向,请尽快添加","");
+        String direction = crmManageService.findClassDirectionByClassName(className);
+        return new JsonResult(direction,direction);
+    }
+
 }

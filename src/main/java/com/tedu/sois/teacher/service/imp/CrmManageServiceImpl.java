@@ -8,17 +8,16 @@ import com.tedu.sois.teacher.dao.StuCrmManageDao;
 import com.tedu.sois.teacher.entity.ClassInfo;
 import com.tedu.sois.teacher.entity.StuCrmManage;
 import com.tedu.sois.teacher.entity.StuCrmManageTemporary;
-import com.tedu.sois.teacher.service.StuCrmManageService;
+import com.tedu.sois.teacher.service.CrmManageService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.ResourceUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 import java.util.Set;
@@ -29,7 +28,10 @@ import java.util.Set;
         rollbackFor = Throwable.class,//什么异常回滚
         timeout = 30,//单位:秒
         propagation = Propagation.REQUIRED)//传播特性
-public class StuCrmManageServiceImpl implements StuCrmManageService {
+public class CrmManageServiceImpl implements CrmManageService {
+
+    @Value("${sois.profile}")
+    private String uploadFolder;
 
     @Autowired
     private StuCrmManageDao stuCrmManageDao;
@@ -41,18 +43,18 @@ public class StuCrmManageServiceImpl implements StuCrmManageService {
         if (file == null || file.isEmpty())
             throw new ServiceException("请选择文件");
 
-        File classpath;
-        try {
-            classpath = new File(ResourceUtils.getURL("classpath:").getPath());
-        } catch (FileNotFoundException e) {
-            throw new ServiceException("资源路径不存在");
-        }
-        File upload = new File(classpath.getAbsolutePath(), "static/excel/");
-        if (!upload.exists())
+        File upload = new File(uploadFolder);
+        if (!upload.exists()){
             upload.mkdirs();
-        String uploadPath = upload + "\\"+file.getOriginalFilename();
+        }
+        String fileName = file.getOriginalFilename();
+        if (fileName.indexOf("(") != -1){
+            fileName = fileName.split("\\(")[0];
+        }
+        File uploadPath = new File(uploadFolder, "crm/excel/");
+        System.err.println("uploadPath = " + uploadPath);
         try {
-            file.transferTo(new File(uploadPath));
+            file.transferTo(uploadPath);
         } catch (IOException e) {
             throw new ServiceException("传输出现异常,请联系管理员修复");
         }
@@ -65,13 +67,13 @@ public class StuCrmManageServiceImpl implements StuCrmManageService {
         }
 
         List<StuCrmManage> list = listener.getList();
-        System.out.println(list);
+        System.err.println(list);
         int row1 = stuCrmManageDao.insertStuCrmManage(list);
         if (row1 == 0)
             throw new ServiceException("基本信息无更新内容");
 
         Set<ClassInfo> seriesClassAll = listener.getSeriesClassAll();
-        int row2 = stuCrmManageDao.insertStuClass(seriesClassAll);
+        int row2 = stuCrmManageDao.insertStuClassSet(seriesClassAll);
         if (row2 == 0)
             throw new ServiceException("班级号信息无更新内容");
     }
@@ -79,6 +81,12 @@ public class StuCrmManageServiceImpl implements StuCrmManageService {
     @Transactional(readOnly = true)
     @Override
     public List<String> showClassNumAllList() {
-        return stuCrmManageDao.selectClassNumAllList();
+        return stuCrmManageDao.selectClassNameAllList();
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public String findClassDirectionByClassName(String className) {
+        return stuCrmManageDao.selectClassDirectionByClassName(className);
     }
 }
