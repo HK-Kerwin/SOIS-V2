@@ -34,6 +34,8 @@
                         </button>
                         <button class="layui-btn layui-btn-sm " lay-event="classManage"><i class="layui-icon">&#xe630;</i>班级管理
                         </button>
+                        <button id="importCRM" class="layui-btn layui-btn-sm " lay-event="importCRM"><i class="layui-icon">&#xe60a;</i>导入CRM学生信息表
+                        </button>
                     </div>
                 </script>
                 <script type="text/html" id="table-toolbar-bar">
@@ -58,7 +60,7 @@
         base: '../dist/layuiadmin/' //静态资源所在路径
     }).extend({
         index: 'lib/index', //主入口模块
-    }).use(['index', 'table', 'form', 'admin'], function () {
+    }).use(['index', 'table', 'form', 'admin','upload'], function () {
         let table = layui.table
             , form = layui.form
             , layer = layui.layer
@@ -133,6 +135,9 @@
                     break;
                 case 'classManage':
                     classManage();
+                    break;
+                case 'importCRM':
+
                     break;
             }
             ;
@@ -214,14 +219,14 @@
                         , success: function (layero, index) {
                             layero.addClass('layui-form');
                             let submitBtn = layero.find('.layui-layer-btn0');
-                            submitBtn.attr('lay-filter', 'formClassRoom').attr('lay-submit', '');
+                            submitBtn.attr('lay-filter', 'formClassTable').attr('lay-submit', '');
                             layero.keydown(function (e) {
                                 if (e.keyCode == 13) {
                                     submitBtn.click();
                                 }
                             });
                             let lock = false;
-                            form.on('submit(formClassRoom)', function (data) {
+                            form.on('submit(classInfoForm)', function (data) {
                                 if (lock) {
                                     lock = false;
                                     return false;
@@ -266,17 +271,16 @@
 
         }
 
-
+        /*班级信息管理*/
         function classManage() {
-            let url = '../classTable/doGetClassNumPageForTeacher';
+            let url = '../classTable/doGetClassTablePageForTeacher';
             $.ajax({
                 url: url,
-                type: 'post',
                 headers: {"token": layui.data(layui.setter.tableName)['token']},
                 success: function (data) {
                     layer.open({
                         type: 1
-                        , title: title
+                        , title: '班级管理'
                         , area: ['590px','650px']
                         , content: data
                         , btn: ['提交', '退出']
@@ -285,14 +289,14 @@
                         , success: function (layero, index) {
                             layero.addClass('layui-form');
                             let submitBtn = layero.find('.layui-layer-btn0');
-                            submitBtn.attr('lay-filter', 'formClassRoom').attr('lay-submit', '');
+                            submitBtn.attr('lay-filter', 'formClassTable').attr('lay-submit', '');
                             layero.keydown(function (e) {
                                 if (e.keyCode == 13) {
                                     submitBtn.click();
                                 }
                             });
                             let lock = false;
-                            form.on('submit(formClassRoom)', function (data) {
+                            form.on('submit(formClassTable)', function (data) {
                                 if (lock) {
                                     lock = false;
                                     return false;
@@ -335,6 +339,38 @@
                 }
             });
         }
+
+
+        let files;
+        layui.upload.render({
+            elem: '#importCRM'
+            , url: '../crm/uploadExcel'
+            , accept: 'file'
+            , exts: 'xls|excel|xlsx*'
+            , field: 'excelFile'
+            , size: 3 * 1024 * 1024
+            , headers: {"token": layui.data(layui.setter.tableName)['token']}
+            , before: function (obj) {
+                layer.load();
+            }
+            , done: function (res, index, upload) {
+                if (res.code == '0') { //上传成功
+                    layer.closeAll('loading');
+                    layer.msg(res.msg, {offset: '15px', time: 2000})
+                    return delete this.files[index]; //删除文件队列已经上传成功的文件
+                } else {
+                    layer.closeAll('loading');
+                    layer.msg(res.msg, {offset: '15px', time: 2000})
+                }
+
+            }, choose: function (obj) {
+                files = this.files = obj.pushFile();
+
+            }, error: function (res, index, upload) {
+                layer.closeAll('loading'); //关闭loading
+                layer.msg(res.msg, {offset: '15px', time: 1000})
+            }
+        });
 
     })
 </script>
