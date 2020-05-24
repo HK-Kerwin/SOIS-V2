@@ -26,8 +26,11 @@ public class ClassRoom extends BaseEntity {
     /**职业发展*/
     private String careerDevelopment;
 
-    /**电脑*/
-    private String computerNum;
+    /**电脑数量*/
+    private Integer computerNum;
+
+    /**显示器数量*/
+    private Integer displayNum;
 
     public Integer getClassRoomId() {
         return classRoomId;
@@ -77,12 +80,20 @@ public class ClassRoom extends BaseEntity {
         this.careerDevelopment = careerDevelopment;
     }
 
-    public String getComputerNum() {
+    public Integer getComputerNum() {
         return computerNum;
     }
 
-    public void setComputerNum(String computerNum) {
+    public void setComputerNum(Integer computerNum) {
         this.computerNum = computerNum;
+    }
+
+    public Integer getDisplayNum() {
+        return displayNum;
+    }
+
+    public void setDisplayNum(Integer displayNum) {
+        this.displayNum = displayNum;
     }
 
     @Override
@@ -94,7 +105,8 @@ public class ClassRoom extends BaseEntity {
                 ", classDirection='" + classDirection + '\'' +
                 ", projectManager='" + projectManager + '\'' +
                 ", careerDevelopment='" + careerDevelopment + '\'' +
-                ", computerNum='" + computerNum + '\'' +
+                ", computerNum=" + computerNum +
+                ", displayNum=" + displayNum +
                 ", createdTime=" + createdTime +
                 ", modifiedTime=" + modifiedTime +
                 ", createdUser='" + createdUser + '\'' +
