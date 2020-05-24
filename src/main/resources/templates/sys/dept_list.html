@@ -150,8 +150,10 @@
 					data = null;
 				}
 				if ( tag === 'edit') {
-					if (data == null)
-						return layer.msg('请选择后编辑', {offset: '15px'});
+					if (data == null){
+						layer.msg('请选择后编辑', {offset: '15px'})
+						return false;
+					}
 					title = '编辑部门';
 				}
 				$.ajax({
