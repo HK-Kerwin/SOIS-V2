@@ -30,16 +30,15 @@ public class SpringWebConfig implements WebMvcConfigurer {
         patterns.add("/build/**");
         patterns.add("/dist/**");
         patterns.add("/i18n/**");
-        patterns.add("/layuiadmin/**");
 
         patterns.add("/");
+        patterns.add("/error");
         patterns.add("/doErrorUI");
         patterns.add("/doLoginUI");
         patterns.add("/common/*");
         patterns.add("/home/*");
         patterns.add("/teacher/*");
         patterns.add("/sys/*");
-        patterns.add("/user/doLogin");
 
         //头像请求
         patterns.add("/upload/**");
@@ -51,7 +50,7 @@ public class SpringWebConfig implements WebMvcConfigurer {
 
 
         patterns.add("/stu/*");
-        patterns.add("/crm/findStuClass");
+        patterns.add("/crm/*");
         patterns.add("/user/*");
 
         registry.addInterceptor( new TimeAccessInterceptor())

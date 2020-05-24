@@ -113,7 +113,7 @@ public class SpringShiroConfig {
 
         map.put("/stu/*", "anon");
         map.put("/score/*", "anon");
-        map.put("/crm/findStuClass", "anon");
+        map.put("/crm/*", "anon");
         map.put("/user/doLogin", "anon");
         //除了匿名访问的资源,其它都要认证("authc")后访问
         //map.put("/**","authc");
