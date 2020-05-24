@@ -1,0 +1,107 @@
+<style type="text/css">
+    .classInfo .layui-form-item {
+        margin: 20px 100px 10px 45px;
+    }
+
+    .classInfo .layui-form-label {
+        width: 80px;
+    }
+</style>
+
+<form class="layui-form classInfo" action=""  lay-filter="classInfoForm">
+
+    <div class="layui-form-item">
+        <label  class="layui-form-label">班级号</label>
+        <div class="layui-input-block">
+            <input type="text" name="className" id="className" placeholder="可搜索"
+                   class="layui-input" style="position:absolute;z-index:2;width:60%;border-right: 0;"
+                   lay-verify="required" onkeyup="search()" autocomplete="off">
+            <select lay-filter="chooseClassName" id="chooseClassName"  lay-search="" >
+                <option value="">可以搜索</option>
+                <option th:each="classNum:${classNum}" th:text="${classNum}"
+                        th:value="${classNum }" ></option>
+            </select>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">班级方向</label>
+        <div class="layui-input-block">
+            <input type="text" class="layui-input" name="classDirection" id="classDirection"
+                   placeholder="班级方向" autocomplete="off" lay-verify="required">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">备注说明</label>
+        <div class="layui-input-block">
+            <input type="text" class="layui-input" name="remark" id="remark"
+                   placeholder="备注说明" autocomplete="off">
+        </div>
+    </div>
+
+</form>
+
+
+<script th:inline="javascript">
+    layui.use(['form'], function () {
+        let form = layui.form,
+        $ = layui.$;
+
+        form.render();
+
+        $(document).on("input propertychange", "select[lay-search] ~ div input", function () {
+            if ($(this).val() == "") {
+                $("#chooseClassName").val(''); //清空原选项值
+                $(this).parent().next().find(".layui-this").addClass(" layui-hide").removeClass("layui-this"); //清除layui选中状态
+                $('#classDirection').val("");
+            }
+        });
+
+        form.on('select(chooseClassName)',function (data) {
+            $("#className").val(data.value);
+            $("#chooseClassName").next().find("dl").css({ "display": "none" });
+            form.render();
+            let className = data.value;
+            if (className == ''){
+                $('#classDirection').val("");
+                return false;
+            }
+            $.ajax({
+                url: '../crm/findClassDirectionByClassName',
+                data: {className:className},
+                type: 'post',
+                headers: {"token": layui.data(layui.setter.tableName)['token']},
+                success: function (res) {
+                    if (res.code == 0) {
+                        $('#classDirection').val(res.data);
+                    }{
+                        layer.msg(res.msg, {offset: '15px'});
+                    }
+                },
+                error: function (res) {
+                    layer.msg(res.msg, {offset: '15px'});
+                }
+            });
+        });
+        
+        window.search = function () {
+            let value = $("#className").val().toUpperCase();
+            $("#chooseClassName").val(value);
+            form.render();
+            $("#chooseClassName").next().find("dl").css({ "display": "block" });
+            let dl = $("#chooseClassName").next().find("dl").children();
+            let j = -1;
+            for (let i = 0; i < dl.length; i++) {
+                if (dl[i].innerHTML.indexOf(value) <= -1) {
+                    dl[i].style.display = "none";
+                    j++;
+                }
+                if (j == dl.length-1) {
+                    $("#chooseClassName").next().find("dl").css({ "display": "none" });
+                }
+            }
+
+        }
+
+    });
+</script>
