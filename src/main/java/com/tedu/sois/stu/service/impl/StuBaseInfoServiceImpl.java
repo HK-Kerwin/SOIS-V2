@@ -141,6 +141,8 @@ public class StuBaseInfoServiceImpl implements StuBaseInfoService, StatusCodeCon
     @RequiredLog("删除学生信息")
     @Override
     public void removeStuInfoById(Long[] stuIds) {
+        if (stuIds == null || stuIds.length == 0)
+            throw new ServiceException("请选择后再删除");
         int row = stuBaseInfoDao.deleteStuInfoById(stuIds);
         if (row == 0)
             throw new ServiceException("删除失败,请重新尝试或联系管理员");

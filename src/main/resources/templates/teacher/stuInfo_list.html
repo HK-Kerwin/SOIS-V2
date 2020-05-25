@@ -467,11 +467,12 @@
                     for (let i = 0; i < data.length; i++) {
                         stuIds.push(data[i].stuId);
                     }
-                    layer.confirm('真的删除行么', function(index){
-                        deleteStuInfo(stuIds.toString())
-                        layer.close(index);
-                        //向服务端发送删除指令
-                    });
+                    if(stuIds.length == 0){
+                        layer.msg('请选择后删除', {offset: '15px'});
+                        return false;
+                    }
+                    deleteStuInfo(stuIds.toString())
+                    layer.close(index);
                     break;
             }
             ;
