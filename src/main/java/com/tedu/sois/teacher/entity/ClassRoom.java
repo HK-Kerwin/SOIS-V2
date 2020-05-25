@@ -20,6 +20,15 @@ public class ClassRoom extends BaseEntity {
     /**班级方向*/
     private String classDirection;
 
+    /**座位数*/
+    private String seatNum;
+
+    /**在读人数*/
+    private String fullTimeStuNum;
+
+    /**其他人数:毕业、VIP*/
+    private String otherStuNum;
+
     /**项目经理*/
     private String projectManager;
 
@@ -64,6 +73,30 @@ public class ClassRoom extends BaseEntity {
         this.classDirection = classDirection;
     }
 
+    public String getSeatNum() {
+        return seatNum;
+    }
+
+    public void setSeatNum(String seatNum) {
+        this.seatNum = seatNum;
+    }
+
+    public String getFullTimeStuNum() {
+        return fullTimeStuNum;
+    }
+
+    public void setFullTimeStuNum(String fullTimeStuNum) {
+        this.fullTimeStuNum = fullTimeStuNum;
+    }
+
+    public String getOtherStuNum() {
+        return otherStuNum;
+    }
+
+    public void setOtherStuNum(String otherStuNum) {
+        this.otherStuNum = otherStuNum;
+    }
+
     public String getProjectManager() {
         return projectManager;
     }
@@ -103,6 +136,9 @@ public class ClassRoom extends BaseEntity {
                 ", classRoomNum=" + classRoomNum +
                 ", className='" + className + '\'' +
                 ", classDirection='" + classDirection + '\'' +
+                ", seatNum='" + seatNum + '\'' +
+                ", fullTimeStuNum='" + fullTimeStuNum + '\'' +
+                ", otherStuNum='" + otherStuNum + '\'' +
                 ", projectManager='" + projectManager + '\'' +
                 ", careerDevelopment='" + careerDevelopment + '\'' +
                 ", computerNum=" + computerNum +
