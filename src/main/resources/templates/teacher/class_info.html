@@ -38,14 +38,22 @@
                    placeholder="备注说明" autocomplete="off">
         </div>
     </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label"></label>
+        <button class="layui-btn layui-btn-danger "
+                lay-filter="removeByName" lay-submit >
+            <i class="layui-icon">&#xe640;</i>删除
+        </button>
+    </div>
 
 </form>
 
 
 <script th:inline="javascript">
     layui.use(['form'], function () {
-        let form = layui.form,
-        $ = layui.$;
+        let form = layui.form
+            ,layer = layui.layer,
+            $ = layui.$;
 
         form.render();
 
@@ -100,8 +108,43 @@
                     $("#chooseClassName").next().find("dl").css({ "display": "none" });
                 }
             }
-
         }
+
+        let lock = false;
+        form.on('submit(removeByName)', function (obj) {
+            if (lock) {
+                lock = false;
+                return false;
+            }
+            lock = true;
+            let className = obj.field.className;
+            let url = '../crm/doRemoveClassInfoByClassName';
+            $.ajax({
+                url: url,
+                data: {className:className},
+                type: 'post',
+                headers: {"token": layui.data(layui.setter.tableName)['token']},
+                success: function (res) {
+                    if (res.code == 0) {
+                        layer.msg(res.msg, {offset: '15px',time:1000},function () {
+                            let index = parent.layer.getFrameIndex(window.name);
+                            layer.close(index);
+                            //刷新，重新渲染表格
+                            location.reload();
+                        });
+                        return;
+                    }
+                    lock = false;
+                    layer.msg(res.msg, {offset: '15px'});
+                },
+                error: function (res) {
+                    lock = false;
+                    layer.msg(res.msg, {offset: '15px'});
+                }
+            });
+            return false;
+        });
+
 
     });
 </script>

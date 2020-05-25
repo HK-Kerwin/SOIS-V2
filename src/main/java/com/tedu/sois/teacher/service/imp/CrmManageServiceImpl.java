@@ -97,12 +97,43 @@ public class CrmManageServiceImpl implements CrmManageService {
 
     @Override
     public void SaveClassInfo(ClassInfo classInfo) {
+        if (classInfo == null)
+            throw new ServiceException("保存数据不允许全为空");
+        if (classInfo.getClassName() == null || "".equals(classInfo.getClassName()))
+            throw new ServiceException("班级名字不能为空");
+        if (classInfo.getClassDirection() == null || "".equals(classInfo.getClassDirection()))
+            throw new ServiceException("课程方向不能为空");
+        int count = stuCrmManageDao.selectClassInfoByClassName(classInfo.getClassName());
+        if (count > 0)
+            throw new ServiceException("班级信息已经存在");
         classInfo.setCreatedUser(ShiroUtils.getUsername());
         classInfo.setCreatedTime(new Date());
+        classInfo.setClassName(classInfo.getClassName().toUpperCase());
+        classInfo.setClassDirection(classInfo.getClassDirection().toUpperCase());
         int row = stuCrmManageDao.insertClassInfo(classInfo);
         if (row == 0)
             throw new ServiceException("添加失败");
     }
+
+    @Override
+    public void removeClassInfoByClassName(String className) {
+        if (className == null || "".equals(className))
+            throw new ServiceException("班级名字不能为空");
+        int count = stuCrmManageDao.selectClassInfoByClassName(className);
+        if (count == 0)
+            throw new ServiceException("班级信息不存在");
+        int row = stuCrmManageDao.deleteClassInfoByClassName(className);
+        if (row == 0)
+            throw new ServiceException("删除失败");
+    }
+
+    @Override
+    public void removeRepeatClassInfo() {
+        int row = stuCrmManageDao.deleteRepeatClassInfo();
+        if (row == 0)
+            throw new ServiceException("没有重复数据删除了");
+    }
+
 
     @Transactional(readOnly = true)
     @Override

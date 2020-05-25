@@ -22,6 +22,17 @@ public interface CrmManageService {
     void SaveClassInfo(ClassInfo classInfo);
 
     /**
+     * 根据班级名字删除信息
+     * @param className
+     */
+    void removeClassInfoByClassName(String className);
+
+    /**
+     * 删除重复的班级信息
+     */
+    void removeRepeatClassInfo();
+
+    /**
      * 查询所有的班级名称
      * @return 全部班级名集合
      */

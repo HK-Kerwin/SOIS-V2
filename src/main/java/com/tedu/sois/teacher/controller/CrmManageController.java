@@ -27,14 +27,40 @@ public class CrmManageController {
         return new JsonResult("数据更新成功");
     }
 
-    @RequestMapping("doSaveClassInfo")
+    /**
+     * 添加班级信息
+     * @param classInfo
+     * @return
+     */
+    @PostMapping("doSaveClassInfo")
     public JsonResult doSaveClassInfo(ClassInfo classInfo){
         crmManageService.SaveClassInfo(classInfo);
         return new JsonResult("添加成功");
     }
 
     /**
-     * 查询crm下载的Excel文件中包含的班级信息
+     * 根据班级名字删除信息
+     * @param className
+     * @return
+     */
+    @PostMapping("doRemoveClassInfoByClassName")
+    public JsonResult doRemoveClassInfoByClassName(String className){
+        crmManageService.removeClassInfoByClassName(className);
+        return new JsonResult("删除成功");
+    }
+
+    /**
+     * 删除重复的班级信息
+     */
+    @RequestMapping("doRemoveRepeatClassInfo")
+    public JsonResult doRemoveRepeatClassInfo(){
+        crmManageService.removeRepeatClassInfo();
+        return new JsonResult("删除成功");
+    }
+
+
+    /**
+     * 查询所有班级名字
      * 后续老师自行添加
      * @return
      */
@@ -43,6 +69,11 @@ public class CrmManageController {
         return new JsonResult(crmManageService.showClassNumAllList());
     }
 
+    /**
+     * 根据班级名字查询方向
+     * @param className
+     * @return
+     */
     @RequestMapping("findClassDirectionByClassName")
     public JsonResult findClassDirectionByClassName(String className){
         if (className == null || "".equals(className))

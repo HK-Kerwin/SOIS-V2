@@ -32,7 +32,9 @@
                         </button>
                         <button class="layui-btn layui-btn-sm " lay-event="refresh"><i class="layui-icon">&#xe666;</i>刷新
                         </button>
-                        <button class="layui-btn layui-btn-sm " lay-event="classManage"><i class="layui-icon">&#xe630;</i>班级管理
+                        <button class="layui-btn layui-btn-sm layui-btn-normal" lay-event="classManage"><i class="layui-icon">&#xe630;</i>班级管理
+                        </button>
+                        <button class="layui-btn layui-btn-sm layui-btn-danger" lay-event="removeRepeat"><i class="layui-icon">&#xe640;</i>删除重复班级
                         </button>
                         <button id="importCRM" class="layui-btn layui-btn-sm " lay-event="importCRM"><i class="layui-icon">&#xe60a;</i>导入CRM学生信息表
                         </button>
@@ -117,6 +119,8 @@
             }
         });
 
+
+
         /* 头工具栏事件 */
         table.on('toolbar(classRoom-list-table-toolbar)', function (obj) {
             let data = table.checkStatus(obj.config.id);
@@ -136,8 +140,8 @@
                 case 'classManage':
                     classManage();
                     break;
-                case 'importCRM':
-
+                case 'removeRepeat':
+                    removeRepeat();
                     break;
             }
             ;
@@ -281,7 +285,7 @@
                     layer.open({
                         type: 1
                         , title: '班级管理'
-                        , area: ['590px','650px']
+                        , area: ['590px','550px']
                         , content: data
                         , btn: ['提交', '退出']
                         , yes: function () {
@@ -290,11 +294,11 @@
                             layero.addClass('layui-form');
                             let submitBtn = layero.find('.layui-layer-btn0');
                             submitBtn.attr('lay-filter', 'formClassTable').attr('lay-submit', '');
-                            layero.keydown(function (e) {
+                            /*layero.keydown(function (e) {
                                 if (e.keyCode == 13) {
                                     submitBtn.click();
                                 }
-                            });
+                            });*/
                             let lock = false;
                             form.on('submit(formClassTable)', function (data) {
                                 if (lock) {
@@ -302,16 +306,11 @@
                                     return false;
                                 }
                                 lock = true;
-                                let url;
-                                if (tag === 'add') {
-                                    url = '../classRoom/doSaveClassRoomInfo';
-                                }
-                                if (tag === 'edit') {
-                                    url = '../classRoom/doModifyClassRoomInfo';
-                                }
+                                let result = data.field;
+                                let url = '../crm/doSaveClassInfo';
                                 $.ajax({
                                     url: url,
-                                    data: data.field,
+                                    data: result,
                                     type: 'post',
                                     headers: {"token": layui.data(layui.setter.tableName)['token']},
                                     success: function (res) {
@@ -340,6 +339,36 @@
             });
         }
 
+
+        let lock;
+        function removeRepeat() {
+            if (lock) {
+                lock = false;
+                return false;
+            }
+            lock = true;
+            let url = '../crm/doRemoveRepeatClassInfo';
+            $.ajax({
+                url: url,
+                headers: {"token": layui.data(layui.setter.tableName)['token']},
+                success: function (res) {
+                    if (res.code == 0) {
+                        layer.msg(res.msg, {offset: '15px',time:1000},function () {
+                            //刷新，重新渲染表格
+                            location.reload();
+                        });
+                        return false;
+                    }
+                    lock = false;
+                    layer.msg(res.msg, {offset: '15px'});
+                },
+                error: function (res) {
+                    lock = false;
+                    layer.msg(res.msg, {offset: '15px'});
+                }
+            });
+            return false;
+        }
 
         let files;
         layui.upload.render({

@@ -6,11 +6,11 @@
     <insert id="insertStuCrmManage" parameterType="java.util.List" keyProperty="crmManageId" useGeneratedKeys="true">
         insert ignore into stu_crm_manage
         (
-            crm_id,crm_stu_name,series_class,
-            crm_class,stu_state,contract_send_type,
-            need_cost,cost_all,enter_class_time,
-            monthly_time,teaching_center,sales_center,
-            consult_name,created_name,created_time
+        crm_id,crm_stu_name,series_class,
+        crm_class,stu_state,contract_send_type,
+        need_cost,cost_all,enter_class_time,
+        monthly_time,teaching_center,sales_center,
+        consult_name,created_name,created_time
         )
         values
         <foreach collection="list" item="scm" separator=",">
@@ -26,7 +26,7 @@
 
     <insert id="insertStuClassSet" parameterType="java.util.Set" keyProperty="classId" useGeneratedKeys="true">
         insert ignore into class_info (
-            class_name,class_direction,created_time
+        class_name,class_direction,created_time
         )
         values
         <foreach collection="collection" item="ct" separator=",">
@@ -35,7 +35,7 @@
     </insert>
     <insert id="insertClassInfo" parameterType="com.tedu.sois.teacher.entity.ClassInfo"
             keyProperty="classId" useGeneratedKeys="true">
-        insert  into class_info
+        insert into class_info
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="className != null  and className != ''">class_name,</if>
             <if test="classDirection != null  and classDirection != ''">class_direction,</if>
@@ -51,6 +51,20 @@
             <if test="createdUser != null  and createdUser != ''">#{createdUser},</if>
         </trim>
     </insert>
+    <delete id="deleteRepeatClassInfo">
+        DELETE FROM class_info WHERE class_id IN (
+            SELECT * FROM (
+                SELECT class_id FROM class_info WHERE class_name -- 注意：多个字段此处一定要加括号，当成联合字段来处理
+                IN (
+                    -- 查找学号和姓名均重复的学生信息
+                    SELECT class_name FROM class_info GROUP BY class_name HAVING COUNT(1) > 1
+                ) AND class_id NOT IN (
+                    -- 查询最小id的记录
+                    SELECT MIN(class_id) FROM class_info GROUP BY class_name HAVING COUNT(1) > 1
+                )
+            ) AS class_info_repeat
+        );
+    </delete>
 
     <select id="selectClassNameAllList" resultType="string">
         SELECT class_name FROM class_info
@@ -58,7 +72,7 @@
         GROUP BY class_name
         ORDER BY class_name ASC
     </select>
-    
+
     <select id="selectClassDirectionByClassName" resultType="string">
         select class_direction from class_info
         where class_name=#{className}
