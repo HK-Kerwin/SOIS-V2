@@ -14,7 +14,7 @@
         <label  class="layui-form-label">班级号</label>
         <div class="layui-input-block">
             <input type="text" name="className" id="className" placeholder="可搜索"
-                   class="layui-input" style="position:absolute;z-index:2;width:60%;border-right: 0;"
+                   class="layui-input" style="position:absolute;z-index:2;width:60%;border-right: 0;cursor:pointer;"
                    lay-verify="required" onkeyup="search()" autocomplete="off">
             <select lay-filter="chooseClassName" id="chooseClassName"  lay-search="" >
                 <option value="">可以搜索</option>
@@ -27,7 +27,7 @@
         <label class="layui-form-label">班级方向</label>
         <div class="layui-input-block">
             <input type="text" class="layui-input" name="classDirection" id="classDirection"
-                   placeholder="班级方向" autocomplete="off" lay-verify="required">
+                   placeholder="班级方向" autocomplete="off" lay-verify="required" onkeyup="upCase()">
         </div>
     </div>
 
@@ -91,24 +91,33 @@
                 }
             });
         });
-        
+
+        window.upCase = function(){
+            let value = $('#classDirection').val().toUpperCase();
+            $('#classDirection').val(value);
+        };
         window.search = function () {
+            if($("#className").val() == ''){
+                $("#chooseClassName").next().attr('class','layui-form-select');
+                $('#classDirection').val("");
+                return false;
+            }
             let value = $("#className").val().toUpperCase();
+            $("#className").val(value);
             $("#chooseClassName").val(value);
             form.render();
-            $("#chooseClassName").next().find("dl").css({ "display": "block" });
+            $("#chooseClassName").next().attr('class','layui-form-select layui-form-selected');
             let dl = $("#chooseClassName").next().find("dl").children();
             let j = -1;
             for (let i = 0; i < dl.length; i++) {
                 if (dl[i].innerHTML.indexOf(value) <= -1) {
-                    dl[i].style.display = "none";
                     j++;
                 }
                 if (j == dl.length-1) {
-                    $("#chooseClassName").next().find("dl").css({ "display": "none" });
+                    $("#chooseClassName").next().attr('class','layui-form-select');
                 }
             }
-        }
+        };
 
         let lock = false;
         form.on('submit(removeByName)', function (obj) {
