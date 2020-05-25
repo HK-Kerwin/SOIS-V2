@@ -1,6 +1,7 @@
 package com.tedu.sois.teacher.controller;
 
 import com.tedu.sois.common.vo.JsonResult;
+import com.tedu.sois.teacher.entity.ClassInfo;
 import com.tedu.sois.teacher.service.CrmManageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -26,13 +27,18 @@ public class CrmManageController {
         return new JsonResult("数据更新成功");
     }
 
+    @RequestMapping("doSaveClassInfo")
+    public JsonResult doSaveClassInfo(ClassInfo classInfo){
+        crmManageService.SaveClassInfo(classInfo);
+        return new JsonResult("添加成功");
+    }
 
     /**
      * 查询crm下载的Excel文件中包含的班级信息
      * 后续老师自行添加
      * @return
      */
-    @GetMapping("findStuClass")
+    @RequestMapping("findStuClass")
     public JsonResult findStuClass(){
         return new JsonResult(crmManageService.showClassNumAllList());
     }

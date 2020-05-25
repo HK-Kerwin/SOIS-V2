@@ -25,7 +25,7 @@
     </insert>
 
     <insert id="insertStuClassSet" parameterType="java.util.Set" keyProperty="classId" useGeneratedKeys="true">
-        insert ignore into class_table(
+        insert ignore into class_info (
             class_name,class_direction,created_time
         )
         values
@@ -33,16 +33,34 @@
             (#{ct.className},#{ct.classDirection},#{ct.createdTime})
         </foreach>
     </insert>
+    <insert id="insertClassInfo" parameterType="com.tedu.sois.teacher.entity.ClassInfo"
+            keyProperty="classId" useGeneratedKeys="true">
+        insert  into class_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="className != null  and className != ''">class_name,</if>
+            <if test="classDirection != null  and classDirection != ''">class_direction,</if>
+            <if test="remark != null  and remark != ''">remark,</if>
+            <if test="createdTime != null  ">created_time,</if>
+            <if test="createdUser != null  and createdUser != ''">created_user,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="className != null  and className != ''">#{className},</if>
+            <if test="classDirection != null  and classDirection != ''">#{classDirection},</if>
+            <if test="remark != null  and remark != ''">#{remark},</if>
+            <if test="createdTime != null  ">#{createdTime},</if>
+            <if test="createdUser != null  and createdUser != ''">#{createdUser},</if>
+        </trim>
+    </insert>
 
     <select id="selectClassNameAllList" resultType="string">
-        SELECT class_name FROM class_table
+        SELECT class_name FROM class_info
         /*WHERE created_time between (SELECT DATE_ADD(now(),INTERVAL -6 MONTH)) and now()*/
         GROUP BY class_name
         ORDER BY class_name ASC
     </select>
     
     <select id="selectClassDirectionByClassName" resultType="string">
-        select class_direction from class_table
+        select class_direction from class_info
         where class_name=#{className}
         GROUP BY class_direction
     </select>

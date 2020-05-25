@@ -18,6 +18,12 @@ public interface StuCrmManageDao extends BaseMapper<StuCrmManage> {
     Integer insertStuCrmManage(List<StuCrmManage> list);
 
     /**
+     * 添加班级信息
+     * @return
+     */
+    int insertClassInfo(ClassInfo classInfo);
+
+    /**
      * 批量插入班级信息
      * @return
      */

@@ -273,7 +273,7 @@
 
         /*班级信息管理*/
         function classManage() {
-            let url = '../classTable/doGetClassTablePageForTeacher';
+            let url = '../classInfo/doGetClassTablePageForTeacher';
             $.ajax({
                 url: url,
                 headers: {"token": layui.data(layui.setter.tableName)['token']},

@@ -5,6 +5,7 @@ import com.alibaba.excel.exception.ExcelAnalysisException;
 import com.tedu.sois.common.annotation.RequiredLog;
 import com.tedu.sois.common.exception.ServiceException;
 import com.tedu.sois.common.listener.StuCrmManageTemporaryListener;
+import com.tedu.sois.common.util.ShiroUtils;
 import com.tedu.sois.teacher.dao.StuCrmManageDao;
 import com.tedu.sois.teacher.entity.ClassInfo;
 import com.tedu.sois.teacher.entity.StuCrmManage;
@@ -22,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -91,6 +93,15 @@ public class CrmManageServiceImpl implements CrmManageService {
             e.printStackTrace();
             throw new ServiceException("导入信息出现问题,请及时联系管理员");
         }
+    }
+
+    @Override
+    public void SaveClassInfo(ClassInfo classInfo) {
+        classInfo.setCreatedUser(ShiroUtils.getUsername());
+        classInfo.setCreatedTime(new Date());
+        int row = stuCrmManageDao.insertClassInfo(classInfo);
+        if (row == 0)
+            throw new ServiceException("添加失败");
     }
 
     @Transactional(readOnly = true)
