@@ -169,7 +169,7 @@
         });
 
         /*表格重载,搜索方法*/
-        var active = {
+        let active = {
             reload: function () {
                 let demoReload = $('#table-demoReload-input');
                 let index = layer.msg('查询中,请稍等',{icon:16,time:1000,shade:0})
@@ -274,6 +274,7 @@
         /* 编辑学生个人信息功能 */
         function edit(data) {
             window.reqData = data;
+            window.active = active;
             let url = 'getStuEditPage';
             layer.open({
                 type: 2 //此处以iframe举例

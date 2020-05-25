@@ -398,6 +398,7 @@
         /* 编辑学生个人信息功能 */
         function edit(data) {
             window.reqData = data;
+            window.active = active;
             let url = '../stu/getStuEditPage';
             layer.open({
                 type: 2 //此处以iframe举例

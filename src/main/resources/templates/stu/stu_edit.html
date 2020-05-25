@@ -503,7 +503,7 @@
                         layui.layer.msg(res.msg==null?'提交失败':res.msg+',重新刷新页面',{offers:'15px',icon:1,time:2000},function () {
                             let index = parent.layer.getFrameIndex(window.name);
                             parent.layer.close(index);
-                            parent.location.reload();
+                            parent.active['reload'].call(this,'reload');
                         });
 
                     } else{
