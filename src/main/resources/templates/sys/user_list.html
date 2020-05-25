@@ -150,7 +150,7 @@
             }
         });
         /*表格重载,搜索方法*/
-        var active = {
+        let active = {
             reload: function () {
                 let demoReload = $('#table-demoReload-input');
                 let index = layer.msg('查询中,请稍等', {icon: 16, time: 1000, shade: 0})
@@ -229,6 +229,7 @@
 
         /* 编辑用户个人信息功能 */
         function edit(data) {
+            window.active = active;
             let url = '../user/getUserInfoPage?userId=' + data.userId;
             layer.open({
                 type: 2 //此处以iframe举例

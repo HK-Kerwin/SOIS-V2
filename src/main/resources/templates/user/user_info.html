@@ -298,7 +298,13 @@
                             offset: '15px'
                             , icon: 1
                         }, function () {
-                            parent.location.reload();
+                            if (parent.active){
+                                let index = parent.layer.getFrameIndex(window.name);
+                                parent.layer.close(index);
+                                parent.active['reload'].call(this,'reload');
+                            } else {
+                                parent.location.reload();
+                            }
                         });
                     }
                     layer.msg(res.msg, {offset: '15px'});
