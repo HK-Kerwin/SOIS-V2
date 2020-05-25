@@ -82,10 +82,11 @@ public class CrmManageServiceImpl implements CrmManageService {
         List<StuCrmManage> list = listener.getList();
         System.err.println(list);
         try{
-            int row1 = stuCrmManageDao.insertStuCrmManage(list);
+            stuCrmManageDao.insertStuCrmManage(list);
 
             Set<ClassInfo> seriesClassAll = listener.getSeriesClassAll();
-            int row2 = stuCrmManageDao.insertStuClassSet(seriesClassAll);
+
+            stuCrmManageDao.insertStuClassSet(seriesClassAll);
         } catch (Exception e){
             e.printStackTrace();
             throw new ServiceException("导入信息出现问题,请及时联系管理员");
