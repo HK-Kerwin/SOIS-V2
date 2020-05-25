@@ -35,10 +35,6 @@ public class SpringWebConfig implements WebMvcConfigurer {
         patterns.add("/error");
         patterns.add("/doErrorUI");
         patterns.add("/doLoginUI");
-        patterns.add("/common/*");
-        patterns.add("/home/*");
-        patterns.add("/teacher/*");
-        patterns.add("/sys/*");
 
         //头像请求
         patterns.add("/upload/**");
@@ -48,10 +44,14 @@ public class SpringWebConfig implements WebMvcConfigurer {
         patterns.add("/user/getUserInfoPage");
         patterns.add("/user/getModifyPasswordPage");
 
-
+        patterns.add("/common/*");
+        patterns.add("/home/*");
+        patterns.add("/training/*");
         patterns.add("/stu/*");
         patterns.add("/crm/*");
+        patterns.add("/teacher/*");
         patterns.add("/user/*");
+        patterns.add("/sys/*");
 
         registry.addInterceptor( new TimeAccessInterceptor())
                 .addPathPatterns()

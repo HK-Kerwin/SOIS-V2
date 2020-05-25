@@ -111,6 +111,7 @@ public class SpringShiroConfig {
         map.put("/doErrorUI", "anon");
         map.put("/common/*", "anon");
 
+        map.put("/training/*", "anon");
         map.put("/stu/*", "anon");
         map.put("/score/*", "anon");
         map.put("/crm/*", "anon");
