@@ -2,6 +2,7 @@ package com.tedu.sois.teacher.controllerpage;
 
 import com.tedu.sois.teacher.entity.ClassRoom;
 import com.tedu.sois.teacher.service.CrmManageService;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,6 +29,7 @@ public class TeacherEditPageController {
         return "teacher/classroom_edit";
     }
 
+    @RequiresPermissions("teacher:class:info")
     @RequestMapping("classInfo/doGetClassTablePageForTeacher")
     public String doGetClassRoomEditPageForTeacher(Model model){
         List<String> list = crmManageService.showClassNumAllList();
