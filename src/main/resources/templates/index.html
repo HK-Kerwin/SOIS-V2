@@ -129,7 +129,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     lay-filter="layadmin-system-side-menu">
 
                     <li th:data-name="${um.menuName}" class="layui-nav-item" th:each="um:${userMenus}">
-                        <a href="javascript:;" th:lay-tips="${um.menuName}" lay-direction="2">
+                        <a href="javascript:;" th:lay-tips="${um.menuName}">
                             <i th:class="${um.icon}"></i>
                             <cite>[[${um.menuName}]]</cite>
                             <span class="layui-nav-more"></span>
