@@ -12,7 +12,7 @@ public class ClassRoom extends BaseEntity {
     private Integer classRoomId;
 
     /**教室号*/
-    private Integer classRoomNum;
+    private String classRoomNum;
 
     /**班级名字*/
     private String className;
@@ -49,11 +49,11 @@ public class ClassRoom extends BaseEntity {
         this.classRoomId = classRoomId;
     }
 
-    public Integer getClassRoomNum() {
+    public String getClassRoomNum() {
         return classRoomNum;
     }
 
-    public void setClassRoomNum(Integer classRoomNum) {
+    public void setClassRoomNum(String classRoomNum) {
         this.classRoomNum = classRoomNum;
     }
 
