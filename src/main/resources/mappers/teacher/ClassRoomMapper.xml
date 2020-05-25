@@ -11,6 +11,9 @@
             <if test="classRoomNum != null  and classRoomNum != ''">class_room_num,</if>
             <if test="className != null  and className != ''">class_name,</if>
             <if test="classDirection != null  and classDirection != ''">class_direction,</if>
+            <if test="seatNum != null  and seatNum != ''">seat_num,</if>
+            <if test="fullTimeStuNum != null  and fullTimeStuNum != ''">full_time_stu_num,</if>
+            <if test="otherStuNum != null  and otherStuNum != ''">other_stu_num,</if>
             <if test="projectManager != null  and projectManager != ''">project_manager,</if>
             <if test="careerDevelopment != null  and careerDevelopment != ''">career_development,</if>
             <if test="computerNum != null  and computerNum != ''">computer_num,</if>
@@ -23,6 +26,9 @@
             <if test="classRoomNum != null  and classRoomNum != ''">#{classRoomNum},</if>
             <if test="className != null  and className != ''">#{className},</if>
             <if test="classDirection != null  and classDirection != ''">#{classDirection},</if>
+            <if test="seatNum != null  and seatNum != ''">#{seatNum},</if>
+            <if test="fullTimeStuNum != null  and fullTimeStuNum != ''">#{fullTimeStuNum},</if>
+            <if test="otherStuNum != null  and otherStuNum != ''">#{otherStuNum},</if>
             <if test="projectManager != null  and projectManager != ''">#{projectManager},</if>
             <if test="careerDevelopment != null  and careerDevelopment != ''">#{careerDevelopment},</if>
             <if test="computerNum != null  and computerNum != ''">#{computerNum},</if>
@@ -48,6 +54,9 @@
         class_room_num = #{classRoomNum},
         class_name = #{className},
         class_direction = #{classDirection},
+        seat_num = #{seatNum},
+        full_time_stu_num = #{fullTimeStuNum},
+        other_stu_num = #{otherStuNum},
         project_manager = #{projectManager},
         career_development = #{careerDevelopment},
         computer_num = #{computerNum},
