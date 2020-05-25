@@ -51,6 +51,30 @@
         </div>
     </div>-->
     <div class="layui-form-item">
+        <label class="layui-form-label">座位数</label>
+        <div class="layui-input-block">
+            <input type="text" class="layui-input" name="seatNum" id="seatNum"
+                   th:value="${classRoom.seatNum}"
+                   placeholder="座位数" autocomplete="off">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">在读人数</label>
+        <div class="layui-input-block">
+            <input type="text" class="layui-input" name="fullTimeStuNum" id="fullTimeStuNum"
+                   th:value="${classRoom.fullTimeStuNum==null?0:classRoom.fullTimeStuNum}"
+                   placeholder="在读人数" autocomplete="off">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">其他人数</label>
+        <div class="layui-input-block">
+            <input type="text" class="layui-input" name="otherStuNum" id="otherStuNum"
+                   th:value="${classRoom.otherStuNum==null?0:classRoom.otherStuNum}"
+                   placeholder="其他人数" autocomplete="off">
+        </div>
+    </div>
+    <div class="layui-form-item">
         <label class="layui-form-label">项目经理</label>
         <div class="layui-input-block">
             <input type="text" class="layui-input" name="projectManager" id="projectManager"

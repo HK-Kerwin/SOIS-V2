@@ -89,11 +89,14 @@
                     sort: true,
                     align: 'center'
                 }
-                    , {field: 'classRoomNum', title: '教室号', align: 'center', minWidth: 60}
+                    , {field: 'classRoomNum', title: '教室号', align: 'center', minWidth: 80}
                     , {field: 'className', title: '班级号', align: 'center', minWidth: 180}
                     , {field: 'classDirection', title: '班级方向', align: 'center', minWidth: 120}
-                    , {field: 'projectManager', title: '项目经理', align: 'center', minWidth: 102}
-                    , {field: 'careerDevelopment', title: '职业发展', align: 'center', minWidth: 102}
+                    , {field: 'seatNum', title: '座位数', align: 'center', minWidth: 80}
+                    , {field: 'fullTimeStuNum', title: '在读人数', align: 'center', minWidth: 90}
+                    , {field: 'otherStuNum', title: '其他人数', align: 'center', minWidth: 90}
+                    , {field: 'projectManager', title: '项目经理', align: 'center', minWidth: 100}
+                    , {field: 'careerDevelopment', title: '职业发展', align: 'center', minWidth: 100}
                     , {field: 'computerNum', title: '电脑数量', align: 'center', minWidth: 100}
                     , {field: 'displayNum', title: '显示器数量', align: 'center', minWidth: 100}
                     , {field: 'remark', title: '备注说明', align: 'center', minWidth: 100}
@@ -120,6 +123,22 @@
         });
 
 
+        /*表格重载,搜索方法*/
+        let active = {
+            reload: function () {
+                let index = layer.msg('查询中,请稍等', {icon: 16, time: 10000, shade: 0})
+                //执行重载
+                table.reload('classRoomInfoReload', {
+                    url: '../classRoom/doFindPageClassRoomInfoList'
+                    , done: function (res, curr, count) {
+                        layer.close(index);
+                    }
+                    , error: function (res, curr, count) {
+                        layer.msg(res.msg);
+                    }
+                }, 'data');
+            }
+        };
 
         /* 头工具栏事件 */
         table.on('toolbar(classRoom-list-table-toolbar)', function (obj) {
@@ -135,7 +154,7 @@
                     edit(data,'edit');
                     break;
                 case 'refresh':
-                    location.reload();
+                    active['reload'].call(this,'reload');
                     break;
                 case 'classManage':
                     classManage();
@@ -165,7 +184,7 @@
                             if (res.code == 0) {
                                 layer.msg(res.msg, {offset: '15px',time:1000}, function () {
                                     layer.close(index);
-                                    location.reload();
+                                    active['reload'].call(this,'reload');
                                 });
                             } else {
                                 layer.msg(res.msg, {offset: '15px'});
@@ -253,7 +272,7 @@
                                             layer.msg(res.msg, {offset: '15px',time:1000},function () {
                                                 layer.close(index);
                                                 //刷新，重新渲染表格
-                                                location.reload();
+                                                active['reload'].call(this,'reload');
                                             });
                                             return;
                                         }
@@ -318,7 +337,7 @@
                                             layer.msg(res.msg, {offset: '15px',time:1000},function () {
                                                 layer.close(index);
                                                 //刷新，重新渲染表格
-                                                location.reload();
+                                                active['reload'].call(this,'reload');
                                             });
                                             return;
                                         }
@@ -355,7 +374,7 @@
                     if (res.code == 0) {
                         layer.msg(res.msg, {offset: '15px',time:1000},function () {
                             //刷新，重新渲染表格
-                            location.reload();
+                            active['reload'].call(this,'reload');
                         });
                         return false;
                     }
@@ -399,6 +418,13 @@
                 layer.closeAll('loading'); //关闭loading
                 layer.msg(res.msg, {offset: '15px', time: 1000})
             }
+        });
+
+        $('.table-reload-btn .layui-btn').on('click', function () {
+            let type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+            let othis = $(this), method = othis.data('method');
+            active[method] ? active[method].call(this, othis) : '';
         });
 
     })
