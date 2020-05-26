@@ -2,6 +2,7 @@ package com.tedu.sois.teacher.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.tedu.sois.teacher.entity.ClassRoom;
+import com.tedu.sois.teacher.entity.ClassRoomCountVo;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
@@ -44,4 +45,10 @@ public interface ClassRoomDao {
      * @return
      */
     List<ClassRoom> selectPageClassRoomInfoList(@Param("startIndex") int startIndex, @Param("limit")Integer limit);
+
+    /**
+     * 教室数据统计
+     * @return
+     */
+    ClassRoomCountVo selectClassRoomStatistical();
 }

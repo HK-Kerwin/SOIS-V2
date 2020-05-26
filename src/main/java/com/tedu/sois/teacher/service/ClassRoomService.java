@@ -2,6 +2,7 @@ package com.tedu.sois.teacher.service;
 
 import com.tedu.sois.common.vo.JsonResult;
 import com.tedu.sois.teacher.entity.ClassRoom;
+import com.tedu.sois.teacher.entity.ClassRoomCountVo;
 
 
 public interface ClassRoomService {
@@ -31,4 +32,10 @@ public interface ClassRoomService {
      * @return
      */
     JsonResult findPageClassRoomInfoList(Integer page, Integer limit);
+
+
+    /**
+     * 教室数据统计
+     */
+    ClassRoomCountVo getClassRoomStatistical();
 }

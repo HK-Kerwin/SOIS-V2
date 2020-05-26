@@ -5,6 +5,7 @@ import com.tedu.sois.common.util.ShiroUtils;
 import com.tedu.sois.common.vo.JsonResult;
 import com.tedu.sois.teacher.dao.ClassRoomDao;
 import com.tedu.sois.teacher.entity.ClassRoom;
+import com.tedu.sois.teacher.entity.ClassRoomCountVo;
 import com.tedu.sois.teacher.service.ClassRoomService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.DecimalFormat;
 import java.util.Date;
 import java.util.List;
 @Transactional(isolation = Isolation.READ_COMMITTED, //隔离级别
@@ -71,5 +73,19 @@ public class ClassRoomServiceImpl implements ClassRoomService {
         int startIndex = (page -1) * limit;
         List<ClassRoom> records = classRoomDao.selectPageClassRoomInfoList(startIndex,limit);
         return new JsonResult(page,limit,count,records);
+    }
+
+    @Override
+    public ClassRoomCountVo getClassRoomStatistical() {
+        ClassRoomCountVo data = classRoomDao.selectClassRoomStatistical();
+        Integer fullTimeStuNumAll = data.getFullTimeStuNumAll();
+        Integer otherStuNumAll = data.getOtherStuNumAll();
+        int stuNum = fullTimeStuNumAll + otherStuNumAll;
+        Integer seatNumAll = data.getSeatNumAll();
+        if (seatNumAll != null && seatNumAll.intValue() != 0){
+            DecimalFormat df = new DecimalFormat("##.##%");
+            data.setSeatUsageRate(df.format(stuNum*1.0/seatNumAll));
+        }
+        return data;
     }
 }

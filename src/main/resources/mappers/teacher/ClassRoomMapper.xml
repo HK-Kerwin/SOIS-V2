@@ -72,4 +72,13 @@
         order by class_room_num
         limit #{startIndex},#{limit}
     </select>
+
+    <select id="selectClassRoomStatistical" resultType="com.tedu.sois.teacher.entity.ClassRoomCountVo">
+        select
+        count(class_room_id) as roomNumAll,
+        sum(seat_num) as seatNumAll,
+        sum(full_time_stu_num) as fullTimeStuNumAll,
+        sum(other_stu_num) as otherStuNumAll
+        from class_room
+    </select>
 </mapper>
