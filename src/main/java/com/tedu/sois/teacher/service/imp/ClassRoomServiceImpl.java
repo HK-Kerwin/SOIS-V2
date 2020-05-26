@@ -6,6 +6,7 @@ import com.tedu.sois.common.vo.JsonResult;
 import com.tedu.sois.teacher.dao.ClassRoomDao;
 import com.tedu.sois.teacher.entity.ClassRoom;
 import com.tedu.sois.teacher.service.ClassRoomService;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
@@ -24,6 +25,7 @@ public class ClassRoomServiceImpl implements ClassRoomService {
     @Autowired
     private ClassRoomDao classRoomDao;
 
+    @RequiresPermissions("teacher:classRoom:add")
     @Override
     public void saveClassRoomInfo(ClassRoom entity) {
         entity.setCreatedUser(ShiroUtils.getUsername());
@@ -33,6 +35,7 @@ public class ClassRoomServiceImpl implements ClassRoomService {
             throw new ServiceException("保存教室信息失败");
     }
 
+    @RequiresPermissions("teacher:classRoom:delete")
     @Override
     public void removeClassRoomInfoByIds(Integer[] classRoomIds) {
         if (classRoomIds == null)
@@ -44,6 +47,7 @@ public class ClassRoomServiceImpl implements ClassRoomService {
             throw new ServiceException("删除失败");
     }
 
+    @RequiresPermissions("teacher:classRoom:update")
     @Override
     public void modifyClassRoomInfo(ClassRoom entity) {
         if (entity == null)
@@ -55,6 +59,7 @@ public class ClassRoomServiceImpl implements ClassRoomService {
             throw new ServiceException("更新失败");
     }
 
+    @RequiresPermissions("teacher:classRoom:view")
     @Transactional(readOnly = true)
     @Override
     public JsonResult findPageClassRoomInfoList(Integer page, Integer limit) {
