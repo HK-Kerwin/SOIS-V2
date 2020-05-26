@@ -103,7 +103,6 @@ public class SysMenuServiceImpl implements SysMenuService {
 
     @RequiresPermissions("sys:menu:view")
     @Cacheable("menuCache")
-    @RequiredLog("查询菜单信息")
     @Transactional(readOnly = true)
     @Override
     public List<Map<String, Object>> findMenuList() {

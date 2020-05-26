@@ -124,7 +124,6 @@ public class SysRoleServiceImpl implements SysRoleService {
 
     @RequiresPermissions("sys:role:view")
     @Cacheable("roleCache")
-    @RequiredLog("分页查询角色信息")
     @Transactional(readOnly = true)
     @Override
     public JsonResult findPageRoleInfoByRoleName(String roleName, Integer page, Integer limit) {

@@ -189,7 +189,6 @@ public class SysUserServiceImpl implements SysUserService {
     //key默认为方法的参数的组合
     @Cacheable(value = "userCache")
     @Transactional(readOnly = true)
-    @RequiredLog("分页查询用户信息")
     @Override
     public JsonResult findUserDeptByUserName(String userName, Integer page, Integer limit) {
         //参数校验
