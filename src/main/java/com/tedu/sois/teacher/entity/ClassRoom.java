@@ -21,13 +21,13 @@ public class ClassRoom extends BaseEntity {
     private String classDirection;
 
     /**座位数*/
-    private String seatNum;
+    private Integer seatNum;
 
     /**在读人数*/
-    private String fullTimeStuNum;
+    private Integer fullTimeStuNum;
 
     /**其他人数:毕业、VIP*/
-    private String otherStuNum;
+    private Integer otherStuNum;
 
     /**项目经理*/
     private String projectManager;
@@ -73,27 +73,27 @@ public class ClassRoom extends BaseEntity {
         this.classDirection = classDirection;
     }
 
-    public String getSeatNum() {
+    public Integer getSeatNum() {
         return seatNum;
     }
 
-    public void setSeatNum(String seatNum) {
+    public void setSeatNum(Integer seatNum) {
         this.seatNum = seatNum;
     }
 
-    public String getFullTimeStuNum() {
+    public Integer getFullTimeStuNum() {
         return fullTimeStuNum;
     }
 
-    public void setFullTimeStuNum(String fullTimeStuNum) {
+    public void setFullTimeStuNum(Integer fullTimeStuNum) {
         this.fullTimeStuNum = fullTimeStuNum;
     }
 
-    public String getOtherStuNum() {
+    public Integer getOtherStuNum() {
         return otherStuNum;
     }
 
-    public void setOtherStuNum(String otherStuNum) {
+    public void setOtherStuNum(Integer otherStuNum) {
         this.otherStuNum = otherStuNum;
     }
 
