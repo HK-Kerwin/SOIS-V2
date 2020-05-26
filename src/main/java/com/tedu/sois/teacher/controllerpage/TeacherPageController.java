@@ -52,4 +52,9 @@ public class TeacherPageController {
     public String doGetClassRoomInfoPageForTeacher(){
         return "teacher/classroom_list";
     }
+
+    @RequestMapping("doGetAssetsInfoPageForMaintenance")
+    public String doGetAssetsInfoPageForMaintenance(){
+        return "teacher/assets_info";
+    }
 }
