@@ -9,7 +9,7 @@ import java.util.Objects;
  */
 public class SysLog implements Serializable{
 	private static final long serialVersionUID = 8924387722922123121L;
-	private Integer logId;
+	private Long logId;
 	/**用户名*/
 	private String userName;
 	/**用户操作*/
@@ -32,7 +32,7 @@ public class SysLog implements Serializable{
 	public SysLog() {
 	}
 
-	public SysLog(Integer logId, String userName, String operation, String method, String params, Long millisecond, String ip, String address, String isp, Date createdTime) {
+	public SysLog(Long logId, String userName, String operation, String method, String params, Long millisecond, String ip, String address, String isp, Date createdTime) {
 		this.logId = logId;
 		this.userName = userName;
 		this.operation = operation;
@@ -49,11 +49,11 @@ public class SysLog implements Serializable{
 		return serialVersionUID;
 	}
 
-	public Integer getLogId() {
+	public Long getLogId() {
 		return logId;
 	}
 
-	public void setLogId(Integer logId) {
+	public void setLogId(Long logId) {
 		this.logId = logId;
 	}
 
