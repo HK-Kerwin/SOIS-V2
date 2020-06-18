@@ -18,6 +18,13 @@ public class TeacherEditPageController {
     @Autowired
     private CrmManageService crmManageService;
 
+    /**
+     *
+     * 教室编辑页面
+     * @param classRoom
+     * @param model
+     * @return
+     */
     @PostMapping("classRoom/doGetClassRoomEditPageForTeacher")
     public String doGetClassRoomEditPageForTeacher(ClassRoom classRoom, Model model){
         List<String> list = crmManageService.showClassNumAllList();
@@ -29,6 +36,11 @@ public class TeacherEditPageController {
         return "teacher/classroom_edit";
     }
 
+    /**
+     * 班级管理弹窗界面
+     * @param model
+     * @return
+     */
     @RequiresPermissions("teacher:class:info")
     @RequestMapping("classInfo/doGetClassTablePageForTeacher")
     public String doGetClassRoomEditPageForTeacher(Model model){

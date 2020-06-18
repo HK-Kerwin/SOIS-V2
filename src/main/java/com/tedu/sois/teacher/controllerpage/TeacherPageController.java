@@ -18,6 +18,12 @@ public class TeacherPageController {
     @Autowired
     private StuBaseInfoService stuBaseInfoService;
 
+    /**
+     * 学员信息管理界面
+     * @param indexSearch
+     * @param model
+     * @return
+     */
     @RequestMapping("doGetStuInfoPageForTeacher")
     public String doGetStuInfoPageForTeacher(String indexSearch,Model model) {
         List<String> list = stuBaseInfoService.showStuClassNumList();
@@ -47,12 +53,19 @@ public class TeacherPageController {
         return "teacher/stuInfo_list";
     }
 
-
+    /**
+     * 教室管理界面
+     * @return
+     */
     @RequestMapping("doGetClassRoomInfoPageForTeacher")
     public String doGetClassRoomInfoPageForTeacher(){
         return "teacher/classroom_list";
     }
 
+    /**
+     * 资产管理界面
+     * @return
+     */
     @RequestMapping("doGetAssetsInfoPageForMaintenance")
     public String doGetAssetsInfoPageForMaintenance(){
         return "teacher/assets_info";
