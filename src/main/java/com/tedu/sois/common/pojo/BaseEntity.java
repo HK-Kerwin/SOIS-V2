@@ -8,6 +8,9 @@ import java.util.Date;
 
 public class BaseEntity implements Serializable {
 
+    /**备注*/
+    protected String remark;
+
     /**创建日期*/
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     protected Date createdTime;
@@ -22,11 +25,8 @@ public class BaseEntity implements Serializable {
     /**更新者*/
     protected String modifiedUser;
 
-    /**删除标记*/
+    /**删除标记 删除标志（0代表存在 2代表删除）*/
     protected String delFlag;
-
-    /**备注*/
-    protected String remark;
 
     public Date getCreatedTime() {
         return createdTime;
