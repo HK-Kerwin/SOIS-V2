@@ -109,7 +109,6 @@ public class SysDeptServiceImpl implements SysDeptService {
 
     @RequiresPermissions("sys:dept:view")
     @Cacheable("deptCache")
-    @RequiredLog("查询所有部门信息")
     @Transactional(readOnly = true)
     @Override
     public List<Map<String, Object>> findDeptInfoList() {
