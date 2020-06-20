@@ -30,24 +30,33 @@ public class TimeAccessInterceptor implements HandlerInterceptor {
     /**
      * token 校验
      *
-     * @param httpServletRequest, httpServletResponse, o
+     * @param req, resp, o
      * @return boolean
      * @methodName preHandle
      * @author fusheng
      * @date 2019/1/3 0003
      */
     @Override
-    public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o) throws Exception {
+    public boolean preHandle(HttpServletRequest req, HttpServletResponse resp, Object o) throws Exception {
         System.out.println("preHandle()");
-        Map<String, String[]> mapIn = httpServletRequest.getParameterMap();
+
+        Map<String, String[]> mapIn = req.getParameterMap();
         JSON jsonObject = JSONUtil.parseObj(mapIn);
-        StringBuffer stringBuffer = httpServletRequest.getRequestURL();
-        httpServletResponse.addHeader("Access-Control-Allow-Origin","*");
-        LOG.info("httpServletRequest ,路径:" + stringBuffer + ",入参:" + JSONUtil.toJsonStr(jsonObject));
+        StringBuffer stringBuffer = req.getRequestURL();
+
+        //跨域问题解决
+        resp.setHeader("Access-Control-Allow-Origin", resp.getHeader("Origin"));
+        resp.setHeader("Access-Control-Allow-Headers", "Authorization, Origin, X-Requested-With, Content-Type, Accept, Access-Token, If-Modified-Since");
+        resp.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
+        resp.setHeader("Access-Control-Max-Age", "3600");
+        resp.setHeader("Access-Control-Allow-Credentials","true");
+        resp.setHeader("P3P", "CP=CAO IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT");
+
+        LOG.info("req ,路径:" + stringBuffer + ",入参:" + JSONUtil.toJsonStr(jsonObject));
 
         //校验APP的登陆状态，如果token 没有过期
         LOG.info("come in preHandle");
-        String oldToken = httpServletRequest.getHeader("token");
+        String oldToken = req.getHeader("token");
         LOG.info("token:" + oldToken);
         /*刷新token，有效期延长2小时*/
         if (StringUtils.isNotBlank(oldToken)) {
@@ -57,7 +66,7 @@ public class TimeAccessInterceptor implements HandlerInterceptor {
             } catch (Exception e) {
                 e.printStackTrace();
                 String str = "{\"code\":801,\"msg\":\"登陆失效,请重新登录!!!\"}";
-                dealErrorReturn(httpServletRequest, httpServletResponse, str);
+                dealErrorReturn(req, resp, str);
                 return false;
             }
             if (claims.getExpiration().getTime() > DateUtil.date().getTime()) {
@@ -65,47 +74,47 @@ public class TimeAccessInterceptor implements HandlerInterceptor {
                 try {
                     String newToken = TokenUtil.createJWT(claims.getId(), claims.getSubject(), TokenUtil.EFFECTIVE_TIME);
                     LOG.info("new TOKEN:{}", newToken);
-                    httpServletRequest.setAttribute("userId", userId);
-                    httpServletResponse.setHeader("token", newToken);
+                    req.setAttribute("userId", userId);
+                    resp.setHeader("token", newToken);
                     LOG.info("flush token success ,{}", oldToken);
                     return true;
                 } catch (Exception e) {
                     e.printStackTrace();
                     String str = "{\"code\":801,\"msg\":\"登陆失效,请重新登录.\"}";
-                    dealErrorReturn(httpServletRequest, httpServletResponse, str);
+                    dealErrorReturn(req, resp, str);
                     return false;
                 }
             }
         }
         String str = "{\"code\":801,\"msg\":\"验证失效!请重新登录!\"}";
-        dealErrorReturn(httpServletRequest, httpServletResponse, str);
+        dealErrorReturn(req, resp, str);
         return false;
     }
 
     @Override
-    public void postHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, ModelAndView modelAndView) throws Exception {
+    public void postHandle(HttpServletRequest req, HttpServletResponse resp, Object o, ModelAndView modelAndView) throws Exception {
     }
 
     @Override
-    public void afterCompletion(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, Exception e) throws Exception {
+    public void afterCompletion(HttpServletRequest req, HttpServletResponse resp, Object o, Exception e) throws Exception {
     }
 
     /**
      * 返回错误信息给WEB
      *
-     * @param httpServletRequest, httpServletResponse, obj
+     * @param req, resp, obj
      * @return void
      * @methodName dealErrorReturn
      * @author fusheng
      * @date 2019/1/3 0003
      */
-    public void dealErrorReturn(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object obj) {
+    public void dealErrorReturn(HttpServletRequest req, HttpServletResponse resp, Object obj) {
         String json = (String) obj;
         PrintWriter writer = null;
-        httpServletResponse.setCharacterEncoding("UTF-8");
-        httpServletResponse.setContentType("application/json; charset=utf-8");
+        resp.setCharacterEncoding("UTF-8");
+        resp.setContentType("application/json; charset=utf-8");
         try {
-            writer = httpServletResponse.getWriter();
+            writer = resp.getWriter();
             writer.print(json);
 
         } catch (IOException ex) {
